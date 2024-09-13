@@ -17,35 +17,34 @@
   },
   "topbarLinks": [
     {
-      "name": "Community",
+      "name": "Discord",
       "url": "https://discord.gg/eJBhuTUQCU"
+    },
+    {
+      "name": "Github",
+      "url": "https://github.com/dcSpark/shinkai-apps"
     }
   ],
   "topbarCtaButton": {
-    "name": "Dashboard",
-    "url": "https://dashboard.mintlify.com"
+    "name": "Get Shinkai",
+    "url": "https://www.shinkai.com/get-shinkai"
   },
   "tabs": [
     {
-      "name": "API Reference",
+      "name": "Developer Guide",
       "url": "api-reference"
     }
   ],
   "anchors": [
     {
-      "name": "Documentation",
-      "icon": "book-open-cover",
-      "url": "https://mintlify.com/docs"
-    },
-    {
-      "name": "Community",
-      "icon": "discord",
-      "url": "https://discord.gg/eJBhuTUQCU"
-    },
-    {
       "name": "Blog",
       "icon": "newspaper",
-      "url": "https://mintlify.com/blog"
+      "url": "https://blog.shinkai.com/"
+    },
+    {
+      "name": "Discord",
+      "icon": "discord",
+      "url": "https://discord.gg/eJBhuTUQCU"
     }
   ],
   "navigation": [
@@ -53,12 +52,13 @@
       "group": "Get Started",
       "pages": [
         "introduction",
+        "what-is-Shinkai",
         "quickstart",
-        "development"
+        "first-Steps"
       ]
     },
     {
-      "group": "Essentials",
+      "group": "Advanced Features",
       "pages": [
         "essentials/markdown",
         "essentials/code",
