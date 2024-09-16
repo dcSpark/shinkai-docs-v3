@@ -3,6 +3,12 @@ title: 'Installation and Setup Guide'
 description: 'Start experiencing the power of Shinkai in under 5 minutes'
 ---
 
+> Minimum System Requirements: 
+>
+> Windows/Linux -> CPU: 4 Cores | RAM: 16 GB
+>
+> MacOs --> Processor M1+ (Not Intel compatible)
+
 ## Shinkai Desktop App
 Getting started with Shinkai is quick and easy. Follow these steps to install and set up Shinkai on your device.
 
@@ -17,7 +23,7 @@ Once downloaded, run the installation file and follow the on-screen instructions
 ### 3. Launch Shinkai
 After installation, open the Shinkai app. The first time you launch it, you'll be guided through a quick setup process.
 
-![Welcome to Shinkai](/images/welcome.svg)
+![Welcome to Shinkai](/images/welcome.jpg)
 
 
 
@@ -26,7 +32,7 @@ To start using your local AI with Shinkai you will need to install local AI agen
 
 After initializing your app you will be prompted to **install recommended models** according to your decice specs. You can see the full list of models available by clicking '**Show all models**.'
 
-![AI Models to install locally](/images/models-setup.png)
+![AI Models to install locally](/images/models-setup.jpg)
 
 
 
@@ -79,38 +85,42 @@ After initializing your app you will be prompted to **install recommended models
 
 </AccordionGroup>
 
-## Update your docs
+## Installing Shinkai Visor (Chrome Extension)
 
-Add content directly in your files with MDX syntax and React components. You can use any of our components, or even build your own.
+Installing the [Shinkai Chrome extension](https://chromewebstore.google.com/u/1/detail/shinkai-visor-supercharge/emahbbinjjmancgckmoodjficjdkjkif) enhances Shinkai’s capabilities by allowing it to seamlessly interact with your web browsing experience. 
 
-<CardGroup>
+The extension enables Shinkai to access, summarize, and organize web content directly in your browser, making tasks like research, reading, and data collection faster and more efficient. 
 
-<Card title="Style Your Docs" icon="paintbrush" href="/settings/global">
-  Add flair to your docs with personalized branding.
-</Card>
+### Install the Chrome Extension
 
-<Card
-  title="Add API Endpoints"
-  icon="square-code"
-  href="/api-playground/configuration"
->
-  Implement your OpenAPI spec and enable API user interaction.
-</Card>
+- Go to the [Chrome Web Store](https://chromewebstore.google.com/u/1/detail/shinkai-visor-supercharge/emahbbinjjmancgckmoodjficjdkjkif).
+- Click the **Add to Chrome** button.
+- Pin Shinkai to your extension navbar.
 
-<Card
-  title="Integrate Analytics"
-  icon="chart-mixed"
-  href="/analytics/supported-integrations"
->
-  Draw insights from user interactions with your documentation.
-</Card>
+![Install Shinkai Visor - Chrome Extension](/images/visor.png)
 
-<Card
-  title="Host on a Custom Domain"
-  icon="browser"
-  href="/settings/custom-domain/subdomain"
->
-  Keep your docs on your own website's subdomain.
-</Card>
+Shinkai Visor acts as a smart assistant while you browse, providing real-time insights and automating tasks, all while keeping your data private and secure on your device.
 
-</CardGroup>
+### Connecting Shinkai Visor to your Desktop App
+Connecting Shinkai Visor to the Shinkai Desktop App provides a more powerful and integrated AI experience. 
+
+With this connection, your desktop app can pull data and insights directly from your web browsing activities, enabling seamless cross-platform AI assistance.
+
+#### 1. Export your connection
+In your Desktop app, go to Settings > Export Connection > Enter a passphrase (_make sure to remember this_) > Click **Generate connection file**.
+
+Save the file in your device.
+
+![Export Desktop App Connection](/images/export-connection.jpg)
+
+#### 2. Restore Connection in Visor (Chrome extension)
+
+- Open Visor in Chrome > Click **Restore**.
+
+![Restore Connection](/images/restore.jpg)
+
+- Upload the connection file you just saved.
+- Enter your passphrase.
+- Click '**Restore Connection**'
+![Restore Connection final step](/images/restore-2.jpg)
+You are all set. You can navigate your local folders, save webpages, initiate chats with your AI while navigating and storing your information locally. 
