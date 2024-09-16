@@ -3,50 +3,78 @@ title: 'Installation and Setup Guide'
 description: 'Start experiencing the power of Shinkai in under 5 minutes'
 ---
 
-> System requirements: 
-
 ## Shinkai Desktop App
-Download the app on your Mac, Windows, or Linux device. 
+Getting started with Shinkai is quick and easy. Follow these steps to install and set up Shinkai on your device.
+
+### 1. Download the app to your device. 
+Visit the [Shinkai website](https://www.shinkai.com/) and click on the "**Download**" button. Shinkai supports Windows, Mac, and Linux platforms.
+
+[![Download Shinkai on Mac, Windows, or Linux](/images/download.png)](https://www.shinkai.com/)
+
+### 2. Install the app
+Once downloaded, run the installation file and follow the on-screen instructions to install Shinkai.
+
+### 3. Launch Shinkai
+After installation, open the Shinkai app. The first time you launch it, you'll be guided through a quick setup process.
+
+![Welcome to Shinkai](/images/welcome.svg)
 
 
-### Edit and preview
+
+#### Setting up Shinkai
+To start using your local AI with Shinkai you will need to install local AI agents or models. 
+
+After initializing your app you will be prompted to **install recommended models** according to your decice specs. You can see the full list of models available by clicking '**Show all models**.'
+
+![AI Models to install locally](/images/models-setup.png)
+
+
+
 
 <AccordionGroup>
-  <Accordion icon="github" title="Clone your docs locally">
-    During the onboarding process, we created a repository on your Github with
-    your docs content. You can find this repository on our
-    [dashboard](https://dashboard.mintlify.com). To clone the repository
-    locally, follow these
-    [instructions](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)
-    in your terminal.
-  </Accordion>
-  <Accordion icon="rectangle-terminal" title="Preview changes">
-    Previewing helps you make sure your changes look as intended. We built a
-    command line interface to render these changes locally. 1. Install the
-    [Mintlify CLI](https://www.npmjs.com/package/mintlify) to preview the
-    documentation changes locally with this command: ``` npm i -g mintlify ```
-    2. Run the following command at the root of your documentation (where
-    `mint.json` is): ``` mintlify dev ```
-  </Accordion>
-</AccordionGroup>
 
-### Deploy your changes
+<Accordion icon="robot" title="AI model guideline according to your RAM">
+  As a general rule, here is a brief guideline for model installation **according to your machine specs**: 
 
-<AccordionGroup>
+    **8GB RAM** ➡ choose 7B models or smaller.
+    _e.g., Gemma2 2b, Codegemma, Falcon, etc._
 
-<Accordion icon="message-bot" title="Install our Github app">
-  Our Github app automatically deploys your changes to your docs site, so you
-  don't need to manage deployments yourself. You can find the link to install on
-  your [dashboard](https://dashboard.mintlify.com). Once the bot has been
-  successfully installed, there should be a check mark next to the commit hash
-  of the repo.
+    **16GB RAM** ➡ choose 7B, 13B models or smaller.
+    _e.g., Llama 3.1 8b, Mistral Nemo 12b, Nexusraven, etc._
+
+    **32GB RAM** ➡ choose 7B, 13B, 15B, 30B models or smaller.
+    _e.g., Codestral, etc._
+
+    **64GB RAM** ➡ choose 7B, 13B, 15B, 30B models or smaller. You might be able to go higher than that.
+    _e.g., Alfred, etc._
+
+    **96GB RAM+** ➡ any model size should work for you. 🦾
 </Accordion>
-<Accordion icon="rocket" title="Push your changes">
-  [Commit and push your changes to
-  Git](https://docs.github.com/en/get-started/using-git/pushing-commits-to-a-remote-repository#about-git-push)
-  for your changes to update in your docs site. If you push and don't see that
-  the Github app successfully deployed your changes, you can also manually
-  update your docs through our [dashboard](https://dashboard.mintlify.com).
+<Accordion icon="laptop" title="Which AI model should I install?">
+  As a general rule: 
+  
+  👟 For **lightweight, fast AI needs** (short conversations, basic text generation): Go with _Gemma2 2b_ or _LLaVA Phi 3_.
+  
+  ⚖️  For **balance between complexity and speed**: _Llama 3.1 8b_ is the best choice.
+  
+  🧠  For **handling large documents and complex reasoning**: Opt for _Mistral Nemo 12b_, but keep in mind it will require more resources and be slower.
+
+  _Ultimately, your choice depends on the type of content, performance requirements, and hardware limitations you have in your setup._
+</Accordion>
+<Accordion icon="book-open" title="Understanding the 'b' in model names">
+  The "**b**" in model names refers to the **number of parameters in the model, measured in billions**. Parameters are the variables the model uses to make predictions, learn language patterns, and generate outputs.
+
+    👀 **The more parameters a model has, the more complex patterns it can learn**, but this also means:
+    - Increased resource consumption (memory, disk space, computational power)
+    - Longer inference time (slower responses, unless optimized)
+
+    👇 Here’s a general guideline for understanding parameter sizes:
+
+    **2b - 8b models** are smaller, faster, and can handle simpler tasks. They’re more lightweight and good for smaller, real-time tasks.
+
+    **10b - 70b models** are larger, slower, and better for complex, nuanced tasks. They have better performance on language understanding and generation, but are resource-intensive.
+
+    💻 _You have to keep in mind your own machine's specs when selecting a model._
 </Accordion>
 
 </AccordionGroup>
