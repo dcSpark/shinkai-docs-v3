@@ -60,11 +60,16 @@
     {
       "group": "Advanced Features",
       "pages": [
-        "essentials/markdown",
-        "essentials/code",
-        "essentials/images",
-        "essentials/settings",
-        "essentials/navigation",
+        "essentials/custom-ai",
+        "essentials/workflows",
+        "essentials/sheets",
+        "essentials/settings"
+      ]
+    },
+    {
+      "group": "Customization & Integrations",
+      "pages": [
+         "essentials/navigation",
         "essentials/reusable-snippets"
       ]
     },
