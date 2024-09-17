@@ -1,52 +1,86 @@
 ---
-title: 'Custom AI Models'
-description: 'Text, title, and styling in standard markdown'
+title: 'AI Models'
+description: 'Your guide to installing the best model for your local AI'
 icon: 'robot'
 ---
 
 <Tip>
 Sections:
-- Models comparison - table
+- ~Definition of model features (technical guide)~
+- ~Models comparison - table~
 - List of models + constantly updating -> Ollama
 - Installing manual AI
 - Custom AI installation
 
 </Tip>
 
+> Models in Shinkai are pulled from Ollama....definition
 
-## AI Models
+## Understanding AI Models
+If you're looking to install an AI model but aren’t sure where to start, understanding the key features of each model can make your decision easier. 
+Factors like the number of **parameters** and **quantization** levels help determine which model suits your needs. 
 
+Whether you’re using it for casual text generation or advanced AI tasks, learning these basics ensures you pick the right model for your device and tasks. 
+**Let's break down these features to help guide your choice**.
 
-<ResponseField name="Parameters" type="AI Models">
+<ResponseField name="Parameters" type="e.g., 8B, 12B, 70B">
   <Expandable title="Parameters definition">
-    <ResponseField name="type" type={'"link" or "github"'} default="link">
-    Link shows a button. GitHub shows the repo information at the url provided including the number of GitHub stars.
-    </ResponseField>
-    <ResponseField name="url" type="string">
-    If `link`: What the button links to.
-    
-    If `github`: Link to the repository to load GitHub information from.
-    </ResponseField>
-    <ResponseField name="name" type="string">
-    Text inside the button. Only required if `type` is a `link`.
-    </ResponseField>
+    **Parameters** refer to the model's size in terms of billions of parameteers. These are the internal settings of the model that are adjusted during training, determining how well it can learn, predict, generate text, or recognize patterns. 
+    **The more parameters a model has, the more detailed and powerful it can be**, though it also requires more computing power. Some examples:
 
+    <ResponseField name="8B Parameters" type="e.g., LLaMA 8B">
+        - **Uses**: Suitable for tasks like general text generation, chatbots, and lightweight language understanding.
+        - **System Requirements**: Requires around 16GB of RAM and an 8-core CPU. A GPU is optional but improves performance.
+    </ResponseField>
+    <ResponseField name="12B Parameters" type="e.g., Mistral-Nemo 12B">
+        - **Uses**: Best for longer-context tasks, such as multi-lingual support and more complex text generation.
+        - **System Requirements**: Needs at least 16GB of RAM and a strong CPU; GPU is recommended for better speed.
+    </ResponseField>
+    <ResponseField name="70B Parameters" type="e.g., LLaMA 70B">
+        - **Uses**: Ideal for large-scale tasks like data analysis, advanced text generation, and more sophisticated AI tools.
+        - **System Requirements**: Requires 32GB RAM, high-end CPUs, and a GPU for optimal performance due to its complexity.    
+    </ResponseField>
   </Expandable>
 </ResponseField>
 
-**Parameters** in AI models are like "settings" that adjust how the model processes information. They're the values that get fine-tuned during training to help the model make predictions, generate text, or recognize patterns. The more parameters a model has, the more detailed and powerful it can be, though it also requires more computing power.
+<ResponseField name="Quantization" type="e.g., Q4, Q8, FP16">
+  <Expandable title="Quantization definition">
+   **Quantization** is a technique used to reduce the size of AI models by simplifying the number of bits used to represent the parameters. 
+   This makes the model faster and more efficient without drastically losing accuracy. Here are some examples:
 
-**Quantization** is a technique used to reduce the size of AI models by simplifying the number of bits used to represent the parameters. This makes the model faster and more efficient without drastically losing accuracy.
+    <ResponseField name="Q4" type="4-bit Quantization">
+        This reduces memory usage and speeds up computation, making it **ideal for devices with limited resources** or when model size needs to be minimized. 
+        Choose this when you need efficiency over slight reductions in accuracy.
+    </ResponseField>
+    <ResponseField name="8Q" type="8-bit Quantization">
+        A **balance between performance and precision**. It’s suitable for most tasks where some compression is acceptable but higher accuracy is still required.
+    </ResponseField>
+    <ResponseField name="FP16" type="16-bit Floating Point">
+        Maintains high accuracy while reducing model size compared to FP32. **Best for tasks where accuracy is more important** but some efficiency is needed.  
+    </ResponseField>
+  </Expandable>
+</ResponseField>
 
-| **Model**          | **Parameters**                     | **Best For**                                |
-|--------------------|------------------------------------|---------------------------------------------|
-| **Llama2**         | 7B, 13B                           | General text generation, lightweight tasks  |
-| **Gemma2**         | 2B, 9B, 27B                       | Efficient text generation and language tasks|
-| **Mistral**        | 7B                                | Lightweight multi-lingual tasks             |
-| **Qwen2**          | 0.5B, 1.5B, 7B                    | Text processing, general AI tasks           |
-| **Vicuna**         | 7B, 13B                           | Conversational AI, chat applications        |
-| **MPT**            | 7B                                | Open-source, versatile AI for local use     |
-| **CodeGemma**      | 2B, 7B                            | Code generation, instruction-following tasks|
-| **LLaVA**          | 7B, 13B                           | Visual and language understanding tasks     |
+### AI Models Comparison
 
+| **Model**          | **Parameters**                     | **Quantization** | **Best For**                                |
+|--------------------|------------------------------------|------------------|---------------------------------------------|
+| **Llama3.1**       | 8B, 70B, 405B                     | Q8, FP16         | Advanced tools, large-scale tasks           |
+| **Gemma2**         | 2B, 9B, 27B                       | Q8               | Efficient text generation and language tasks|
+| **Mistral-Nemo**   | 12B, 70B                          | Q4               | Long-context tasks, multi-lingual support   |
+| **Qwen2**          | 0.5B, 1.5B, 7B, 72B               | Q4, Q8           | Text processing, general AI tasks           |
+| **Deepseek-Coder** | 16B, 236B                         | Q8, FP16         | Code generation, fill-in-the-middle tasks   |
+| **Command-R**      | 35B                               | Q8               | Conversational, long-context interactions   |
+| **Mistral**        | 7B                                | Q4               | Lightweight multi-lingual tasks             |
+| **CodeGemma**      | 2B, 7B                            | Q8               | Code generation, instruction-following tasks|
+| **Command-R+**     | 104B                              | FP16             | Enterprise AI, large-scale conversational tasks|
+| **Mixtral**        | 8x7B, 8x22B                       | Q4               | Mixture-of-Experts tasks, multi-lingual tasks|
+
+
+
+<Frame>
+  <img src="/images/models-list.jpg" style={{ borderRadius: '0.5rem' }} />
+</Frame>
+
+## Installing Custom AIs 
 
