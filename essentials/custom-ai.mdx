@@ -5,16 +5,9 @@ icon: 'robot'
 ---
 
 <Tip>
-Sections:
-- ~Definition of model features (technical guide)~
-- ~Models comparison - table~
-- List of models + constantly updating -> Ollama
-- Installing manual AI
-- Custom AI installation
-
+AI models in Shinkai are powered by Ollama and are constantly being updated.
 </Tip>
 
-> Models in Shinkai are pulled from Ollama....definition
 
 ## Understanding AI Models
 If you're looking to install an AI model but aren’t sure where to start, understanding the key features of each model can make your decision easier. 
@@ -62,7 +55,8 @@ Whether you’re using it for casual text generation or advanced AI tasks, learn
 </ResponseField>
 
 ### AI Models Comparison
-
+Choosing the right AI model depends on the task you want to perform and the specs of your device. 
+Models may have different versions to install, here are a few examples:
 | **Model**          | **Parameters**                     | **Quantization** | **Best For**                                |
 |--------------------|------------------------------------|------------------|---------------------------------------------|
 | **Llama3.1**       | 8B, 70B, 405B                     | Q8, FP16         | Advanced tools, large-scale tasks           |
@@ -70,17 +64,45 @@ Whether you’re using it for casual text generation or advanced AI tasks, learn
 | **Mistral-Nemo**   | 12B, 70B                          | Q4               | Long-context tasks, multi-lingual support   |
 | **Qwen2**          | 0.5B, 1.5B, 7B, 72B               | Q4, Q8           | Text processing, general AI tasks           |
 | **Deepseek-Coder** | 16B, 236B                         | Q8, FP16         | Code generation, fill-in-the-middle tasks   |
-| **Command-R**      | 35B                               | Q8               | Conversational, long-context interactions   |
-| **Mistral**        | 7B                                | Q4               | Lightweight multi-lingual tasks             |
 | **CodeGemma**      | 2B, 7B                            | Q8               | Code generation, instruction-following tasks|
-| **Command-R+**     | 104B                              | FP16             | Enterprise AI, large-scale conversational tasks|
-| **Mixtral**        | 8x7B, 8x22B                       | Q4               | Mixture-of-Experts tasks, multi-lingual tasks|
 
+### Browsing AI models in Shinkai
 
+Shinkai offers you a wide array of models to choose from. To browse the whole list of AI models in Shinkai, click the `AIs` option of the left side menu > Click the `Show all models` option below the recommended models. 
 
 <Frame>
   <img src="/images/models-list.jpg" style={{ borderRadius: '0.5rem' }} />
 </Frame>
+In this view you can access the different models available in Shinkai. This list is continously being updated. 
 
-## Installing Custom AIs 
+<Tip>
+    You can choose the version of the model you'd like to install in the dropdown menu next to the model's name. 
+    
+    Refer to the **[parameters and quantization](/essentials/custom-ai#understanding-ai-models)** guidelines to help you make the best choice for your device and task. 
+</Tip>
 
+## Installing AIs Manually
+The list of AI models in Shinkai is powered by Ollama and is continously growing. Although, if you want to install another model, you can do it easily:
+
+1.  Click the `AIs` option on the left side menu > Click the `+ Manually Add AI` button on the upper-right corner.
+<Frame>
+  <img src="/images/manual-ai.jpg" style={{ borderRadius: '0.5rem' }} />
+</Frame>
+2. Select the model you'd like to install. Currently, the available options are: *OpenAI, Together AI, Ollama, Gemini, and Exo*.
+3. Choose the model type or version you want to install. 
+4. Customize the name of the model or leave the name given by default.
+5. Enter the URL of the model source. 
+6. Enter the **API key** for the model *(e.g., you need an active subscription in OpenAI to request API keys of their models)*. 
+7. Click 'Add AI'. You will now see the model available in the `AIs` view and within the model dropdown of AI Chats.  
+
+
+<Frame>
+  <img src="/images/manual-ai-b.jpg" style={{ borderRadius: '0.5rem' }} />
+</Frame>
+
+### Custom AIs
+If the model you want to install is not present in the models list, you can add custom models providing the information requested in the form: *Model name (service provider); model type; model name to appear in the chats; external URL; and API key*. 
+
+<Frame>
+  <img src="/images/custom-ai.jpg" style={{ borderRadius: '0.5rem' }} />
+</Frame>
