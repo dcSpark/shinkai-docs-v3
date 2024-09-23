@@ -1,51 +1,50 @@
 {
   "$schema": "https://mintlify.com/schema.json",
-  "name": "Starter Kit",
+  "name": "Shinkai Docs",
   "logo": {
-    "dark": "/logo/dark.svg",
-    "light": "/logo/light.svg"
+    "dark": "/logo/logo-dark.svg",
+    "light": "/logo/logo-light.svg"
   },
   "favicon": "/favicon.svg",
   "colors": {
-    "primary": "#0D9373",
-    "light": "#07C983",
-    "dark": "#0D9373",
+    "primary": "#FE6162",
+    "light": "#FE6162",
+    "dark": "#FE6162",
     "anchors": {
-      "from": "#0D9373",
-      "to": "#07C983"
+      "from": "#FE6162",
+      "to": "#AEA89B"
     }
   },
   "topbarLinks": [
     {
-      "name": "Support",
-      "url": "mailto:hi@mintlify.com"
+      "name": "Discord",
+      "url": "https://discord.gg/eJBhuTUQCU"
+    },
+    {
+      "name": "Github",
+      "url": "https://github.com/dcSpark/shinkai-apps"
     }
   ],
   "topbarCtaButton": {
-    "name": "Dashboard",
-    "url": "https://dashboard.mintlify.com"
+    "name": "Get Shinkai",
+    "url": "https://www.shinkai.com/get-shinkai"
   },
   "tabs": [
     {
-      "name": "API Reference",
+      "name": "Developer Guide",
       "url": "api-reference"
     }
   ],
   "anchors": [
     {
-      "name": "Documentation",
-      "icon": "book-open-cover",
-      "url": "https://mintlify.com/docs"
-    },
-    {
-      "name": "Community",
-      "icon": "slack",
-      "url": "https://mintlify.com/community"
-    },
-    {
       "name": "Blog",
       "icon": "newspaper",
-      "url": "https://mintlify.com/blog"
+      "url": "https://blog.shinkai.com/"
+    },
+    {
+      "name": "Discord",
+      "icon": "discord",
+      "url": "https://discord.gg/eJBhuTUQCU"
     }
   ],
   "navigation": [
@@ -53,12 +52,13 @@
       "group": "Get Started",
       "pages": [
         "introduction",
+        "what-is-Shinkai",
         "quickstart",
-        "development"
+        "first-steps"
       ]
     },
     {
-      "group": "Essentials",
+      "group": "Advanced Features",
       "pages": [
         "essentials/markdown",
         "essentials/code",
@@ -84,8 +84,8 @@
     }
   ],
   "footerSocials": {
-    "x": "https://x.com/mintlify",
-    "github": "https://github.com/mintlify",
-    "linkedin": "https://www.linkedin.com/company/mintsearch"
+    "x": "https://twitter.com/ShinkaiProtocol",
+    "github": "https://github.com/dcSpark/shinkai-apps",
+    "discord": "https://discord.com/invite/MmYd9zQquy"
   }
 }
