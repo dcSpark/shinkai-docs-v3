@@ -60,17 +60,24 @@
     {
       "group": "Advanced Features",
       "pages": [
-        "essentials/custom-ai",
-        "essentials/workflows",
-        "essentials/sheets",
-        "essentials/settings"
+        "advanced/custom-ai",
+        {
+          "group": "Experimental Features",
+          "pages": [
+            "advanced/experimental",
+            "advanced/workflows",
+            "advanced/sheets",
+            "advanced/tools"
+          ]
+        }
       ]
     },
     {
       "group": "Customization & Integrations",
       "pages": [
-         "essentials/customization",
-        "essentials/integrations"
+         "custom/customization",
+        "custom/integrations",
+        "custom/settings"
       ]
     },
     {
