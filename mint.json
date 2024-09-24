@@ -64,20 +64,20 @@
         {
           "group": "Experimental Features",
           "pages": [
-            "advanced/experimental",
+            "advanced/overview",
             "advanced/workflows",
             "advanced/sheets",
             "advanced/tools"
           ]
-        }
+        },
+        "custom/settings"
       ]
     },
     {
       "group": "Customization & Integrations",
       "pages": [
          "custom/customization",
-        "custom/integrations",
-        "custom/settings"
+        "custom/integrations"
       ]
     },
     {
