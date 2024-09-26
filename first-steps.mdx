@@ -85,17 +85,39 @@ When creating a new chat there are different settings you can adjust:
   </Accordion>
 
   <Accordion icon="Sliders" title="Chat Settings">
-    You can add your local files or folders to provide robust context to the AI. 
+    You can access chat settings to adjust how the model generates text. By adjusting these settings, you can fine-tune the balance between creativity and accuracy, depending on the nature of your project or conversation.
+    ![Menu options](/images/chat-settings.jpg) 
+    <Tabs>
+      <Tab title="Enable Stream">
+        This toggle allows you to turn on or off streaming mode. When enabled, the model will stream responses word by word or in chunks rather than delivering the full response at once. This can create a more dynamic, conversational experience.
+      </Tab>
+      <Tab title="Temperature">
+        The temperature controls the **randomness** of the AI’s responses.
+    
+          - A lower temperature (e.g., `0.2`) makes the model more deterministic, meaning it will generate more focused and repetitive responses.
+          - A higher temperature (e.g., `0.8`) introduces more randomness and creativity, making the responses less predictable but possibly more diverse.
+          - For balanced creativity and coherence, a temperature between `0.7` and `1.0` is commonly used.
+      </Tab>
+      <Tab title="Top P (Nucleus Sampling)">
+        - This setting affects how the model selects words based on cumulative probability.
+        - `Top P` sets a threshold for considering the most likely word choices. For example, a `Top P` of `0.9` means the model will sample from the smallest possible set of words whose combined probability is 90%.
+        - Lower `Top P` values result in more conservative responses, while higher values (closer to `1.0`) allow for more diversity.
+      </Tab>
+      <Tab title="Top K">
+        - `Top K` controls how many of the highest probability word choices are considered at each step.
+        - For instance, `Top K = 40` means the model will only consider the top 40 most likely words, filtering out less probable options.
+        - A lower `Top K` (e.g., `5` or `10`) will make the responses more deterministic, while a higher Top K (e.g., `50` or `100`) allows for more variety in responses.
+      </Tab>
+      <Tab title="Custom Prompt">
+        - This field allows you to input a custom prompt that adjusts the context or behavior of the AI.
+        - You can add specific instructions here, such as “Respond concisely” or “Act as a friendly assistant,” which will influence how the AI interacts within the session.
+      </Tab>
+      </Tabs>
+     
   </Accordion>
 
 </AccordionGroup>
 
-
-#### Workflow Library
-`Workflows` are predefined instructions crafted to help you streamline your processes. They help automate repetitive tasks reducing manual intervention, ensuring that tasks are handled consistently every time. 
-
-
-> Browse workflows directly in the New Chat view, or create your own custom workflows. 
 
 ### Files Manager
 Shinkai offers you a dedicated view to create and manage folders, where you can store your files and include them in your interactions with your AI. 
@@ -108,7 +130,7 @@ Go to `My AI Files Explorer` on the left side menu. In this view you can add New
 
 
 ### Subscriptions
-The `Browse Subscriptions` feature in Shinkai allows users to subscribe to up-to-date content from various sources across the decentralized Shinkai Network. 
+The `Browse Subscriptions` feature in Shinkai allows users to **subscribe to up-to-date content from various sources** across the decentralized Shinkai Network. 
 This option lets users enhance their AI's knowledge base by subscribing to folders of AI-ready content, such as news, sports, cryptocurrency updates, and even user-shared files like PDFs or websites.
 <Frame>
   <img src="/images/subscriptions.jpg" style={{ borderRadius: '0.5rem' }} />
