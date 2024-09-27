@@ -1,33 +1,38 @@
 ---
-title: 'Introduction'
-description: 'Example section for showcasing API endpoints'
+title: "Introduction to Shinkai API"
 ---
 
-<Note>
-  If you're not looking to build API reference documentation, you can delete
-  this section by removing the api-reference folder.
-</Note>
 
-## Welcome
+Welcome to the Shinkai API documentation. This API provides a comprehensive set of tools for managing AI-powered workflows, file systems, and cryptocurrency wallets. Whether you're building advanced AI applications, managing subscriptions, or handling digital assets, the Shinkai API offers the flexibility and power you need.
 
-There are two ways to build API documentation: [OpenAPI](https://mintlify.com/docs/api-playground/openapi/setup) and [MDX components](https://mintlify.com/docs/api-playground/mdx/configuration). For the starter kit, we are using the following OpenAPI specification.
+## API Overview
 
-<Card
-  title="Plant Store Endpoints"
-  icon="leaf"
-  href="https://github.com/mintlify/starter/blob/main/api-reference/openapi.json"
->
-  View the OpenAPI specification file
-</Card>
+Our API is organized into several key sections, each focusing on a specific aspect of the Shinkai ecosystem:
 
-## Authentication
+### General
 
-All API endpoints are authenticated using Bearer tokens and picked up from the specification file.
+The General section covers core functionality and system-wide operations. Here you'll find endpoints for managing LLM providers, handling embedding models, and performing essential system checks.
 
-```json
-"security": [
-  {
-    "bearerAuth": []
-  }
-]
-```
+### Jobs
+
+The Jobs section is dedicated to managing AI tasks and workflows. It includes endpoints for creating and managing jobs, handling file inboxes, and interacting with Language Model (LLM) providers.
+
+### Subscriptions
+
+In the Subscriptions section, you'll find tools for managing shared content and user subscriptions. This includes creating shareable folders, managing notifications, and handling subscriber lists.
+
+### Tool Offerings
+
+The Tool Offerings section provides endpoints for managing and accessing various tools available within the Shinkai ecosystem. This includes listing, adding, and removing tool offerings.
+
+### Vector File System (vecfs)
+
+The Vector File System (vecfs) section offers powerful file management capabilities optimized for AI operations. It includes endpoints for file conversion, folder management, and vector-based file searches.
+
+### Wallet
+
+The Wallet section provides cryptocurrency wallet management features. This includes creating and restoring wallets, as well as processing payments.
+
+Each section of the API is designed to be intuitive and powerful, allowing you to build sophisticated applications on top of the Shinkai platform. As you explore the documentation, you'll find detailed information about each endpoint, including request parameters, response formats, and example usage.
+
+We're excited to see what you'll build with the Shinkai API. Let's get started!

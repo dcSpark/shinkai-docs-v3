@@ -31,8 +31,7 @@
   },
   "tabs": [
     {
-      "name": "Developer Guide",
-      "openapi": "/api-reference/yamls/general.yaml",
+      "name": "Developer Guide", 
       "url": "api-reference"
     }
   ],
@@ -53,7 +52,7 @@
       "group": "Get Started",
       "pages": [
         "introduction",
-        "what-is-Shinkai",
+        "what-is-shinkai",
         "quickstart",
         "first-steps"
       ]
@@ -66,12 +65,9 @@
           "group": "Experimental Features",
           "pages": [
             "advanced/overview",
-            "advanced/workflows",
-            "advanced/sheets",
-            "advanced/tools"
+            "advanced/workflows"
           ]
-        },
-        "custom/settings"
+        }
       ]
     },
     {
@@ -81,15 +77,7 @@
       ]
     },
     {
-      "group": "Endpoint Examples",
-      "pages": [
-        "api-reference/endpoint/get",
-        "api-reference/endpoint/create",
-        "api-reference/endpoint/delete"
-      ]
-    },
-    {
-      "group": "general",
+      "group": "General",
       "pages": [
         "api-reference/general/post-v2add_llm_provider",
         "api-reference/general/post-v2add_ollama_models",
@@ -113,7 +101,7 @@
       ]
     },
     {
-      "group": "jobs",
+      "group": "Jobs",
       "pages": [
         "api-reference/jobs/post-v2add_file_to_inbox",
         "api-reference/jobs/get-v2all_inboxes",
@@ -133,7 +121,7 @@
       ]
     },
     {
-      "group": "subscriptions",
+      "group": "Subscriptions",
       "pages": [
         "api-reference/subscriptions/post-v2available_shared_items",
         "api-reference/subscriptions/post-v2available_shared_items_open",
@@ -150,7 +138,7 @@
       ]
     },
     {
-      "group": "tool-offerings",
+      "group": "Tool Offerings",
       "pages": [
         "api-reference/tool-offerings/get-v2get_all_tool_offerings",
         "api-reference/tool-offerings/post-v2get_tool_offering",
@@ -159,7 +147,7 @@
       ]
     },
     {
-      "group": "vecfs",
+      "group": "Vector File System",
       "pages": [
         "api-reference/vecfs/post-v2convert_files_and_save",
         "api-reference/vecfs/post-v2copy_folder",
@@ -176,7 +164,7 @@
       ]
     },
     {
-      "group": "wallet",
+      "group": "Wallet",
       "pages": [
         "api-reference/wallet/post-v2create_local_wallet",
         "api-reference/wallet/post-v2pay_invoice",
