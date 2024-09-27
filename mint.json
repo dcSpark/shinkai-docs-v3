@@ -174,7 +174,7 @@
     }
   ],
   "api": {
-    "baseUrl": "https://api.shinkai.com",
+    "baseUrl": "http://127.0.0.1:9550",
     "playground": {
       "mode": "show" 
     }
