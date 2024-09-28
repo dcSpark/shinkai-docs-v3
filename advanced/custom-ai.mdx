@@ -1,0 +1,164 @@
+---
+title: 'AI Models'
+description: 'Your guide to installing the best model for your local AI'
+icon: 'robot'
+---
+
+<Info>
+Local AI models in Shinkai are powered by Ollama and are constantly being updated.
+</Info>
+
+
+## Understanding AI Models
+If you're looking to install a local AI model but aren’t sure where to start, understanding the key features of each model can make your decision easier. 
+Factors like the number of **parameters** and **quantization** levels help determine which model suits your needs. 
+
+Whether you’re using it for casual text generation or advanced AI tasks, learning these basics ensures you pick the right model for your device and tasks. 
+**Let's break down these features to help guide your choice**.
+
+<ResponseField name="Parameters" type="e.g., 8B, 12B, 70B">
+  <Expandable title="Parameters definition">
+    **Parameters** refer to the model's size in terms of billions of parameteers. These are the internal settings of the model that are adjusted during training, determining how well it can learn, predict, generate text, or recognize patterns. 
+    **The more parameters a model has, the more detailed and powerful it can be**, though it also requires more computing power. Some examples:
+
+    <ResponseField name="8B Parameters" type="e.g., LLaMA 8B">
+        - **Uses**: Suitable for tasks like general text generation, chatbots, and lightweight language understanding.
+        - **System Requirements**: Requires around 16GB of RAM and an 8-core CPU. A GPU is optional but improves performance.
+    </ResponseField>
+    <ResponseField name="12B Parameters" type="e.g., Mistral-Nemo 12B">
+        - **Uses**: Best for longer-context tasks, such as multi-lingual support and more complex text generation.
+        - **System Requirements**: Needs at least 16GB of RAM and a strong CPU; GPU is recommended for better speed.
+    </ResponseField>
+    <ResponseField name="70B Parameters" type="e.g., LLaMA 70B">
+        - **Uses**: Ideal for large-scale tasks like data analysis, advanced text generation, and more sophisticated AI tools.
+        - **System Requirements**: Requires 32GB RAM, high-end CPUs, and a GPU for optimal performance due to its complexity.    
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="Quantization" type="e.g., Q4, Q8, FP16">
+  <Expandable title="Quantization definition">
+   **Quantization** is a technique used to reduce the size of AI models by simplifying the number of bits used to represent the parameters. 
+   This makes the model faster and more efficient without drastically losing accuracy. Here are some examples:
+
+    <ResponseField name="Q4" type="4-bit Quantization">
+        This reduces memory usage and speeds up computation, making it **ideal for devices with limited resources** or when model size needs to be minimized. 
+        Choose this when you need efficiency over slight reductions in accuracy.
+    </ResponseField>
+    <ResponseField name="8Q" type="8-bit Quantization">
+        A **balance between performance and precision**. It’s suitable for most tasks where some compression is acceptable but higher accuracy is still required.
+    </ResponseField>
+    <ResponseField name="FP16" type="16-bit Floating Point">
+        Maintains high accuracy while reducing model size compared to FP32. **Best for tasks where accuracy is more important** but some efficiency is needed.  
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<Note>
+  You might find models versions specified as this: `model_8b-23-q3_K_S`.
+  Here's a breakdown of what each part likely means:
+  - **model** - the name of the model.
+  - **8b** - stands for 8 billion parameters.
+  - **23** - might represent the version or a specific variant of the model.
+  - **q3** - refers to quantization at level 3.
+  - **K** - likely refers to the type of quantization strategy used.
+  - **S** - might stand for a specific optimization applied to this model, such as speed improvements or memory efficiency tweaks.
+
+
+</Note>
+
+### AI Models Comparison
+Choosing the right AI model depends on the task you want to perform and the specs of your device. 
+Models may have different versions to install, here are a few examples:
+| **Model**          | **Parameters**                     | **Quantization** | **Best For**                                |
+|--------------------|------------------------------------|------------------|---------------------------------------------|
+| **Llama3.1**       | 8B, 70B, 405B                     | Q8, FP16         | Advanced tools, large-scale tasks           |
+| **Gemma2**         | 2B, 9B, 27B                       | Q8               | Efficient text generation and language tasks|
+| **Mistral-Nemo**   | 12B, 70B                          | Q4               | Long-context tasks, multi-lingual support   |
+| **Qwen2**          | 0.5B, 1.5B, 7B, 72B               | Q4, Q8           | Text processing, general AI tasks           |
+| **Deepseek-Coder** | 16B, 236B                         | Q8, FP16         | Code generation, fill-in-the-middle tasks   |
+| **CodeGemma**      | 2B, 7B                            | Q8               | Code generation, instruction-following tasks|
+
+### Browsing Local AI Models in Shinkai
+
+Shinkai offers you a wide array of models to choose from. To browse the whole list of local AI models in Shinkai, click the `AIs` option of the left side menu > Click the `Show all models` option below the recommended models. 
+
+<Frame>
+  <img src="/images/models-list.jpg" style={{ borderRadius: '0.5rem' }} />
+</Frame>
+In this view you can access the different agents available in Shinkai. In the `Tags` column next to each model you can see that each offers several size variants (e.g., 8b, 35b). These numbers refer to the number of [parameters](/advanced/custom-ai#understanding-ai-models) in the model, which directly affect the model’s performance, speed, and the *hardware resources* required. 
+
+
+<Tip>
+    You can choose the version of the model you'd like to install in the dropdown menu next to the model's name. 
+    
+    Refer to the **[parameters and quantization](/advanced/custom-ai#understanding-ai-models)** guidelines to help you make the best choice for your device and task. 
+</Tip>
+
+## Installing Local AIs Manually
+The list of AI models in Shinkai is powered by Ollama and is continously growing. Although, if you want to install another model, you can do it easily:
+
+> Click the `AIs` option on the left side menu > Click the `+ Manually Add AI` button on the upper-right corner.
+<Frame>
+  <img src="/images/manual-ai-b.jpg" style={{ borderRadius: '0.5rem' }} />
+</Frame>
+There are several model options available to choose from: **OpenAI, Together AI, Ollama, Gemini, Groq, OpenRouter, and Exo**.
+
+
+<Accordion title="Installing OpenAI Model">
+  <Warning>You need and active OpenAI subscription to get your API key.</Warning>
+  <Steps>
+    <Step title="Generate your API key">
+      Go to your [OpenAI dashboard](https://platform.openai.com/api-keys) > Select `API keys` from the side menu > Click the `+ Create new secret key` button.
+      
+      ![Generate API Key](/images/openai-api-key.jpg)
+      Copy the key > Go to Shinkai
+    </Step>
+    <Step title="Paste your API key in Shinkai">
+      - Select the **Model Type** you'd like to install (i.e., `GPT 4o, GPT 4o Mini, or Custom` for other models)
+      - (Optional) You can edit the **AI Name** --> This is how it will be displayed in your Chats view. 
+      <Info>This field only accepts alphanumeric characters and underscores. </Info>
+      
+      ![Paste API key in Shinkai](/images/add-gpt4.jpg)
+    </Step>
+    <Step title="Add AI and start Chatting">
+      Once added you will be redirected to the **Chats** view with your new AI selected and ready to initiate a conversation. 
+    </Step>
+  </Steps>
+
+</Accordion>
+
+<Accordion title="Installing OpenRouter Model">
+  <Info> 
+    You need to log in into [OpenRouter](https://openrouter.ai/) to generate your API keys.
+    Most models are paid, but you can find some free options. 
+  </Info>
+  <Steps>
+    <Step title="Generate your API key">
+      - Log in to OpenRouter > Hover your profile menu at the upper-right corner > Select `Keys`.
+      - Click the `Create Key` button. 
+      - Give your key a name (e.g., Shinkai) > Click `Create`.
+      
+      ![Generate key OpenRouter](/images/openrouter-key.jpg)
+
+      Copy the key and go to your Shinkai app > Paste the key.
+    </Step>
+    <Step title="Select the model to install">
+      OpenRouter offers over 200 AI models to choose from. We are going to choose the **free** model: `Meta: Llama 3.2 11B`.
+      - Copy the model id (see pic)
+      
+      ![model id](/images/model-id.jpg)
+
+    </Step>
+    <Step title="Complete the manual installation in your Shinkai app">
+      - Paste the `model id` in the `Custom Model Type` field.
+      - In `AI Name` field you can customize how you want to see this AI displayed in your Chats. 
+      <Info> This field only accepts alphanumeric characters and underscores. </Info>
+      - Click `Add AI`. You are all set! 
+
+      ![Openrouter New AI](/images/openrouter-new-ai.jpg)
+
+    </Step>
+  </Steps>
+
+</Accordion>

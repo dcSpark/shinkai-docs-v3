@@ -5,29 +5,50 @@ icon: 'shoe-prints'
 ---
 
 ## Overview
-The default view when you opening Shinkai Desktop is the 'Chats' view. Here you can see three main sections in your app. 
-
-On the left side you access the menu with the different options available, where you can notice that the 'chats' option is active. 
-
-1. There is a middle section where chats are going to be stored for easy access. 
-2. On the right side you have the AI response view. Here is where the conversation with your AI takes place.
-3. Below the response section you find the text field where you input questions and prompts to start conversations with your local AI. 
+The default view when you opening Shinkai Desktop is the `Chats` view. Here you can see four main sections in your app. 
 
 <Frame>
   <img src="/images/overview.jpg" style={{ borderRadius: '0.5rem' }} />
 </Frame>
 
+<Tabs>
+  <Tab title="1. Left Sidebar Menu">
+    On the left sidebar you access Shinkai's menu with different options. 
+    <CardGroup cols={2}>
+      <Card>
+        ![Menu options](/images/menu-options.jpg) 
+      </Card>
+      <Card>
+        Here you can access the basic features of Shinkai.
+
+        You can Toggle the sidebar according to your needs. 
+      </Card>
+    </CardGroup> 
+  </Tab>
+  <Tab title="2. Chats">
+    Here's where you can access your chats. Notice there are two tabs at the top: `Active` and `Archive`.
+    To keep your active chats view clear, you can archive each by simply hovering your cursor over the chat and clicking the 📦 box icon.  
+  </Tab>
+  <Tab title="4. AI Response Field">
+    In this section you will see the AI chat response once you have prompted it with instructions or questions. 
+  </Tab>
+  <Tab title="4. Input Field">
+    Here is where you ask your questions, and provide prompts to your local AI. There are some options that we'll review more in depth in the following section. 
+  </Tab>
+</Tabs>
+
+-----
+
 Let's get down to the different options of the menu, to get you familiarized with the basic tools of Shinkai. 
 
-### AI Chats
+## AI Chats
 The first options of the side menu are reserved for chats. The first one leads you directly into a **new chat creation**, while the second opens the view of **all chats**. 
 
-Notice that there are two tabs in the chats section: `Active` and `Archived`. You can archive a chat anytime you want. Just hover the chat and click the box icon. 
 <Frame>
   <img src="/images/chat.jpg" style={{ borderRadius: '0.5rem' }} />
 </Frame>
 
-#### Creating a new AI chat
+### Creating a new AI chat
 When creating a new chat there are different settings you can adjust:
 
 <AccordionGroup>
@@ -35,28 +56,68 @@ When creating a new chat there are different settings you can adjust:
     The first dropdown menu displays all the models you have installed, allowing you to change from one model to the next easily. 
     Learn more about [AI Model installation here](/quickstart#setting-up-shinkai). 
   </Accordion>
+
    <Accordion icon="paperclip" title="Upload a file">
     You can upload files to the chat to help the AI understand specific contexts and to ensure getting more accurate responses.  
   </Accordion>
-   <Accordion icon="sitemap" title="Add workflow">
-    Shinkai comes with a set of pre-made prompts –or workflows– ready to use, optimizing tasks and processes. Just click on the workflow icon and select the workflow you'd like to apply in your prompt. 
+
+  <Accordion icon="books" title="Prompts Library">
+    Shinkai comes with an extensive list of ready-to-use prompts. Just click on the books icon and the list will appear on the right side of your app. 
+
+    You can create new `custom prompts` by clicking the ➕ plus icon at the upper right corner.
+    <Frame>
+      <img src="/images/prompt-library.jpg" style={{ borderRadius: '0.5rem' }} />
+    </Frame>  
   </Accordion>
-   <Accordion icon="box-archive" title="Local AI files">
+
+   <Accordion icon="sitemap" title="Add workflow">
+    Shinkai comes with algorithmic instructions –or workflows– ready to use, helping you optimize tasks and processes. 
+    Just click on the workflow icon and it will display the `Workflow Library` where you can select the workflow you'd like to apply in your prompt. 
+    
+    Clicking the ➕ plus icon at the top right corner will lead you to the [Worflow Playground](/advanced/workflows), where you can create custom workflows adapted to your needs. 
+    <Frame>
+      <img src="/images/workflows.jpg" style={{ borderRadius: '0.5rem' }} />
+    </Frame>
+  </Accordion>
+
+  <Accordion icon="folder-closed" title="Local AI files">
     You can add your local files or folders to provide robust context to the AI. 
   </Accordion>
-   <Accordion icon="file-magnifying-glass" title="AI files content search">
-    Look for specific files in the content search and include them easily in your chat.  
+
+  <Accordion icon="Sliders" title="Chat Settings">
+    You can access chat settings to adjust how the model generates text. By adjusting these settings, you can fine-tune the balance between creativity and accuracy, depending on the nature of your project or conversation.
+    ![Menu options](/images/chat-settings.jpg) 
+    <Tabs>
+      <Tab title="Enable Stream">
+        This toggle allows you to turn on or off streaming mode. When enabled, the model will stream responses word by word or in chunks rather than delivering the full response at once. This can create a more dynamic, conversational experience.
+      </Tab>
+      <Tab title="Temperature">
+        The temperature controls the **randomness** of the AI’s responses.
+    
+          - A lower temperature (e.g., `0.2`) makes the model more deterministic, meaning it will generate more focused and repetitive responses.
+          - A higher temperature (e.g., `0.8`) introduces more randomness and creativity, making the responses less predictable but possibly more diverse.
+          - For balanced creativity and coherence, a temperature between `0.7` and `1.0` is commonly used.
+      </Tab>
+      <Tab title="Top P (Nucleus Sampling)">
+        - This setting affects how the model selects words based on cumulative probability.
+        - `Top P` sets a threshold for considering the most likely word choices. For example, a `Top P` of `0.9` means the model will sample from the smallest possible set of words whose combined probability is 90%.
+        - Lower `Top P` values result in more conservative responses, while higher values (closer to `1.0`) allow for more diversity.
+      </Tab>
+      <Tab title="Top K">
+        - `Top K` controls how many of the highest probability word choices are considered at each step.
+        - For instance, `Top K = 40` means the model will only consider the top 40 most likely words, filtering out less probable options.
+        - A lower `Top K` (e.g., `5` or `10`) will make the responses more deterministic, while a higher Top K (e.g., `50` or `100`) allows for more variety in responses.
+      </Tab>
+      <Tab title="Custom Prompt">
+        - This field allows you to input a custom prompt that adjusts the context or behavior of the AI.
+        - You can add specific instructions here, such as “Respond concisely” or “Act as a friendly assistant,” which will influence how the AI interacts within the session.
+      </Tab>
+      </Tabs>
+     
   </Accordion>
+
 </AccordionGroup>
 
-
-### Workflow Library
-`Workflows` are predefined prompts crafted to help you streamline your processes. They help automate repetitive tasks reducing manual intervention, ensuring that tasks are handled consistently every time. 
-<Frame>
-  <img src="/images/workflows.jpg" style={{ borderRadius: '0.5rem' }} />
-</Frame>
-
-> Browse workflows directly in the New Chat view, or create your own custom workflows. 
 
 ### Files Manager
 Shinkai offers you a dedicated view to create and manage folders, where you can store your files and include them in your interactions with your AI. 
@@ -69,11 +130,15 @@ Go to `My AI Files Explorer` on the left side menu. In this view you can add New
 
 
 ### Subscriptions
-The `Browse Subscriptions` feature in Shinkai allows users to subscribe to up-to-date content from various sources across the decentralized Shinkai Network. 
+The `Browse Subscriptions` feature in Shinkai allows users to **subscribe to up-to-date content from various sources** across the decentralized Shinkai Network. 
 This option lets users enhance their AI's knowledge base by subscribing to folders of AI-ready content, such as news, sports, cryptocurrency updates, and even user-shared files like PDFs or websites.
 <Frame>
   <img src="/images/subscriptions.jpg" style={{ borderRadius: '0.5rem' }} />
 </Frame>
+
+<Tip>
+When you subscribe to content, it will be stored in your `Al File Explorer`. It might take a few minutes to appear, although you can see updates in `My Subscriptions`.
+</Tip>
 
 Benefits of subscribing to up-to-date content:
 
