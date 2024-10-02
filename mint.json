@@ -53,14 +53,31 @@
       "pages": [
         "introduction",
         "what-is-shinkai",
-        "quickstart",
-        "first-steps"
+        "quickstart" 
       ]
     },
+    {
+      "group": "Basic Features",
+      "pages": [
+        "first-steps",
+        "basics/ai-chats",
+        "basics/files-manager",
+        "basics/subscriptions"
+      ]
+      }, 
     {
       "group": "Advanced Features",
       "pages": [
         "advanced/custom-ai",
+        {
+          "group": "Installing AI Models",
+          "pages": [
+            "advanced/model-install",
+            "advanced/gpt",
+            "advanced/openrouter"
+          ]
+        },
+        "advanced/visor",
         {
           "group": "Experimental Features",
           "pages": [
