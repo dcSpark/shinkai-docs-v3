@@ -75,7 +75,8 @@
             "advanced/model-install",
             "advanced/models/gpt",
             "advanced/models/openrouter",
-            "advanced/models/ollama"
+            "advanced/models/ollama",
+            "advanced/models/gemini"
           ]
         },
         "advanced/visor",
