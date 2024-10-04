@@ -73,8 +73,11 @@
           "group": "Installing AI Models",
           "pages": [
             "advanced/model-install",
-            "advanced/gpt",
-            "advanced/openrouter"
+            "advanced/models/gpt",
+            "advanced/models/openrouter",
+            "advanced/models/ollama",
+            "advanced/models/gemini",
+            "advanced/models/groq"
           ]
         },
         "advanced/visor",
