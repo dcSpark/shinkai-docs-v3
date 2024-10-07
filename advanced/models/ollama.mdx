@@ -6,59 +6,72 @@ description: 'Learn how to install Ollama models in Shinkai'
 **Ollama** is an innovative Al platform designed to democratize access to large language models (LLMs) by allowing users to run these models locally on their machines. 
 This capability enhances privacy and control over data, as it mitigates concerns associated with cloud-based solutions.
 
-<Note>Note that all AI models in Shinkai are powered by Ollama. Before installing Ollama models manually, check the available models list for quick installation.</Note>
-<Frame>
-  <img src="/images/ollama-models.jpg"  style={{ borderRadius: '0.5rem' }}/>
-</Frame>
-
-
-`ollama ls`to list models installed
-`ollama pull <model>`to install models 
-
-
-
-
 
 ## Step-by-step installation guide
 
 <Steps>
-    <Step title="Download Ollama in your device">
-      Go to [Ollama](https://ollama.com/) > Create your account > Download Ollama to your device > Install it.
+    <Step title="Check if model is available for quick installation">
+    <Note>Note that all AI models in Shinkai are powered by Ollama. Before installing Ollama models manually, check the available models list for quick installation.</Note>
+    <Frame>
+      <img src="/images/ollama-models.jpg"  style={{ borderRadius: '0.5rem' }}/>
+    </Frame>
+
+    You can also check in your terminal the installed models in your device:
+
+    ```Bash 
+    $ ollama ls
+    NAME                         ID              SIZE      MODIFIED    
+    bespoke-minicheck:7b         66607904c165    4.7 GB    4 hours ago    
+    aya:8b                       7ef8c4942023    4.8 GB    4 hours ago    
+    llama3.1:8b-instruct-q4_1    e129e608a752    5.1 GB    3 days ago     
+    snowflake-arctic-embed:xs    bf75350e1752    45 MB     3 days ago 
+    ```
+    <Tip>If the model cannot be found in the quick installation list, proceed to step 2. </Tip>  
+    </Step>
+    <Step title="Pull new model from Ollama">
+    Go to Ollama, and browse the model you want to install. 
+    Copy the code `ollama run <model>` and paste it in your terminal.  
+
+    For example:
+    ```Bash 
+    $ ollama run bespoke-minicheck
+    pulling manifest 
+    pulling 78b0a71988a5... 100% ▕████████████████████████████▏ 4.7 GB                         
+    pulling 016aea4b585f... 100% ▕████████████████████████████▏  340 B                         
+    pulling 60ed67c565f8... 100% ▕████████████████████████████▏  506 B                         
+    pulling 7a3775deddf8... 100% ▕████████████████████████████▏   50 B                         
+    pulling a870cda2bff0... 100% ▕████████████████████████████▏  495 B                         
+    verifying sha256 digest 
+    writing manifest 
+    success 
+
+    ``` 
+    Check that the model is now installed in your device:
+
+    ```Bash 
+    $ ollama ls
+    NAME                              ID              SIZE      MODIFIED       
+    bespoke-minicheck:latest          66607904c165    4.7 GB    2 minutes ago     
+    paraphrase-multilingual:latest    ba13c2e06707    562 MB    11 minutes ago    
+    bespoke-minicheck:7b              66607904c165    4.7 GB    5 hours ago       
+    aya:8b                            7ef8c4942023    4.8 GB    5 hours ago       
+    llama3.1:8b-instruct-q4_1         e129e608a752    5.1 GB    3 days ago        
+    snowflake-arctic-embed:xs         bf75350e1752    45 MB     3 days ago        
+
+    ```
+
+    </Step>
+    <Step title="Add model to Shinkai">
+    Open Shinkai > Go to `AIs` > `+ Add AI` > `+ Manually Add AI`
+      - 1. Select **Ollama** in Model Provider.
+      - 2. Select the **Model Type** you just pulled in step 2.
+      - (Optional) You can edit the **AI Name** --> This is how it will be displayed in your Chats view. 
+      <Note>This field only accepts alphanumeric characters and underscores. </Note>
+      - 3. You DO NOT need an API key, as Ollama runs locally on your device.
       
+      ![Install Ollama Model](/images/ollama-installed.jpg)
     </Step>
-    <Step title="Check if the model is available for quick installation">
-      In Ollama's website, open your **user's dropdown menu** in the upper-right corner > Click [Settings](https://ollama.com/settings/keys) > Select `Ollama Keys`.
 
-      Click the `Add Ollama Public Key` button > Generate your key.
-
-      <Tip>If you have a password app, like 1Password, it can generate the key automatically for you and save it to your keychain.</Tip>
-
-      ![Add key to Ollama](/images/ollama-key.jpg)
-
-    </Step>
-    <Step title="Run the model you want to import">
-        Browse the models' library in Ollama > Select the one you'd like to use in Shinkai > Choose the [parameters](/advanced/custom-ai) of the model (*i.e., 2b, 8b, etc.*) 
-        
-       ![run ollama models](/images/ollama-run.jpg)
-
-       Copy the command `ollama run <model>` > Open your Terminal and run it. 
-
-       It should look something like this:
-       ![Terminal](/images/terminal.jpg)
-    </Step>
-    <Step title="Add the model into Shinkai">
-       - Open Shinkai > Go to `AIs` > `+ Add AI` > `+ Manually Add AI`
-       1. Select **Ollama** in Model Provider
-       2. Choose a model from the list or select 'Custom model' if it does not appear.
-       3. Give your AI a name. 
-       <Note>This field only accepts alphanumeric characters and underscores</Note>
-       4. Add the **Ollama Key** that you generated in step 2.
-       ![add ollama model](/images/add-ollama.jpg)
-    </Step>
   </Steps>
 
   Congratulations! You have now installed a new Ollama model in your Shinkai Desktop App!
-
-  <Frame>
-  <img src="/images/ollama-installed.jpg"  style={{ borderRadius: '0.5rem' }}/>
-</Frame>
