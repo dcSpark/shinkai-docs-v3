@@ -76,7 +76,8 @@
             "advanced/models/gpt",
             "advanced/models/openrouter",
             "advanced/models/gemini",
-            "advanced/models/groq"
+            "advanced/models/groq",
+            "advanced/models/ollama"
           ]
         },
         "advanced/visor",
