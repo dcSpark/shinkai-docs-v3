@@ -2,7 +2,22 @@
 title: 'Ollama Models'
 description: 'Learn how to install Ollama models in Shinkai'
 ---
-**Ollama's AI models** provide advanced AI capabilities for tasks like text generation and language understanding through easy-to-use APIs. They are designed for seamless integration, offering developers a fast, scalable, and efficient way to incorporate AI into their applications.
+
+**Ollama** is an innovative Al platform designed to democratize access to large language models (LLMs) by allowing users to run these models locally on their machines. 
+This capability enhances privacy and control over data, as it mitigates concerns associated with cloud-based solutions.
+
+<Note>Note that all AI models in Shinkai are powered by Ollama. Before installing Ollama models manually, check the available models list for quick installation.</Note>
+<Frame>
+  <img src="/images/ollama-models.jpg"  style={{ borderRadius: '0.5rem' }}/>
+</Frame>
+
+
+`ollama ls`to list models installed
+`ollama pull <model>`to install models 
+
+
+
+
 
 ## Step-by-step installation guide
 
@@ -11,7 +26,7 @@ description: 'Learn how to install Ollama models in Shinkai'
       Go to [Ollama](https://ollama.com/) > Create your account > Download Ollama to your device > Install it.
       
     </Step>
-    <Step title="Add Ollama Public Key ">
+    <Step title="Check if the model is available for quick installation">
       In Ollama's website, open your **user's dropdown menu** in the upper-right corner > Click [Settings](https://ollama.com/settings/keys) > Select `Ollama Keys`.
 
       Click the `Add Ollama Public Key` button > Generate your key.
