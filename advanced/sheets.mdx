@@ -10,36 +10,29 @@ icon: 'layer-group'
 `Shinkai Sheets` are spreadsheets embedded in your Shinkai Desktop app, just like Google sheets, but empowered with artificial intelligence that help you optimize tasks with just a few clicks. 
 
 
-
 ## Creating a New Sheet
-<Card>
-  <Icon icon="thumbtack" size={24} /> Click the `Create Project` button > Give your sheet a name > `Create`
-</Card>
-<Steps>
-  <Step title="Adding Columns & Rows">
-    
-    ![New Sheet](/images/sheet-new.jpg)
-  </Step>
-  <Step title="Enter your content">
-    These are instructions or content that only pertain to the second step.
-  </Step>
-  <Step title="AI Generated Columns">
-    These are instructions or content that only pertain to the third step.
-  </Step>
-</Steps>
+You can create a Sheet from scratch, adding columns and rows manually, or import a **CSV** or **XLSX** file to interact with them with AI.
 
+### Columns Data
+When creating a new column in Sheets, you can select different data types. If you want to apply AI, select the `AI Generated` option > Choose your AI model > Write your prompt.
+<Frame>
+      <img src="/images/sheet-new.jpg"  style={{ borderRadius: '0.5rem' }}/>
+    </Frame>
 
+<Tip>
+When writing a prompt for the AI Generated column, make sure to start with a `=`followed by the instruction.
+For example, if you want to concatenate the prompt with another column, the syntax should be like this: `="First part of the prompt" + {Col} + ". Second part of the prompt"`.
 
-### Interacting with sheets
-> Lorem ipsum
+If you are using a workflow, you can just type the column you want the workflow to work on, e.g., `=B`. 
+</Tip>
 
-- IMG
 
 ## Interacting with Sheets
+Here is an example of how to use the `AI Generated` option concatenating a prompt and a column. 
 <iframe 
   width="560" 
   height="315" 
-  src="https://www.youtube.com/embed/GQ9yRPfsDPk?si=iLoagfoVJrPs4H43&amp;controls=0" 
+  src="https://www.youtube.com/embed/GQ9yRPfsDPk?si=iLoagfoVJrPs4H43&amp" 
   title="YouTube video player" 
   frameborder="0" 
   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
@@ -47,5 +40,16 @@ icon: 'layer-group'
   allowfullscreen
 ></iframe>
 
-### Chat with Sheets
-> Lorem ipsum
+### Applying Workflows to Sheets
+You can create [workflows](/advanced/workflows) to automate tasks, connecting mutliple steps in a single flow and use them to interact with your Sheets in Shinkai. 
+Here's a brief example:
+<iframe 
+  width="560" 
+  height="315" 
+  src="https://www.youtube.com/embed/aEhXtRNUlWw?si=8HTCJtKsV87SI_RH" 
+  title="YouTube video player" 
+  frameborder="0" 
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+  referrerpolicy="strict-origin-when-cross-origin"
+  allowfullscreen
+></iframe>

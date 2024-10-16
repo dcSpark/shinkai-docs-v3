@@ -1,0 +1,264 @@
+---
+title: 'Building Workflows'
+description: 'Guideline to build your own workflows in Shinkai'
+icon: 'hammer'
+---
+
+The Shinkai `Workflow Playground` is a user-friendly interface where you can define, test, and iterate workflows for your AI agents. 
+It leverages the `Shinkai DSL`, a language designed specifically for building sequences of tasks that your agents can perform.
+
+
+## Shinkai's DSL
+
+**Shinkai’s Domain-Specific Language (DSL)** is designed to help you easily create workflows that guide an AI agent through a series of tasks. 
+Here's a quick step-by-step guide on how to use it. 
+
+
+
+<Expandable title="DSL Syntax Cheat Sheet">
+    This cheat sheet provides a concise reference for Shinkai’s DSL, covering the core elements you need to create workflows.
+
+    #### 1. Workflow
+    Defines the overall process and its steps.
+
+    ```markup Example
+    workflow WorkflowName v1.0 {
+        // steps go here
+    }
+    ```
+
+    #### 2. Step
+    Each workflow contains steps that define individual actions or tasks.
+
+    ```markup Example
+    step StepName {
+        // step body with actions, conditions, or loops
+    }
+    ```
+
+    #### 3. Step Body
+    The body of each step contains actions, conditions, register operations, or loops.
+
+    ```markup Example
+    step_body = { (condition | register_operation | action | for_loop)+ }
+    ```
+    
+    #### 4. Condition
+    Conditions allow the workflow to perform actions based on logical checks (e.g., if a value is true).
+
+    ```markup Example
+    if $expression {
+        // actions to execute if the condition is true
+    }
+    ```
+
+    #### 5. Loop
+    A loop runs a set of actions for each item in a list or within a range.
+
+    ```markup Example
+    for $item in $list {
+        // actions for each item
+    }
+    ```
+
+    #### 6. Action
+    Actions are individual commands or external function calls executed by the workflow.
+
+    ```markup Example
+    action = { external_fn_call | command(param1, param2, ...) }
+    ```
+
+    #### 7. Function Call
+    Functions let you perform pre-built tasks. They are called using `call` followed by the function name and any required parameters.
+
+    ```markup Example
+    $result = call function_name($param1, $param2)
+    ```
+
+    #### 8. Registers
+    Registers store intermediate values. These values are prefixed by $ and can hold strings, numbers, booleans, etc.
+
+    ```markup Example
+    $R1 = "value" // Register for storing a string, number, etc.
+    ```
+
+    #### 9. Register Operation
+    A register operation assigns a value or result from a function to a register.
+
+    ```markup Example
+    $R1 = call some_function($param)
+    ```
+
+  </Expandable>
+
+ <Expandable title="Expression Components">
+    #### 1. Comparison Operators
+    Comparison operators are used in conditions to compare values.
+
+    ```
+    ==  // equal to
+    !=  // not equal to
+    >   // greater than
+    <   // less than
+    >=  // greater than or equal to
+    <=  // less than or equal to
+
+    ```
+
+    #### 2. Range Expression
+    A range expression is used to define a sequence of numbers or items.
+
+    ```
+    identifier1..identifier2
+
+    ```
+
+    #### 3. Simple Expressions
+    Simple expressions are basic values like identifiers, numbers, strings, booleans, or registers.
+
+    ```
+    $R1  // A register
+    123  // A number
+    "Text" // A string
+
+    ```
+
+
+ </Expandable>
+
+ <Expandable title="Data Types and Literals">
+    #### 1. Strings
+    Text values are enclosed in double quotes.
+
+    ```
+    "some text"
+    ```
+
+    #### 2. Numbers
+    Use digits to define numbers.
+
+    ```
+    12345
+    ```
+
+    #### 3. Booleans
+    Boolean values are either `true` or `false`.
+
+    ```
+    true
+    false
+    ```
+
+    #### 4. Identifiers
+    Identifiers are alphanumeric strings or underscores used for names (e.g., variable names, workflow names).
+
+    ```
+    identifier = [A-Z, a-z, 0-9, _]
+    ```
+
+    #### 5. Delimiters
+    Characters used to separate parts of a string into individual components, e.g. `{ "\"" ~ (!"\"" ~ ANY)* ~ "\"" }`
+
+    ```Markup Example
+    $LOG = "INFO|2024-09-20|Server started"
+    $LOG_PARTS = $LOG.split("|")  // Result: ["INFO", "2024-09-20", "Server started"]
+
+    ```
+
+ </Expandable>
+
+### How to write a workflow with DSL
+
+<Steps titleSize="h3">
+  <Step title="Defining a workflow">
+    Every workflow starts with `workflow`, followed by its name and version.
+    ```Markup Example
+    workflow WebProcess v0.1 {
+        // steps go here
+    }
+    ```
+  </Step>
+  <Step title="Adding Steps">
+    Each step starts with the word `step` followed by the step name.
+    ```Markup Example
+    step Initialize {
+        $PROMPT = "You are an expert summarizer..."
+    }
+    ```
+  </Step>
+  <Step title="Using Registers (Variables)">
+    Registers (variables) store information. They start with `$`.
+    Example:
+        - `$PROMPT` stores a string.
+        - `$CONTENT` stores downloaded data.
+    ```Markup Example
+        $PROMPT = "Summarize the webpage content"
+    ```
+  </Step>
+  <Step title="Calling External Functions">
+    External functions let you use pre-built commands to perform tasks, like downloading data or processing information. The function is called with `call`.
+    ```Markup Example
+        $CONTENT = call download_webpage_and_save_as_markdown($INPUT)
+    ```
+  </Step>
+  <Step title="Conditions">
+    Use `if` statements to run actions only when certain conditions are met.
+    ```Markup Example
+    if $TRANSACTION.value > 100 {
+        // actions go here
+    }
+    ```
+  </Step>
+  <Step title="Loops">
+    Use `for` loops to repeat actions for a list of items.
+    ```Markup Example
+    for $item in $list {
+        // actions go here
+    }
+    ```
+  </Step>
+
+</Steps>
+
+#### Example Workflow
+Here’s a complete example of a workflow that initializes a task, downloads webpage data, and summarizes it:
+```
+workflow WebProcess v0.1 {
+    step Initialize {
+        $PROMPT = "You are an expert summarizer. Summarize the webpage content in markdown format."
+    }
+    step Download {
+        $CONTENT = call download_webpage_and_save_as_markdown($INPUT)
+    }
+    step Summarize {
+        $RESULT = call inference($PROMPT, $CONTENT)
+    }
+}
+```
+In this example:
+
+- **Step 1** (`Initialize`): Sets up the task with a prompt for the AI.
+- **Step 2** (`Download`): Downloads webpage content using an external function.
+- **Step 3** (`Summarize`): Uses the AI to summarize the content based on the prompt.
+
+
+------
+## Building Workflows with BAML
+**BAML** is a domain-specific language designed to simplify the creation and testing of large language model (LLM) functions. 
+
+It treats prompts as functions with defined input variables and outputs, making it significantly faster than traditional Python-based testing environments. BAML supports multiple languages, ensures type safety, and provides real-time prompt previews. 
+
+**You can easily create workflows in Shinkai using BAML**. You can test your functions in the [BAML playground](https://www.promptfiddle.com/) for instant feedback. 
+
+For more information about BAML, explore their documentation [here](https://docs.boundaryml.com/docs/get-started/what-is-baml).
+
+------
+By following these simple guidelines, you can easily create powerful workflows with Shinkai DSL and BAML!
+
+## Enabling/Disabling Workflows
+Workflows can be enabled and disabled at convenience. To do this, simply go to `Shinkai Tools`, browse the list and switch the `toggle` on/off to enable/disable them. 
+
+<Frame>
+  <img src="/images/enable-tools.jpg"  style={{ borderRadius: '0.5rem' }}/>
+</Frame>
+

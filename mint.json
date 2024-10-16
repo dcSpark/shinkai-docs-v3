@@ -85,7 +85,14 @@
           "group": "Experimental Features",
           "pages": [
             "advanced/overview",
-            "advanced/workflows"
+            {
+              "group": "Workflows Playground",
+              "pages": [
+            "advanced/workflows",
+            "advanced/custom-workflows"
+              ]
+            },
+            "advanced/sheets"
           ]
         }
       ]
