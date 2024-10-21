@@ -81,6 +81,7 @@
           ]
         },
         "advanced/visor",
+        "advanced/sheets",
         {
           "group": "Experimental Features",
           "pages": [
@@ -91,8 +92,7 @@
             "advanced/workflows",
             "advanced/custom-workflows"
               ]
-            },
-            "advanced/sheets"
+            }
           ]
         }
       ]
