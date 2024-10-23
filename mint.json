@@ -53,7 +53,8 @@
       "pages": [
         "introduction",
         "what-is-shinkai",
-        "quickstart" 
+        "quickstart",
+        "basics/ai-agents" 
       ]
     },
     {
