@@ -28,7 +28,7 @@ When creating a new chat there are different settings you can adjust:
   <Accordion icon="books" title="Prompts Library">
     Shinkai comes with an extensive list of ready-to-use prompts. Just click on the books icon and the list will appear on the right side of your app. 
 
-    You can create new `custom prompts` by clicking the ➕ plus icon at the upper right corner.
+    <Tip>You can create new `custom prompts` by clicking the ➕ plus icon at the upper right corner.</Tip>
     <Frame>
       <img src="/images/prompt-library.jpg" style={{ borderRadius: '0.5rem' }} />
     </Frame>  
@@ -38,7 +38,7 @@ When creating a new chat there are different settings you can adjust:
     Shinkai comes with algorithmic instructions –or workflows– ready to use, helping you optimize tasks and processes. 
     Just click on the workflow icon and it will display the `Workflow Library` where you can select the workflow you'd like to apply in your prompt. 
     
-    Clicking the ➕ plus icon at the top right corner will lead you to the [Worflow Playground](/advanced/workflows), where you can create custom workflows adapted to your needs. 
+    Clicking the ➕ plus icon at the top right corner will lead you to the [Playground](/advanced/workflows), where you can create custom workflows adapted to your needs. 
     <Frame>
       <img src="/images/workflows.jpg" style={{ borderRadius: '0.5rem' }} />
     </Frame>
@@ -47,62 +47,11 @@ When creating a new chat there are different settings you can adjust:
   <Accordion icon="folder-closed" title="Local AI files">
     You can add your local files or folders to provide robust context to the AI. Learn more about Files Manager [here](/basics/files-manager). 
   </Accordion>
+  <Accordion icon="sliders" title="Chat Settings">
+    You can access [chat settings](/basics/chat-settings) to adjust how the model generates text. 
+    
+    By adjusting these settings, you can fine-tune the balance between creativity and accuracy, depending on the nature of your project or conversation. 
+  </Accordion>
 
 </AccordionGroup>
 
-
-## Chat Settings
-    You can access chat settings to adjust how the model generates text. By adjusting these settings, you can fine-tune the balance between creativity and accuracy, depending on the nature of your project or conversation.
-    ![Menu options](/images/chat-settings.jpg) 
-    <Tabs>
-      <Tab title="Enable Stream">
-        This toggle allows you to turn on or off streaming mode. When enabled, the model will stream responses word by word or in chunks rather than delivering the full response at once. This can create a more dynamic, conversational experience.
-
-        <Note>If you want to use a tool in your prompt, you need to turn this option off to do so, due to a Ollama limitation.</Note>
-      </Tab>
-      <Tab title="Temperature">
-        The temperature controls the **randomness** of the AI’s responses.
-    
-          - A lower temperature (< 1) makes the model more deterministic, meaning it will generate more focused and repetitive responses.
-          - A higher temperature (> 1) increases randomness and creativity, making the responses less predictable but can lead to less coherent results.
-        <Note>For balanced creativity and coherence, a temperature between `0.7` and `1.0` is commonly used.</Note>
-      </Tab>
-      <Tab title="Top P (Nucleus Sampling)">
-        This setting affects how the model selects words based on cumulative probability.
-        - `Top P` sets a threshold for considering the most likely word choices. For example, a `Top P` of `0.9` means the model will sample from the smallest possible set of words whose combined probability is 90%.
-        - Lower `Top P` values result in more conservative responses, while higher values (closer to `1.0`) allow for more diversity.
-        
-        This approach balances diversity and relevance by focusing on a subset of probable outcomes.
-        <Note>**Recommendation**: Values around `0.8` to `0.9` are often effective for maintaining meaningful yet varied outputs.</Note>
-      </Tab>
-      <Tab title="Top K">
-        `Top K` controls how many of the highest probability word choices are considered at each step.
-        - For instance, `Top K = 40` means the model will only consider the top 40 most likely words, filtering out less probable options.
-        - A lower `Top K` (e.g., `5` or `10`) will make the responses more deterministic, while a higher Top K (e.g., `50` or `100`) allows for more variety in responses.
-        <Note>**Recommendation**: A typical value is between `20` and `50`, depending on how much diversity you want in responses.</Note>
-      </Tab>
-      <Tab title="Custom Prompt">
-        This field allows you to input a custom prompt that adjusts the context or behavior of the AI.
-        
-        You can add specific instructions here, such as “Respond concisely” or “Act as a friendly assistant,” which will influence how the AI interacts within the session.
-      </Tab>
-      </Tabs>
-
-### Setting Up your Chat for Improved Responses
-
-To achieve optimal responses from an AI model, consider the following setup:
-
-**1. Determine Your Goals**:
-  - For **creative tasks** (*e.g., storytelling*), use a higher temperature (around `0.8`) with moderate top-p (`0.9`) and top-k (`30`).
-  - For **factual or structured responses** (*e.g., technical writing*), lower temperature (`0.5`) with lower top-p (`0.7`) and top-k (`20`) may be preferable.
-
-**2. Experiment and Iterate**:
-  - Start with recommended values and adjust based on output quality.
-  - Monitor for balance between creativity and coherence; **tweak one parameter at a time to understand its impact**.
-
-**3. Utilize Feedback Loops**:
-  - Incorporate user feedback or evaluation metrics to refine settings further.
-
-By carefully tuning these parameters, you can significantly enhance the performance of AI models in generating relevant, coherent, and engaging text outputs tailored to specific applications or audiences.
-
-     

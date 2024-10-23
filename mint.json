@@ -53,14 +53,21 @@
       "pages": [
         "introduction",
         "what-is-shinkai",
-        "quickstart" 
+        "quickstart",
+        "basics/ai-agents" 
       ]
     },
     {
       "group": "Basic Features",
       "pages": [
         "first-steps",
-        "basics/ai-chats",
+        {
+          "group": "Chats",
+          "pages": [
+            "basics/ai-chats",
+            "basics/chat-settings"
+          ]
+        },
         "basics/files-manager",
         "basics/subscriptions"
       ]
@@ -87,7 +94,7 @@
           "pages": [
             "advanced/overview",
             {
-              "group": "Workflows Playground",
+              "group": "Playground",
               "pages": [
             "advanced/workflows",
             "advanced/custom-workflows"
