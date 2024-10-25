@@ -29,6 +29,9 @@
     "name": "Get Shinkai",
     "url": "https://www.shinkai.com/get-shinkai"
   },
+  "feedback": {
+    "thumbsRating": true
+  },
   "tabs": [
     {
       "name": "Developer Guide", 
