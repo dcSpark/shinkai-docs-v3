@@ -20,8 +20,10 @@ When creating a new column in Sheets, you can select different data types. If yo
 </Frame>
 
 <Tip>
-When writing a prompt for the AI Generated column, make sure to start with a `=`followed by the instruction.
-For example, if you want to concatenate the prompt with another column, the syntax should be like this: `="First part of the prompt" + {Col} + ". Second part of the prompt"`.
+When writing a prompt for the **AI Generated** column, make sure to start with a `=`followed by the instruction.
+For example, if you want to concatenate the prompt with another column, the syntax should be like this: `="Text " + COLUMN + " Text"` 
+
+> e.g., `="What's the capital city of " + A + ". Only mention the name"`
 
 If you are using a workflow, you can just type the column you want the workflow to work on, e.g., `=B`. 
 </Tip>
