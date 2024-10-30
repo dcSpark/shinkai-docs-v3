@@ -93,6 +93,7 @@
         "advanced/visor",
         "advanced/sheets",
         "advanced/shinkai-identity",
+        "advanced/connect-identity",
         {
           "group": "Experimental Features",
           "pages": [
