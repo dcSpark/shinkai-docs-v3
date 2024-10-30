@@ -92,7 +92,8 @@
         },
         "advanced/visor",
         "advanced/sheets",
-        "advanced/shinkai-identity"
+        "advanced/shinkai-identity",
+        "advanced/connect-identity"
       ]
     },
     {
