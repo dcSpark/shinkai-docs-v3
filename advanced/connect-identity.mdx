@@ -1,0 +1,59 @@
+---
+title: 'Connect Your Identity to Shinkai Desktop'
+description: 'Connect your identity so you can take part in the Shinkai Network and use p2p capabilities'
+icon: 'plug'
+---
+
+After following [the previous documentation on registering your identity on-chain](/advanced/shinkai-identity), you should have your identity keys downloaded on your machine. 
+
+Now we will move forward with connecting this identity, using the keys, to your Shinkai node (Shinkai Desktop).
+
+<Note>
+### Requirements
+
+Before moving forward make sure you have Shinkai Desktop installed. If you don't, please reference the [Installation and Setup Guide](/quickstart) page for instructions.
+
+Also, make sure you've registered an identity on-chain following the [Registering Your Shinkai Identity](/advanced/shinkai-identity) documentation. 
+
+> You must follow the instructions and register an identity by clicking the link in Shinkai Desktop, not by registering an identity through the dApp directly (otherwise the correct keys from Shinkai Desktop will not be used when registering your identity).
+
+</Note>
+
+## How to Connect Your Identity to Shinkai Desktop
+
+<Steps titleSize="h3">
+  <Step title="Copy the Keys in your Desktop App">
+    Open your Shinkai Desktop App > Go to `Settings` > `Public Keys`.
+    ![Public Keys](/images/public-keys.jpg)
+    <Icon icon="copy" iconType="duotone" /> Copy your `Node Public Keys`.
+  </Step>
+
+  <Step title="Paste the Keys in Your Shinkai Profile">
+    Go to [your profile](https://shinkai-contracts.pages.dev/profile) > Click your `identity` button. 
+    ![Your profile](/images/profile.jpg)
+    
+    Click the `edit` button > <Icon icon="paste" iconType="duotone" /> Paste your `Node Public Keys` as follows:
+    - Node Encryption Key > Encryption Public Key
+    - Node Signature > Signature Public Key
+    - Node address: http://127.0.0.1:9550
+
+    ![Adding Public Keys to Shinkai Identity](/images/keys-pasted.jpg)
+
+    <Icon icon="floppy-disk" iconType="duotone" /> `Save` the changes. 
+
+  </Step>
+
+  <Step title="Restart your Shinkai Desktop App">
+    Restart Shinkai desktop so your identity is refreshed. 
+  </Step>
+
+  <Step title="Copy the name of your registered Shinkai Identity">
+    - Open Shinkai Desktop and click on the Settings tab at the bottom left corner of the application.
+    - Click on the Shinkai Identity input box, input your identity name, and click save. Make sure to include the `@@` prefix so your identity looks like `@@myidentity.arb-sep-shinkai`.
+    - Once you click `save`, you will have your identity connected to Shinkai Desktop!
+    ![Shinkai Identity connected](/images/connected-identity.jpg)
+  </Step>
+
+</Steps>
+
+<Icon icon="hands-clapping" iconType="duotone" /> Congratulations, **you have your identity connected to Shinkai Desktop**! Now you can take part in the Shinkai Network and use p2p capabilities.
