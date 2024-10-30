@@ -92,19 +92,18 @@
         },
         "advanced/visor",
         "advanced/sheets",
-        "advanced/shinkai-identity",
-        "advanced/connect-identity",
+        "advanced/shinkai-identity"
+      ]
+    },
+    {
+      "group": "Experimental Features",
+      "pages": [
+        "advanced/overview",
         {
-          "group": "Experimental Features",
+          "group": "Playground",
           "pages": [
-            "advanced/overview",
-            {
-              "group": "Playground",
-              "pages": [
-            "advanced/workflows",
-            "advanced/custom-workflows"
-              ]
-            }
+        "advanced/workflows",
+        "advanced/custom-workflows"
           ]
         }
       ]
