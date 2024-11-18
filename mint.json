@@ -87,7 +87,9 @@
             "advanced/models/openrouter",
             "advanced/models/gemini",
             "advanced/models/groq",
-            "advanced/models/ollama"
+            "advanced/models/ollama",
+            "advanced/models/together-ai",
+            "advanced/models/claude"
           ]
         },
         "advanced/visor",
