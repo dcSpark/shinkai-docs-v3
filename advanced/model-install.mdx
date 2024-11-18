@@ -1,5 +1,5 @@
 ---
-title: 'Overview'
+title: 'Connect AI Providers'
 description: 
 icon: 'magnifying-glass'
 ---
@@ -8,10 +8,15 @@ icon: 'magnifying-glass'
 The list of AI models in Shinkai is powered by Ollama and is continously growing. Although, if you want to install another model, you can do it easily:
 
 > Click the `AIs` option on the left side menu > Click the `+ Manually Add AI` button on the upper-right corner.
+
+<Tip>
+  Shinkai makes it easy. Endpoints and models are already filled out for you. You just need to provide the API Key (except for Ollama) > Select the provider and model you'd like to install and you're done. 
+</Tip>
+
 <Frame>
   <img src="/images/manual-ai-b.jpg" style={{ borderRadius: '0.5rem' }} />
 </Frame>
-There are several model options available to choose from: **OpenAI, Together AI, Ollama, Gemini, Groq, OpenRouter, and Exo**.
+There are several model options available to choose from: **OpenAI, Together AI, Ollama, Gemini, Groq, OpenRouter, Exo, and Claude**.
 
 ##  How to install models from different providers
 
@@ -24,23 +29,24 @@ There are several model options available to choose from: **OpenAI, Together AI,
     Add your ChatGPT model to Shinkai
   </Card>
   <Card
-    title="OpenRouter"
-    icon="robot"
-    href="/advanced/models/openrouter"
-  >
-    Install any model available in OpenRouter
-  </Card>
-  
-</CardGroup>
-
-<CardGroup cols={3}>
-  <Card
     title="Gemini"
     icon="robot"
     href="/advanced/models/gemini"
   >
     Install Google's next-generation AI models
   </Card>
+
+</CardGroup>
+
+<CardGroup cols={2}>
+  <Card
+    title="Claude"
+    icon="robot"
+    href="/advanced/models/claude"
+  >
+    Install Anthropic's Claude models locally
+  </Card>
+  
   <Card
     title="Groq"
     icon="robot"
@@ -48,12 +54,31 @@ There are several model options available to choose from: **OpenAI, Together AI,
   >
     Install Groq AI models in two simple steps
   </Card>
+
+</CardGroup>
+
+<CardGroup cols={3}>
   <Card
     title="Ollama"
     icon="robot"
     href="/advanced/models/ollama"
   >
     Install other Ollama models in Shinkai
+  </Card>
+  <Card
+    title="OpenRouter"
+    icon="robot"
+    href="/advanced/models/openrouter"
+  >
+    Install any model available in OpenRouter
+  </Card>
+
+  <Card
+    title="Together AI"
+    icon="robot"
+    href="/advanced/models/together-ai"
+  >
+    Install any model available in Together AI
   </Card>
 
 </CardGroup>
