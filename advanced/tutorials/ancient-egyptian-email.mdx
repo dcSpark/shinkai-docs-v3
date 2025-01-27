@@ -45,37 +45,33 @@ Note: For enhanced security, always use SSL/TLS connections and app-specific pas
 
 To create your email assistant tool:
 
-1. In Shinkai Desktop, click on the "Shinkai Tools" icon (wrench and screwdriver crossed) in the left sidebar.
-2. Click the "Create Tool" button (highlighted in red) at the top of the page.
-3. In the Tool Editor that opens:
-   - On the left side, you'll see a chat panel where you can provide your initial prompt
-   - On the right side, you'll find the code editor where you can modify your tool's code
-   - Below the code editor is the testing section where you can run your tool
+1. Navigate to the Tool Editor:
+   - Open Shinkai Desktop
+   - Click the wrench and screwdriver icon (Shinkai Tools) in the left sidebar
+   - Click the red "Create Tool" button at the top of the page
 
-4. In the left chat panel, provide an initial prompt describing your tool. For example:
-   ```
-   Create an email assistant that responds with an ancient Egyptian pharaoh personality
-   ```
+2. In the Tool Editor:
+   - The left panel contains a chat interface for initial prompts
+   - The right panel shows the code editor
+   - Below is the testing section for running your tool
 
-5. Once the initial code is generated, you'll see it in the code editor on the right. You can:
-   - Review the generated code
-   - Make manual edits as needed
-   - Select the required dependencies from the dropdown menu
+3. Start with a prompt:
+   - In the left chat panel, describe your tool
+   - Example: "Create an email assistant that responds with an ancient Egyptian pharaoh personality"
+   - The LLM will generate initial code based on your prompt
 
-Our implementation uses these native Shinkai tools, which you'll need to select as dependencies:
-```typescript
-import {
-    emailFetcher,
-    sendEmail,
-    shinkaiLlmPromptProcessor,
-    shinkaiSqliteQueryExecutor,
-} from './shinkai-local-tools.ts';
-```
+4. Configure dependencies:
+   - Select required tools from the dropdown menu:
+     * Email Fetcher (for retrieving emails)
+     * Email Sender (for sending responses)
+     * LLM Prompt Processor (for generating responses)
+     * SQLite Query Executor (for tracking responses)
 
-After making any changes to the code:
-- Click "Apply Changes" to update the tool
-- Use the testing section below the editor to verify your changes
-- The metadata will automatically update based on your code
+5. Review and test:
+   - Examine the generated code in the editor
+   - Make any necessary adjustments
+   - Click "Apply Changes" to update
+   - Use the testing section to verify functionality
 
 ### Core Components Flow
 
@@ -384,155 +380,29 @@ Key advantages of this architecture:
 - Automated task scheduling
 - Simple configuration through UI
 
-Consider extending the tool with these advanced features:
+Consider extending the tool with these features:
 
 ### Custom Email Filters
-Implement sophisticated filtering logic to prioritize and categorize incoming emails:
-
-```typescript
-// Priority-based filtering
-const filterByPriority = (email: EMAIL) => {
-    // Check for urgent keywords in subject
-    const urgentKeywords = ['urgent', 'asap', 'emergency'];
-    const isUrgent = urgentKeywords.some(keyword => 
-        email.subject.toLowerCase().includes(keyword)
-    );
-
-    // Check for VIP senders
-    const vipSenders = ['ceo@company.com', 'manager@company.com'];
-    const isVipSender = vipSenders.includes(email.sender);
-
-    return {
-        priority: isUrgent || isVipSender ? 'high' : 'normal',
-        category: isUrgent ? 'urgent' : 'regular'
-    };
-};
-
-// Department-based routing
-const routeByDepartment = (email: EMAIL) => {
-    const departments = {
-        technical: ['bug', 'error', 'support'],
-        sales: ['quote', 'price', 'purchase'],
-        general: ['info', 'general', 'question']
-    };
-
-    for (const [dept, keywords] of Object.entries(departments)) {
-        if (keywords.some(k => email.subject.toLowerCase().includes(k))) {
-            return dept;
-        }
-    }
-    return 'general';
-};
-```
+Enhance email processing with smart filtering capabilities:
+- Filter by urgency levels (e.g., "URGENT" in subject gets priority handling)
+- Route emails to specific handlers based on department keywords
+- Identify VIP senders for special response handling
+- Set up time-based filters for business hours vs. after-hours responses
 
 ### Response Templates
-Create a template system for common response patterns while maintaining Khufur's personality:
-
-```typescript
-const responseTemplates = {
-    technical_issue: `
-        As an ancient pharaoh trapped in this digital sarcophagus,
-        I shall guide you through this technical challenge.
-        Here are the sacred steps to resolve your issue:
-        {{resolution_steps}}
-        May the gods of technology smile upon you!
-    `,
-    meeting_request: `
-        From my eternal prison in this cursed tomb,
-        I can grant you an audience at the following times:
-        {{available_times}}
-        Choose wisely, for my time is as precious as the sands of the Nile.
-    `,
-    general_inquiry: `
-        Greetings, seeker of knowledge!
-        Even after thousands of years trapped in this digital pyramid,
-        I can still assist you with:
-        {{inquiry_response}}
-        Remember, helping you brings me one step closer to freedom!
-    `
-};
-
-// Template processor
-const processTemplate = (template: string, variables: Record<string, string>) => {
-    let response = template;
-    for (const [key, value] of Object.entries(variables)) {
-        response = response.replace(`{{${key}}}`, value);
-    }
-    return response;
-};
-```
+Create themed response patterns while maintaining Khufur's personality:
+- Technical support responses with ancient Egyptian metaphors
+- Meeting scheduling replies with pyramid-themed time slots
+- Welcome messages for new contacts with hieroglyphic greetings
+- Follow-up templates with references to ancient wisdom
 
 ### Monitoring Capabilities
-Add comprehensive monitoring to track the assistant's performance and behavior:
+Track the assistant's performance with:
+- Response time monitoring for email processing efficiency
+- Success rate tracking for email deliverability
+- Category distribution analysis for workload patterns
+- Error logging for troubleshooting and improvement
 
-```typescript
-// Performance metrics tracking
-interface EmailMetrics {
-    processed_count: number;
-    response_times: number[];
-    error_count: number;
-    categories: Record<string, number>;
-}
-
-const metrics: EmailMetrics = {
-    processed_count: 0,
-    response_times: [],
-    error_count: 0,
-    categories: {}
-};
-
-// Monitoring implementation
-const monitorEmailProcessing = async (email: EMAIL) => {
-    const startTime = Date.now();
-    try {
-        // Process email
-        await processEmail(email);
-        
-        // Record metrics
-        metrics.processed_count++;
-        metrics.response_times.push(Date.now() - startTime);
-        
-        // Track categories
-        const category = routeByDepartment(email);
-        metrics.categories[category] = (metrics.categories[category] || 0) + 1;
-        
-        // Log success
-        console.log(`
-            Email processed successfully:
-            - Subject: ${email.subject}
-            - Category: ${category}
-            - Processing time: ${Date.now() - startTime}ms
-        `);
-    } catch (error) {
-        // Track errors
-        metrics.error_count++;
-        console.error(`
-            Email processing failed:
-            - Subject: ${email.subject}
-            - Error: ${error.message}
-            - Stack: ${error.stack}
-        `);
-    }
-};
-
-// Generate monitoring report
-const generateReport = () => {
-    const avgResponseTime = metrics.response_times.reduce((a, b) => a + b, 0) / metrics.response_times.length;
-    return {
-        total_processed: metrics.processed_count,
-        average_response_time: avgResponseTime,
-        error_rate: metrics.error_count / metrics.processed_count,
-        category_distribution: metrics.categories
-    };
-};
-```
-
-These extensions enhance the tool with:
-- Smart email prioritization and routing
-- Consistent yet personalized responses
-- Performance tracking and error monitoring
-- Detailed analytics for optimization
-
-For the complete implementation, refer to:
+The complete implementation is available in these gists:
 - [Tool Implementation (tool.ts)](https://gist.githubusercontent.com/Yiakman/11840eaf2ca28733b519caa90fcfe659/raw/9dcc4ad867f63435ed17d9e1b07a5f09a70c1441/tool.ts)
 - [Metadata Configuration (metadata.json)](https://gist.githubusercontent.com/Yiakman/c7491c142dcf3cea7597053611e2fe77/raw/b49f87da9ccf1d00cd7ef6040b61694043923488/metadata.json)
