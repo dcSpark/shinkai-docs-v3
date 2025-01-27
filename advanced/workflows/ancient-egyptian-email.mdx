@@ -12,7 +12,8 @@ This tutorial guides you through creating an automated email response system usi
 Before starting this tutorial:
 1. Install and open Shinkai Desktop
 2. Enable experimental features in Settings
-3. Have an email account with IMAP/SMTP access (we recommend using Zoho Mail for testing)
+3. Have an email account with IMAP/SMTP access that supports secure connections (SSL/TLS)
+4. Enable two-factor authentication and generate an app-specific password if supported by your provider
 
 ## Email Tool Configuration
 
@@ -20,17 +21,19 @@ First, configure the Email Fetcher and Email Sender tools in the Shinkai Tools s
 
 ### Email Fetcher (IMAP) Configuration
 Configure the following in the Tool Config page:
-- IMAP Server: imap.zoho.com (or your provider)
-- Port: 993 (SSL/TLS)
-- Username: your email
-- Password: your email password
+- IMAP Server: Your email provider's IMAP server
+- Port: Your provider's IMAP port (typically uses SSL/TLS)
+- Username: Your email address
+- Password: Your email password or app-specific password
 
 ### Email Sender (SMTP) Configuration
 Configure in the same Tool Config page:
-- SMTP Server: smtp.zoho.com (or your provider)
-- Port: 465 (SSL/TLS)
-- Username: your email
-- Password: your email password
+- SMTP Server: Your email provider's SMTP server
+- Port: Your provider's SMTP port (typically uses SSL/TLS)
+- Username: Your email address
+- Password: Your email password or app-specific password
+
+Note: Refer to your email provider's documentation for the specific server addresses and port numbers. Many providers also recommend using app-specific passwords for enhanced security.
 
 ## Creating the Email Assistant
 
@@ -58,8 +61,10 @@ let { emails, login_status } = await emailFetcher({
 
 2. **Checking for Previously Answered Emails**
 ```typescript
+// Use parameterized queries for security
 const answeredEmailsQuery = await shinkaiSqliteQueryExecutor({
-    query: `SELECT * FROM ${tableName}`,
+    query: 'SELECT * FROM answered_emails WHERE processed = ?',
+    params: [false]
 });
 const answeredEmails = (answeredEmailsQuery.result as ANSWERED_EMAIL_REGISTER[]) ?? [];
 ```
