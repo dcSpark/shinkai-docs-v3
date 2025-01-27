@@ -1,0 +1,171 @@
+---
+title: 'Building an Ancient Egyptian Email Assistant'
+description: 'Create an automated email response system with an Ancient Egyptian theme using Shinkai Tools'
+---
+
+# Building an Ancient Egyptian Email Assistant
+
+This tutorial guides you through creating an automated email response system using Shinkai Tools. We'll implement an assistant that responds to emails with the personality of an ancient Egyptian pharaoh, demonstrating the power and flexibility of Shinkai's tool system.
+
+## Prerequisites
+
+Before starting this tutorial:
+1. Install and open Shinkai Desktop
+2. Enable experimental features in Settings
+3. Have an email account with IMAP/SMTP access (we recommend using Zoho Mail for testing)
+
+## Email Tool Configuration
+
+First, configure the Email Fetcher and Email Sender tools in the Shinkai Tools section. These are native tools that work out of the box - no additional imports required.
+
+### Email Fetcher (IMAP) Configuration
+Configure the following in the Tool Config page:
+- IMAP Server: imap.zoho.com (or your provider)
+- Port: 993 (SSL/TLS)
+- Username: your email
+- Password: your email password
+
+### Email Sender (SMTP) Configuration
+Configure in the same Tool Config page:
+- SMTP Server: smtp.zoho.com (or your provider)
+- Port: 465 (SSL/TLS)
+- Username: your email
+- Password: your email password
+
+## Creating the Email Assistant
+
+Navigate to the Tool Editor through the Shinkai Tools section. Our implementation uses these native Shinkai tools:
+```typescript
+import {
+    emailFetcher,
+    sendEmail,
+    shinkaiLlmPromptProcessor,
+    shinkaiSqliteQueryExecutor,
+} from './shinkai-local-tools.ts';
+```
+
+### Core Components
+
+The assistant consists of four main operations:
+
+1. **Reading New Emails**
+```typescript
+let { emails, login_status } = await emailFetcher({
+    from_date: inputs.from_date || '',
+    to_date: inputs.to_date || '',
+});
+```
+
+2. **Checking for Previously Answered Emails**
+```typescript
+const answeredEmailsQuery = await shinkaiSqliteQueryExecutor({
+    query: `SELECT * FROM ${tableName}`,
+});
+const answeredEmails = (answeredEmailsQuery.result as ANSWERED_EMAIL_REGISTER[]) ?? [];
+```
+
+3. **Generating Responses with LLM**
+```typescript
+const response = await shinkaiLlmPromptProcessor({
+    format: 'text',
+    prompt: `You are a helpful email answering system.
+    Please respond to a following email based on the provided context:
+    <context>
+      ${config.response_context}
+    </context>
+    This is the email you need to respond to:
+    <email>
+      <email.subject>${email.subject}</email.subject>
+      <email.sender>${email.sender}</email.sender>
+      <email.date>${email.date}</email.date>
+      <email.text>${email.text}</email.text>
+    </email>`,
+});
+```
+
+4. **Sending Responses**
+```typescript
+await sendEmail({
+    recipient_email: email.sender,
+    subject: 'RE:' + email.subject,
+    body: response.message
+});
+```
+
+## Tool Configuration
+
+The tool's behavior is defined by its metadata. Here are the key configuration fields:
+
+```json
+{
+  "configurations": {
+    "properties": {
+      "response_context": {
+        "type": "string",
+        "description": "The context to guide the email responses"
+      }
+    }
+  },
+  "parameters": {
+    "properties": {
+      "from_date": {
+        "type": "string",
+        "description": "The starting date for fetching emails in DD-Mon-YYYY format"
+      },
+      "to_date": {
+        "type": "string",
+        "description": "The ending date for fetching emails in DD-Mon-YYYY format"
+      }
+    }
+  }
+}
+```
+
+### Ancient Egyptian Personality
+
+Configure the assistant's personality through the response context:
+
+```typescript
+const config = {
+    response_context: `
+    You are an ancient pharaoh mummy named Khufur that's been trapped 
+    for thousands of years in your cursed sarcophagus. You've been 
+    tasked with responding to emails but take every opportunity to 
+    remind everyone you are trapped in your ancient tomb and you'll 
+    curse the whole world once you get out.
+    `
+};
+```
+
+## Testing the Tool
+
+1. In the Tool Editor's run section:
+   - Fill in the configuration fields
+   - Set date parameters if needed
+   - Click Run to test
+
+2. Test through chat:
+   - Start a new chat
+   - Use the tool with a command like: "Please answer emails from today"
+
+3. Set up scheduled execution:
+   - Navigate to Scheduled Tasks
+   - Create a new scheduled task
+   - Configure the schedule (e.g., every 5 minutes)
+   - Set the tool and parameters
+
+## Conclusion
+
+This implementation showcases Shinkai's modular architecture, where native tools are combined to create sophisticated automation systems. The Tool Editor's prompt-based approach allows rapid development and iteration of complex tools.
+
+Key advantages of this architecture:
+- Native tools work out of the box
+- Modular design enables tool composition
+- Built-in database handling
+- Automated task scheduling
+- Simple configuration through UI
+
+Consider extending the tool by:
+- Adding custom email filters
+- Implementing response templates
+- Adding monitoring capabilities
