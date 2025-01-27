@@ -194,23 +194,46 @@ The tool's behavior is defined by its metadata. Here are the key configuration f
 
 ### Response Generation and Personality
 
-The email processing follows a structured loop that handles each email individually, with built-in error handling and response tracking. Here's how the response generation works:
+The tool processes each unanswered email through a structured loop, generating personalized responses while maintaining consistency and reliability. Here's the detailed workflow:
 
-1. **Email Content Formatting**
-   The tool structures each email's content in a clear XML format for the LLM:
+1. **Email Processing Loop**
    ```typescript
-   <email>
-     <email.subject>${email.subject}</email.subject>
-     <email.sender>${email.sender}</email.sender>
-     <email.date>${email.date}</email.date>
-     <email.text>${email.text}</email.text>
-   </email>
+   try {
+       for (const email of emails) {
+           // Skip if we've already answered this email
+           const emailUniqueId = await generateEmailUniqueId(email);
+           if (answeredEmails.find(ae => ae.email_unique_id === emailUniqueId)) {
+               continue;
+           }
+   ```
+   Each iteration:
+   - Generates a unique ID for the email
+   - Checks if we've already responded
+   - Processes only new, unanswered emails
+
+2. **LLM Response Generation**
+   The tool formats email content in XML for clear LLM processing:
+   ```typescript
+   const response = await shinkaiLlmPromptProcessor({
+       format: 'text',
+       prompt: `You are a helpful email answering system.
+       Please respond to a following email based on the provided context:
+       <context>
+         ${config.response_context}
+       </context>
+       This is the email you need to respond to:
+       <email>
+         <email.subject>${email.subject}</email.subject>
+         <email.sender>${email.sender}</email.sender>
+         <email.date>${email.date}</email.date>
+         <email.text>${email.text}</email.text>
+       </email>`,
+   });
    ```
 
-2. **Personality Customization**
-   The response_context field in the tool's configuration defines the assistant's personality. You can customize this in the Tool Config page:
+3. **Personality Injection**
+   The ancient Egyptian personality comes from the response_context:
    ```typescript
-   // Example personality configuration
    const config = {
        response_context: `
        You are an ancient pharaoh mummy named Khufur that's been trapped 
@@ -221,39 +244,35 @@ The email processing follows a structured loop that handles each email individua
        `
    };
    ```
-   
-   Modify this context to create different personalities. The LLM will consistently style responses according to your configuration. For example:
-   - Change the character's name and background
-   - Adjust the tone (formal, casual, mysterious)
-   - Add specific phrases or mannerisms
-   - Include knowledge about specific topics
-   
-3. **Response Processing and Tracking**
-   The tool ensures consistent and reliable response handling:
 
-   - **Format Control**:
-     ```typescript
-     const response = await shinkaiLlmPromptProcessor({
-         format: 'text',  // Ensures clean, plain text responses
-         prompt: `...`    // Structured prompt with context
-     });
-     ```
+4. **Response Handling and Storage**
+   After generating the response:
+   ```typescript
+   try {
+       // Send the response
+       await sendEmail({
+           recipient_email: email.sender,
+           subject: 'RE:' + email.subject,
+           body: response.message
+       });
 
-   - **Response Tracking**:
-     ```typescript
-     // Record response in database with parameterized query
-     await shinkaiSqliteQueryExecutor({
-         query: 'INSERT INTO answered_emails (email_unique_id, subject, email, response) VALUES (?, ?, ?, ?)',
-         params: [emailUniqueId, email.subject, email.sender, response.message]
-     });
-     ```
+       // Record in database with parameterized query
+       await shinkaiSqliteQueryExecutor({
+           query: 'INSERT INTO answered_emails (email_unique_id, subject, email, response) VALUES (?, ?, ?, ?)',
+           params: [emailUniqueId, email.subject, email.sender, response.message]
+       });
+   } catch (error) {
+       console.error(`Failed to process email: ${error}`);
+       continue; // Skip problematic emails
+   }
+   ```
 
-   - **Error Handling**:
-     - Each email is processed in an isolated try-catch block
-     - Failed responses are logged but don't block other emails
-     - Duplicate responses are prevented via unique email IDs
-     - The tool skips problematic emails and continues processing
-     - No partial responses are ever sent to users
+The error handling ensures:
+- LLM processing failures are caught and logged
+- Failed emails don't block the processing loop
+- No partial or duplicate responses are sent
+- Each response is properly recorded in the database
+- The system maintains a reliable processing state
 
 ## Testing the Tool
 
@@ -268,26 +287,41 @@ The email processing follows a structured loop that handles each email individua
 
 3. Set up scheduled execution:
    1. Navigate to Scheduled Tasks:
-      - Click the clock icon with circling arrow in the Shinkai Desktop sidebar
-      - You'll see a list of your existing scheduled tasks
+      - In Shinkai Desktop's left sidebar, locate and click the clock icon with circling arrow
+      - The Scheduled Tasks page opens, showing your existing scheduled tasks in a list format
+      - Each task displays its name, status, and last execution time
 
-   2. Create a new task:
-      - Click the "Create New" button (highlighted in red)
-      - In the Edit Scheduled Task form:
-         * Task Name: Give it a descriptive name (e.g., "Khufur Mail")
-         * Task Description: (Optional) Add details about the task
-         * Task Prompt: Specify email date ranges (e.g., "Please answer emails from_date 23-Jan-2025")
-         * Schedule: Choose frequency (e.g., "every 5 min" or custom cron expression)
-         * AI/Agent: Select your preferred model (e.g., "gpt_4o_mini")
-         * Tool: Select your Email Assistant from the dropdown
+   2. Create a new scheduled task:
+      - Click the "Create New" button (highlighted in red) at the top of the page
+      - The Edit Scheduled Task form appears with these fields:
+         * Task Name: Enter "Khufur Mail" or another descriptive name
+         * Task Description: Optional field for additional context
+         * Task Prompt: Enter the email processing command, for example:
+           ```
+           Please answer emails from_date 23-Jan-2025 and to_date 23-Jan-2027
+           ```
+         * Schedule: Choose from predefined options or enter a custom cron expression:
+           - "every 5 min" (recommended for testing)
+           - "every hour"
+           - "every Monday at 8am"
+           - Custom cron (e.g., "*/30 * * * *" for every 30 minutes)
+         * AI/Agent: Select your model from the dropdown (e.g., "gpt_4o_mini")
+         * Tool: Choose your Email Assistant from the available tools
 
-   3. Monitor task execution:
-      - View task status in the main Scheduled Tasks list
-      - Click "View Logs" to check execution history
-      - Use the ellipsis menu (⋮) for additional options:
-         * Edit task configuration
-         * Run task immediately
-         * Delete task if needed
+   3. Monitor and manage tasks:
+      - In the main Scheduled Tasks list:
+        * Active tasks show a green status indicator
+        * Each task has a "View Logs" button for execution history
+      - Click "View Logs" to see:
+        * Execution timestamps
+        * Success/failure status
+        * Response details
+        * Error messages if any
+      - Use the ellipsis menu (⋮) for task management:
+        * Edit: Modify task configuration
+        * Run Now: Execute task immediately
+        * Delete: Remove the task
+      - The task list automatically updates to show recent executions
 
 ## Conclusion
 
