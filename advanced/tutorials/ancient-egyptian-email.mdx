@@ -1,0 +1,408 @@
+---
+title: 'Building an Ancient Egyptian Email Assistant'
+description: 'Create an automated email response system with an Ancient Egyptian theme using Shinkai Tools'
+---
+
+# Building an Ancient Egyptian Email Assistant
+
+This tutorial guides you through creating an automated email response system using Shinkai Tools. We'll implement an assistant that responds to emails with the personality of an ancient Egyptian pharaoh, demonstrating the power and flexibility of Shinkai's tool system.
+
+## Prerequisites
+
+Before starting this tutorial:
+1. Install and open Shinkai Desktop
+2. Enable experimental features in Settings
+3. Have an email account with IMAP/SMTP access that supports secure connections (SSL/TLS)
+4. Enable two-factor authentication and generate an app-specific password if supported by your provider
+
+## Email Tool Configuration
+
+First, configure the Email Fetcher and Email Sender tools in the Shinkai Tools section. These are native tools that work out of the box - no additional imports required.
+
+### Email Tool Configuration
+
+Both the Email Fetcher and Email Sender are native Shinkai tools that can be configured directly through the Tool Config page in the Shinkai Desktop app. No additional setup or environment configuration is required.
+
+#### Email Fetcher Setup
+In the Tool Config page:
+1. Enable the Email Fetcher tool
+2. Configure your IMAP settings:
+   - Server and port (SSL/TLS required)
+   - Authentication credentials
+   - Use app-specific passwords when available
+
+#### Email Sender Setup
+In the same Tool Config page:
+1. Enable the Email Sender tool
+2. Configure your SMTP settings:
+   - Server and port (SSL/TLS required)
+   - Authentication credentials
+   - Use app-specific passwords when available
+
+Note: For enhanced security, always use SSL/TLS connections and app-specific passwords when supported by your email provider. The tool automatically handles secure connections and credential management.
+
+## Creating the Email Assistant
+
+To create your email assistant tool:
+
+1. Navigate to the Tool Editor:
+   - Open Shinkai Desktop
+   - Click the wrench and screwdriver icon (Shinkai Tools) in the left sidebar
+   - Click the red "Create Tool" button at the top of the page
+
+2. In the Tool Editor:
+   - The left panel contains a chat interface for initial prompts
+   - The right panel shows the code editor
+   - Below is the testing section for running your tool
+
+3. Start with a prompt:
+   - In the left chat panel, describe your tool
+   - Example: "Create an email assistant that responds with an ancient Egyptian pharaoh personality"
+   - The LLM will generate initial code based on your prompt
+
+4. Configure dependencies:
+   - Select required tools from the dropdown menu:
+     * Email Fetcher (for retrieving emails)
+     * Email Sender (for sending responses)
+     * LLM Prompt Processor (for generating responses)
+     * SQLite Query Executor (for tracking responses)
+
+5. Review and test:
+   - Examine the generated code in the editor
+   - Make any necessary adjustments
+   - Click "Apply Changes" to update
+   - Use the testing section to verify functionality
+
+### Core Components Flow
+
+The email assistant follows a carefully orchestrated sequence of operations to process incoming emails and generate responses. Here's how the process flows:
+
+1. **Email Fetching and Initial Processing**
+   First, we retrieve new emails from the configured inbox using the Email Fetcher tool. This step includes validation to ensure we only process emails with complete information:
+```typescript
+try {
+    // Retrieve and validate emails
+    let { emails, login_status } = await emailFetcher({
+        from_date: inputs.from_date || '',
+        to_date: inputs.to_date || '',
+    });
+
+    // Filter valid emails and check date range
+    emails = emails
+        .filter((e: EMAIL) => (e.date && e.sender && e.subject))
+        .filter((e: EMAIL) => e.date > (minDate?.toISOString() || '1970-01-01T00:00:00.000Z'));
+
+    // Check for previously answered emails using parameterized query
+    const answeredEmailsQuery = await shinkaiSqliteQueryExecutor({
+        query: 'SELECT * FROM answered_emails WHERE email_unique_id = ?',
+        params: [emailUniqueId]
+    });
+    if (!answeredEmailsQuery?.result) {
+        throw new Error('Failed to query answered emails');
+    }
+    const answeredEmails = (answeredEmailsQuery.result as ANSWERED_EMAIL_REGISTER[]) ?? [];
+} catch (error) {
+    console.error(`Failed to process emails: ${error}`);
+    throw error;
+}
+```
+
+2. **Duplicate Response Prevention**
+   For each retrieved email, we generate a unique identifier based on its content and check our database to prevent duplicate responses. This ensures we never send multiple responses to the same email:
+```typescript
+try {
+    for (const email of emails) {
+        // Skip if we've already answered this email
+        const emailUniqueId = await generateEmailUniqueId(email);
+        if (answeredEmails.find(ae => ae.email_unique_id === emailUniqueId)) {
+            continue;
+        }
+```
+
+3. **Response Generation Loop**
+   Once we've identified new, unanswered emails, we process each one in a loop. For each email:
+   - Generate a unique identifier
+   - Check if we've already responded
+   - If it's a new email, generate a personalized response using the LLM
+   
+Here's how we generate the response using our ancient Egyptian personality:
+```typescript
+// Use LLM to create a response in the ancient Egyptian style
+const response = await shinkaiLlmPromptProcessor({
+    format: 'text',
+    prompt: `You are a helpful email answering system.
+    Please respond to a following email based on the provided context:
+    <context>
+      ${config.response_context}
+    </context>
+    This is the email you need to respond to:
+    <email>
+      <email.subject>${email.subject}</email.subject>
+      <email.sender>${email.sender}</email.sender>
+      <email.date>${email.date}</email.date>
+      <email.text>${email.text}</email.text>
+    </email>`,
+});
+```
+
+4. **Response Delivery and Recording**
+   After generating a response, we complete two final steps atomically to ensure consistency:
+   - Send the response to the original sender
+   - Record the response in our database to prevent duplicate replies
+   
+Here's the implementation:
+```typescript
+// Send the response
+await sendEmail({
+    recipient_email: email.sender,
+    subject: 'RE:' + email.subject,
+    body: response.message
+});
+
+// Record the response in the database using parameterized query
+await shinkaiSqliteQueryExecutor({
+    query: 'INSERT INTO answered_emails (email_unique_id, subject, email, response) VALUES (?, ?, ?, ?)',
+    params: [emailUniqueId, email.subject, email.sender, response.message]
+});
+```
+
+If any step fails, the error handling ensures:
+- The current email processing is skipped
+- Other emails can still be processed
+- Errors are logged for debugging
+- No duplicate responses are sent
+
+## Tool Configuration
+
+The tool's behavior is defined by its metadata. Here are the key configuration fields:
+
+```json
+{
+  "configurations": {
+    "properties": {
+      "response_context": {
+        "type": "string",
+        "description": "The context to guide the email responses"
+      }
+    }
+  },
+  "parameters": {
+    "properties": {
+      "from_date": {
+        "type": "string",
+        "description": "The starting date for fetching emails in DD-Mon-YYYY format"
+      },
+      "to_date": {
+        "type": "string",
+        "description": "The ending date for fetching emails in DD-Mon-YYYY format"
+      }
+    }
+  }
+}
+```
+
+### Response Generation and Personality
+
+The heart of our email assistant is its ability to generate personalized responses with an ancient Egyptian flair. For each new email that hasn't been answered yet, we follow this process:
+
+1. **Email Processing Loop**
+   The tool iterates through each email, checking if it needs a response:
+   - First, verify if the email is new using its unique ID
+   - If we've already answered it, skip to the next email
+   - If it's new, proceed with generating a response
+
+2. **Personality Integration**
+   The ancient Egyptian personality comes from the response_context configuration:
+   - This context guides the LLM's response style
+   - Every response maintains the character of Khufur, the trapped pharaoh
+   - The personality remains consistent across all email responses
+
+1. **Email Processing Loop**
+   ```typescript
+   try {
+       for (const email of emails) {
+           // Skip if we've already answered this email
+           const emailUniqueId = await generateEmailUniqueId(email);
+           if (answeredEmails.find(ae => ae.email_unique_id === emailUniqueId)) {
+               continue;
+           }
+   ```
+   Each iteration:
+   - Generates a unique ID for the email
+   - Checks if we've already responded
+   - Processes only new, unanswered emails
+
+3. **LLM Response Generation**
+   For each new email, we structure the content in XML format and combine it with our personality context. The LLM then:
+   - Receives the email content in a structured format
+   - Processes it alongside the pharaoh personality context
+   - Generates a response that maintains Khufur's character
+   
+Here's how we combine the email content with our personality:
+   ```typescript
+   const response = await shinkaiLlmPromptProcessor({
+       format: 'text',
+       prompt: `You are a helpful email answering system.
+       Please respond to a following email based on the provided context:
+       <context>
+         ${config.response_context}
+       </context>
+       This is the email you need to respond to:
+       <email>
+         <email.subject>${email.subject}</email.subject>
+         <email.sender>${email.sender}</email.sender>
+         <email.date>${email.date}</email.date>
+         <email.text>${email.text}</email.text>
+       </email>`,
+   });
+   ```
+
+3. **Personality Injection**
+   The ancient Egyptian personality comes from the response_context:
+   ```typescript
+   const config = {
+       response_context: `
+       You are an ancient pharaoh mummy named Khufur that's been trapped 
+       for thousands of years in your cursed sarcophagus. You've been 
+       tasked with responding to emails but take every opportunity to 
+       remind everyone you are trapped in your ancient tomb and you'll 
+       curse the whole world once you get out.
+       `
+   };
+   ```
+
+4. **Response Handling and Storage**
+   Once the LLM generates a response with Khufur's personality, we complete the process by:
+   - Sending the response back to the original sender
+   - Recording it in our database to prevent duplicate responses
+   - Handling any errors that might occur during sending or storage
+   
+Here's how we handle the final steps:
+   ```typescript
+   try {
+       // Send the response
+       await sendEmail({
+           recipient_email: email.sender,
+           subject: 'RE:' + email.subject,
+           body: response.message
+       });
+
+       // Record in database with parameterized query
+       await shinkaiSqliteQueryExecutor({
+           query: 'INSERT INTO answered_emails (email_unique_id, subject, email, response) VALUES (?, ?, ?, ?)',
+           params: [emailUniqueId, email.subject, email.sender, response.message]
+       });
+   } catch (error) {
+       console.error(`Failed to process email: ${error}`);
+       continue; // Skip problematic emails
+   }
+   ```
+
+This complete process ensures:
+- Each email gets a unique, personalized response in Khufur's voice
+- The LLM consistently maintains the ancient Egyptian personality
+- No email receives duplicate responses
+- Failed processing doesn't block other emails
+- All successful responses are properly recorded
+- The system maintains a reliable state throughout the process
+
+## Testing the Tool
+
+1. In the Tool Editor's run section:
+   - Fill in the configuration fields
+   - Set date parameters if needed
+   - Click Run to test
+
+2. Test through chat:
+   - Start a new chat
+   - Use the tool with a command like: "Please answer emails from today"
+
+3. Set up scheduled execution:
+   1. Access Scheduled Tasks:
+      - Open Shinkai Desktop
+      - In the left sidebar, locate and click the clock icon with circling arrow
+      - The Scheduled Tasks page opens, displaying your existing scheduled tasks
+      - Each task shows:
+        * Task name and current status (active/inactive)
+        * Last execution time
+        * Quick access to logs and controls
+
+   2. Create a new scheduled task:
+      - Click the "Create New" button (highlighted in red) at the top
+      - In the Edit Scheduled Task form, configure:
+         * Task Name: "Khufur Mail" (or your preferred name)
+         * Task Description: (Optional) Add context like "Ancient Egyptian email responder"
+         * Task Prompt: Specify the email processing command:
+           ```
+           Please answer emails from_date 23-Jan-2025 and to_date 23-Jan-2027
+           ```
+         * Schedule: Select from:
+           - "every 5 min" (recommended for initial testing)
+           - "every hour" (for regular checking)
+           - "every Monday at 8am" (for weekly processing)
+           - Custom cron expression (e.g., "*/30 * * * *" for every 30 minutes)
+         * AI/Agent: Choose your preferred model (e.g., "gpt_4o_mini")
+         * Tool: Select your Email Assistant from the tools list
+
+   3. Monitor and manage tasks:
+      - In the main Scheduled Tasks list, each task shows:
+        * Task name and active/inactive status (with green indicator when active)
+        * Schedule information (e.g., "Every 5 minutes")
+        * Last execution time and status
+        * "View Logs" button for detailed execution history
+
+      - Use the "View Logs" button to monitor execution:
+        * See timestamps for each run
+        * Check success/failure status for each execution
+        * View detailed response information
+        * Access error messages if any issues occurred
+        * Navigate to the chat log for each execution
+
+      - Access additional options via the ellipsis menu (⋮):
+        * Edit: Modify task settings or schedule
+        * Run Now: Execute the task immediately
+        * Delete: Remove the task from the list
+
+      - Best practices for monitoring:
+        * Check logs regularly during initial setup
+        * Verify successful email processing
+        * Monitor response quality and consistency
+        * Adjust schedule based on email volume
+
+## Conclusion
+
+This implementation showcases Shinkai's modular architecture, where native tools are combined to create sophisticated automation systems. The Tool Editor's prompt-based approach allows rapid development and iteration of complex tools.
+
+Key advantages of this architecture:
+- Native tools work out of the box
+- Modular design enables tool composition
+- Built-in database handling
+- Automated task scheduling
+- Simple configuration through UI
+
+Consider extending the tool with these features:
+
+### Custom Email Filters
+Enhance email processing with smart filtering capabilities:
+- Filter by urgency levels (e.g., "URGENT" in subject gets priority handling)
+- Route emails to specific handlers based on department keywords
+- Identify VIP senders for special response handling
+- Set up time-based filters for business hours vs. after-hours responses
+
+### Response Templates
+Create themed response patterns while maintaining Khufur's personality:
+- Technical support responses with ancient Egyptian metaphors
+- Meeting scheduling replies with pyramid-themed time slots
+- Welcome messages for new contacts with hieroglyphic greetings
+- Follow-up templates with references to ancient wisdom
+
+### Monitoring Capabilities
+Track the assistant's performance with:
+- Response time monitoring for email processing efficiency
+- Success rate tracking for email deliverability
+- Category distribution analysis for workload patterns
+- Error logging for troubleshooting and improvement
+
+The complete implementation is available in these gists:
+- [Tool Implementation (tool.ts)](https://gist.githubusercontent.com/Yiakman/11840eaf2ca28733b519caa90fcfe659/raw/9dcc4ad867f63435ed17d9e1b07a5f09a70c1441/tool.ts)
+- [Metadata Configuration (metadata.json)](https://gist.githubusercontent.com/Yiakman/c7491c142dcf3cea7597053611e2fe77/raw/b49f87da9ccf1d00cd7ef6040b61694043923488/metadata.json)
