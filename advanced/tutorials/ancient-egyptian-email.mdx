@@ -1,6 +1,7 @@
 ---
-title: 'Building an Ancient Egyptian Email Assistant'
+title: 'Building an AI Email Assistant'
 description: 'Create an automated email response system with an Ancient Egyptian theme using Shinkai Tools'
+icon: 'envelope-circle-check'
 ---
 
 # Building an Ancient Egyptian Email Assistant
@@ -48,7 +49,7 @@ To create your email assistant tool:
 1. Navigate to the Tool Editor:
    - Open Shinkai Desktop
    - Click the wrench and screwdriver icon (Shinkai Tools) in the left sidebar
-   - Click the red "Create Tool" button at the top of the page
+   - Click the red "+ Create Tool" button at the top of the page
 
 2. In the Tool Editor:
    - The left panel contains a chat interface for initial prompts
@@ -69,9 +70,13 @@ To create your email assistant tool:
 
 5. Review and test:
    - Examine the generated code in the editor
-   - Make any necessary adjustments
+   - You can take inspiration or directly paste the code and metadata from the links below
    - Click "Apply Changes" to update
-   - Use the testing section to verify functionality
+   - Use the testing section to verify functionality. In order to test the tool, you need to fill in the configuration fields and click run.
+
+The complete implementation is available in these gists:
+- [Tool Implementation (tool.ts)](https://gist.githubusercontent.com/Yiakman/11840eaf2ca28733b519caa90fcfe659/raw/9dcc4ad867f63435ed17d9e1b07a5f09a70c1441/tool.ts)
+- [Metadata Configuration (metadata.json)](https://gist.githubusercontent.com/Yiakman/c7491c142dcf3cea7597053611e2fe77/raw/b49f87da9ccf1d00cd7ef6040b61694043923488/metadata.json)
 
 ### Core Components Flow
 
@@ -146,7 +151,7 @@ const response = await shinkaiLlmPromptProcessor({
 ```
 
 4. **Response Delivery and Recording**
-   After generating a response, we complete two final steps atomically to ensure consistency:
+   After generating a response, the tool executes two final steps atomically to ensure consistency:
    - Send the response to the original sender
    - Record the response in our database to prevent duplicate replies
    
@@ -310,7 +315,7 @@ This complete process ensures:
 
 1. In the Tool Editor's run section:
    - Fill in the configuration fields
-   - Set date parameters if needed
+   - Set date parameters if needed, remember to use the DD-Mon-YYYY format. For example 22-Jan-2025
    - Click Run to test
 
 2. Test through chat:
@@ -332,9 +337,9 @@ This complete process ensures:
       - In the Edit Scheduled Task form, configure:
          * Task Name: "Khufur Mail" (or your preferred name)
          * Task Description: (Optional) Add context like "Ancient Egyptian email responder"
-         * Task Prompt: Specify the email processing command:
+         * Task Prompt: Specify the email processing command, use this as an example:
            ```
-           Please answer emails from_date 23-Jan-2025 and to_date 23-Jan-2027
+           Please answer emails from_date 23-Jan-2025 and to_date 23-Jan-2027. Use the DD-Mon-YYYY format.
            ```
          * Schedule: Select from:
            - "every 5 min" (recommended for initial testing)
