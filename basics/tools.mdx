@@ -13,8 +13,8 @@ To access the Tools section:
 
 1. Open the **Settings** menu and select **General Settings**
 2. Scroll to the bottom and enable the **Enable Experimental Features** toggle
-3. Once enabled, you'll see the Tools icon (🛠️) in the left menu
-4. Click the Tools icon to access the Tools section
+3. Once enabled, you'll see the Shinkai Tools icon (🛠️) in the left menu
+4. Click the Shinkai Tools icon to access the Tools section
 
 ## Tools Section Overview
 
@@ -33,32 +33,34 @@ The Tools section provides a comprehensive view of all available tools. Here's w
 
 To create a new tool:
 
-1. Click the **Create Tool** button in the Tools section
+1. Click the **Create Tool** button in the Tools section.
 2. Choose your preferred language (Python or TypeScript)
-3. Provide an initial prompt describing your tool's functionality
+3. Provide to the LLM in the chat an initial prompt describing your tool's functionality
 4. The system will generate initial code and metadata
-5. Modify the generated code in the editor as needed
-6. Update the metadata JSON to define inputs, outputs, and configuration
+5. Modify the generated code in the editor as needed.
+6. To switch between code and metadata use the labeled tabs above the editor.
+7. Review and update the metadata JSON to define inputs, outputs, and configuration. You can automatically regenerate the metadata based on the code pressing the "Regenerate Metadata" button on the top-right corner.
 
 ## Testing in the Playground
 
 The Tool Playground allows you to test your tools before deployment:
 
 1. Access the playground from the tool's configuration page
-2. Fill in the required input fields
+2. Fill in the required input and configuration fields
 3. Click "Run" to test the tool
 4. Review the output and execution logs
 5. Make adjustments to the code or metadata as needed
 
 ## Configuring Tools
 
-Most tools require configuration before use:
+Most tools require configuration before use, once the tool is saved from the Tool's Playground, you will be directed to the configuration page. If you want to modify a tool's config you can:
 
-1. Click the **Configure** button next to a tool
-2. Set required parameters (e.g., API keys, credentials)
-3. Save your configuration
-4. Optional: Export the tool as a ZIP file for sharing
-5. Optional: Delete the tool if no longer needed
+1. Click the **Configure** button next to a tool in the Shinkai Tools section
+2. Click on the Configuration tab
+3. Set required parameters (e.g., API keys, credentials)
+4. Save your configuration
+5. Optional: Export the tool as a ZIP file for sharing
+6. Optional: Delete the tool if no longer needed
 
 ## Using Tools in Chat
 
