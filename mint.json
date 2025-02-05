@@ -100,7 +100,8 @@
         },
         "advanced/sheets",
         "advanced/shinkai-identity",
-        "advanced/connect-identity"
+        "advanced/connect-identity",
+        "advanced/agents"
       ]
     },
     {
