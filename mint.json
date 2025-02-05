@@ -72,7 +72,6 @@
           ]
         },
         "basics/files-manager",
-        "basics/subscriptions",
         "basics/tools"
       ]
       }, 
@@ -93,7 +92,6 @@
             "advanced/models/claude"
           ]
         },
-        "advanced/visor",
         "advanced/sheets",
         "advanced/shinkai-identity",
         "advanced/connect-identity"
