@@ -1,0 +1,163 @@
+---
+title: 'Metadata'
+description: 'Learn how to use and create Shinkai Metadata to automate tasks and extend functionality'
+icon: 'file-code'
+---
+
+# **Metadata** Fields
+Version 0.9.8
+
+This document provides a technical overview of the **Metadata** schema for tool/function definitions. The **Metadata** is a top-level object that describes each tool’s configuration, parameters, outputs, and related fields. Below is a structured breakdown of the fields that can appear, along with their types and meanings.
+
+
+An example of a real Metadata can be viewed [here](https://github.com/dcSpark/shinkai-tools/blob/main/tools/twitter-post/metadata.json) 
+
+
+## Table: Metadata
+
+| Field             | Type                | Description                                                                                                             |
+|-------------------|---------------------|-------------------------------------------------------------------------------------------------------------------------|
+| **id**            | string (optional)   | Unique identifier for the tool.                                                                                        |
+| **name**          | string (required)   | Human-readable name for the tool.                                                                                      |
+| **version**       | string (optional)   | Version of the tool.                                                                                                   |
+| **description**   | string (optional)   | Short description explaining the tool’s purpose.                                                                       |
+| **author**        | string (optional)   | Author or maintainer of the tool.                                                                                      |
+| **homepage**      | string (optional)   | URL to the tool’s homepage or documentation.                                                                           |
+| **keywords**      | array of strings    | List of keywords or tags associated with the tool.                                                                     |
+| **tool_type**     | string (optional)   | Indicates the type of tool (e.g. “typescript”, “python”).                                                              |
+| **license**       | string (optional)   | License for the tool (e.g. “MIT”).                                                                                     |
+| **configurations**| ConfigurationsTable | Configuration settings for the tool (see [Configurations Table](#configurations-table) below).                         |
+| **parameters**    | ParametersTable     | The input parameters accepted by the tool (see [Parameters Table](#parameters-table) below).                           |
+| **result**        | ResultTable         | The shape of the tool’s output (see [Result Table](#result-table) below).                                             |
+| **sqlTables**     | array of objects    | Optional list of SQL table definitions (see [SQL Tables](#sql-tables) section).                                        |
+| **sqlQueries**    | array of objects    | Optional list of SQL queries or statements (see [SQL Queries](#sql-queries) section).                                  |
+| **tools**         | array               | Optional references to internal or external helper tools.                                                              |
+| **oauth**         | array of objects    | OAuth configuration objects if the tool requires authentication (see [OAuth Table](#oauth-table) section).             |
+
+> **Note**: Any of these fields not marked “required” is optional. A specific metadata entry may include all, some, or none of these fields.
+
+---
+
+## Configurations Table
+
+The **configurations** field typically has the structure shown below. It is always an object with a `type: "object"` and a `properties` key that defines each possible configuration setting:
+
+| Field       | Type                 | Description                                                                                                           |
+|-------------|----------------------|-----------------------------------------------------------------------------------------------------------------------|
+| **type**    | string (always "object") | Must be `"object"` for the top-level configurations schema.                                                          |
+| **properties** | PropertiesTable   | A collection of fields describing each configuration setting. Each property can have its own `type`, `description`, `default`, or `enum`. |
+| **required** | array of strings    | Optional. A list of property names that are required.                                                                 |
+
+### PropertiesTable for Configurations
+
+Each property under `configurations.properties` can include:
+- **type**: `"string"`, `"number"`, `"boolean"`, `"array"`, or `"object"`.
+- **description**: Explains the purpose of that configuration property.
+- **default**: Default value for the property (if any).
+- **enum**: A list of permitted values (if restricted).
+- **nullable**: If `true`, indicates that the value can be `null` (optional).
+- **required**: If present in the top-level `configurations.required`, that property must be provided.
+
+---
+
+## Parameters Table
+
+The **parameters** field describes the inputs a tool expects. It also always has the top-level shape:
+
+| Field       | Type                 | Description                                                                                          |
+|-------------|----------------------|------------------------------------------------------------------------------------------------------|
+| **type**    | string (always "object") | Must be `"object"` for the parameters schema.                                                        |
+| **properties** | PropertiesTable   | Each input parameter, with its own `type`, `description`, and optional attributes like `default`.    |
+| **required** | array of strings    | Optional. Names of any parameters that must be supplied.                                             |
+
+### PropertiesTable for Parameters
+
+Each property under `parameters.properties` can include:
+- **type**: `"string"`, `"number"`, `"boolean"`, `"array"`, or `"object"`.
+- **description**: Explains that parameter’s purpose or usage.
+- **default**: Default value if not specified by the user.
+- **enum**: Possible fixed choices (e.g., `["high","low","urgent"]`).
+- **items**: For an array type, describes the type or structure of each element (which can itself be string, number, object, etc.).
+- **nullable**: Indicates if the value can be `null`.
+
+---
+
+## Result Table
+
+The **result** field defines how the tool’s output is structured:
+
+| Field       | Type                 | Description                                                                                        |
+|-------------|----------------------|----------------------------------------------------------------------------------------------------|
+| **type**    | string (always "object") | Must be `"object"` for the result schema.                                                          |
+| **properties** | PropertiesTable   | Describes the output fields the tool produces. Each field has its own `type` and other annotations.|
+| **required** | array of strings    | Optional. Lists the fields that will always appear in the result.                                  |
+
+### PropertiesTable for Result
+
+As with configurations and parameters, each property can specify:
+- **type**: `"string"`, `"number"`, `"boolean"`, `"array"`, or `"object"`.
+- **description**: Explains what that output field represents.
+- **items**: If the field is an array, describes each element.
+- **nullable**: If present, indicates the field can be `null`.
+
+---
+## PropertiesTable
+
+Below is a table describing the possible fields in **PropertiesTable**—used for **configurations**, **parameters**, or **result**. Each entry in a **PropertiesTable** can define one property with the following structure:
+
+| Field         | Type / Possible Values                | Description                                                                                                                                          |
+|---------------|---------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **type**      | string                                | Indicates the data type of the property. Common values are `"string"`, `"number"`, `"boolean"`, `"array"`, or `"object"`.                                                                  |
+| **description** | string                              | Explains the purpose of this property or what it represents. Mandatory for Parameters and Configuration.                                                                                      |
+| **default**   | any (optional)                        | Default value. _Only for reference_ it is NOT APPLIED, or passed to the LLM.                                                                              |
+| **enum**      | array of strings (optional)           | Restricts the property to a specific set of string values (e.g., `["urgent", "high", "low"]`). _Only for reference_, not enforced for LLM or verified. Only the description is passed to the LLM models.                                                               |
+| **items**     | object (only for arrays)              | For `type: "array"`, describes the expected type of each element. This can itself be a nested structure (e.g., `{ "type": "object", "properties": ... }`).     |
+| **properties**| object (only for objects)             | For `type: "object"`, defines the keys and associated types within the nested object (a deeper **PropertiesTable**).                               |
+| **required**  | array of strings (optional)           | If present, lists which fields are mandatory in a nested object. This is usually specified at a higher level, but sometimes included in property definitions. |
+| **nullable**  | boolean (optional)                    | If `true`, indicates the property can be `null`. _Only for reference_, not enforced, passed to LLMs, or used in execution.                                                                                                       |
+
+
+## SQL Tables
+
+The **sqlTables** array (if present) describes database tables used by the tool. Each entry is typically:
+
+| Field       | Type   | Description                                                         |
+|-------------|--------|---------------------------------------------------------------------|
+| **name**     | string | The table’s name.                                                  |
+| **definition** | string | The SQL statement to create or define the table.                   |
+
+---
+
+## SQL Queries
+
+The **sqlQueries** array (if present) contains query definitions. Each entry often has:
+
+| Field  | Type   | Description                                                     |
+|--------|--------|-----------------------------------------------------------------|
+| **name**  | string | A short name or identifier for the query.                     |
+| **query** | string | The SQL query or statement itself.                            |
+
+---
+
+## OAuth Table
+
+If the tool requires OAuth authentication, **oauth** is an array of objects. Each object can include:
+
+| Field                         | Type   | Description                                                                   |
+|-------------------------------|--------|-------------------------------------------------------------------------------|
+| **name**                      | string | Custom name of the OAuth service (e.g., “Github”, “Gmail”, etc.).               |
+| **version**                   | "2.0" | OAuth version.                                                 |
+| **authorizationUrl**          | string | The URL the user is redirected to for authorization.                         |
+| **redirectUrl**               | string | The callback/redirect URL after user grants authorization.                   |
+| **tokenUrl**                  | string | The URL where the tool exchanges the code for an access token.               |
+| **clientId**                  | string | OAuth client ID.                                                              |
+| **clientSecret**              | string | OAuth client Secret.                                          |
+| **scopes**                    | string[]  | List of permission scopes requested.                                          |
+| **responseType**              | "code" | Type of an authorization code.                       |
+| **refreshToken**              | "true" (optional) | If the refresh token is requested, if the service returns or uses one.                        |
+| **pkceType**                  | "plain" \| "S256" (optional) | Defines PKCE usage (if set).                                          |
+| **requestTokenAuthHeader**    | "basic" (optional) | Advanced field: The scheme for token exchange (“basic”) to send Authorization: Basic base64({client-id}:{client-secret}) in the headers.                                |
+| **requestTokenContentType**   | "application/x-www-form-urlencoded” (optional) |  By default query params are used to pass data to the authorizationUrl, this option changes the mechanism.                       |
+
+
+The metadata JSON is structured to comprehensively describe a tool's identity, configuration, and integration requirements. It includes basic information (like the name, description, and author), technical details (such as configurations, parameters, and results defined via JSON schemas), SQL interactions (through table definitions and queries), and external integrations (via OAuth settings). Understanding each field’s purpose is crucial for accurately generating documentation and ensuring that Shinkai's tool platform can correctly interpret and utilize the tool’s function.

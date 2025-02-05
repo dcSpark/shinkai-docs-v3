@@ -72,7 +72,8 @@
           ]
         },
         "basics/files-manager",
-        "basics/tools"
+        "basics/tools",
+        "basics/metadata"
       ]
       }, 
     {
