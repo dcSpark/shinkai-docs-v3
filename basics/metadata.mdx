@@ -4,7 +4,7 @@ description: 'Learn how to use and create Shinkai Metadata to automate tasks and
 icon: 'file-code'
 ---
 
-# **Metadata** Fields
+# Metadata Fields
 Version 0.9.8
 
 This document provides a technical overview of the **Metadata** schema for tool/function definitions. The **Metadata** is a top-level object that describes each tool’s configuration, parameters, outputs, and related fields. Below is a structured breakdown of the fields that can appear, along with their types and meanings.
@@ -155,9 +155,9 @@ If the tool requires OAuth authentication, **oauth** is an array of objects. Eac
 | **scopes**                    | string[]  | List of permission scopes requested.                                          |
 | **responseType**              | "code" | Type of an authorization code.                       |
 | **refreshToken**              | "true" (optional) | If the refresh token is requested, if the service returns or uses one.                        |
-| **pkceType**                  | "plain" \| "S256" (optional) | Defines PKCE usage (if set).                                          |
-| **requestTokenAuthHeader**    | "basic" (optional) | Advanced field: The scheme for token exchange (“basic”) to send Authorization: Basic base64({client-id}:{client-secret}) in the headers.                                |
+| **pkceType**                  | "plain" or "S256" (optional) | Defines PKCE usage (if set).                                          |
 | **requestTokenContentType**   | "application/x-www-form-urlencoded” (optional) |  By default query params are used to pass data to the authorizationUrl, this option changes the mechanism.                       |
+| **requestTokenAuthHeader**    | "basic" (optional) | Advanced field: The scheme for token exchange (“basic”) to send ```Authorization: Basic base64({client-id}:{client-secret})``` in the headers.                                |
 
 
 The metadata JSON is structured to comprehensively describe a tool's identity, configuration, and integration requirements. It includes basic information (like the name, description, and author), technical details (such as configurations, parameters, and results defined via JSON schemas), SQL interactions (through table definitions and queries), and external integrations (via OAuth settings). Understanding each field’s purpose is crucial for accurately generating documentation and ensuring that Shinkai's tool platform can correctly interpret and utilize the tool’s function.

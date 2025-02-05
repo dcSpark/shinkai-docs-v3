@@ -72,8 +72,13 @@
           ]
         },
         "basics/files-manager",
-        "basics/tools",
-        "basics/metadata"
+        {
+          "group": "Shinkai Tools",
+          "pages": [
+            "basics/tools",
+            "basics/metadata"
+          ]
+        }
       ]
       }, 
     {
