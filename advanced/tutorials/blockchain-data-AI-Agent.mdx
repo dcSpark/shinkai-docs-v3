@@ -257,6 +257,14 @@ Below we dynamically name the outputs of a token price, fdv and market cap in qu
         ...
 ```
 
+You should also remove from the output some data coming from the data sources but that you’re not interested in. This will improve speed and lower cost of the LLM inference.
+Below, we remove 2 data points from the output of our portfolio tracker tool (unit and fingerprint of the token) :
+
+```python
+            position.pop("unit", None)
+            position.pop("fingerprint", None)
+```
+
 ### 3.3 Exploring multimodal outputs
 
 As they use tools, blockchain AI Agents are not limited to text format as outputs. Some prices evolution or holdings data might be better shown on a graph. Some token analysis might be usefully presented in a pdf report. Some information might be more efficient to listen to instead of reading.
