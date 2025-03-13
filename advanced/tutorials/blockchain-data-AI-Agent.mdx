@@ -18,9 +18,15 @@ You will learn about :
 
 Our concrete example will be a Cardano blockchain AI Agent, which accesses data through 6 related tools using the Taptools API, and that are already available in the [Shinkai AI Store](https://store.shinkai.com/).
 We will refer to the code of these tools (search for 'Taptools' in the Shinkai AI Store).
-You can see the capabilities of this Cardano AI Agent in this video (link).
+You can see the capabilities of this Cardano AI Agent in the video below.
 
-This tutorial is a detailed overview of the AI Agent design and implementation process, but not a step by step guide on how to code all of its tools.
+<video
+  controls
+  className="w-full aspect-video"
+  src="/videos/shinkai_demo_cardano_taptools_agent.mp4"
+></video>
+
+This tutorial is a detailed overview of the design and implementation process of such a blockchain data aware AI Agent, but not a step by step guide on how to code all of its tools.
 
 
 ## Prerequisites
@@ -86,7 +92,7 @@ This tool retrieves and aggregates market data for native tokens. It fetches dat
 
 * Cardano NFT Market Stats Aggregator :
 
-This tool retrieves and presents Cardano NFT market data. It retrieves overall market statistics (volume, buyers, sellers, and percentage changes), it identifies today top NFT collections based on customizable ranking criteria (and fetches additional collection details like social links), it calculates total trading volume over specified timeframes, and presents lists of top collections by volume. It delivers personalized and user-friendly summaries of the Cardano NFT market landscape.
+This tool retrieves and presents Cardano NFTs market data. It retrieves overall market statistics (volume, buyers, sellers, and percentage changes), it identifies today top NFT collections based on customizable ranking criteria (and fetches additional collection details like social links), it calculates total trading volume over specified timeframes, and presents lists of top collections by volume. It delivers personalized and user-friendly summaries of the Cardano NFTs market landscape.
 
 * Cardano Native Token Trading Chart Generator :
 
@@ -129,7 +135,7 @@ As an example, here are the endpoints of the Taptools API used for our Cardano N
 
 This variety of data allows the Cardano AI Agent to trigger only one tool when asked about a particular token while being able to answer various questions and provide extensive analysis.
 
-Once you have defined your blcokchain AI Agent's tools, you can build them carefully following the guidance below to make them optimally useful.
+Once you have defined your blockchain AI Agent's tools, you can build them carefully following the guidance below to make them optimally useful.
 
 ## Part 3 : Building useful tools
 
@@ -152,7 +158,7 @@ You can also read the step by step tutorial explaining all the complete code of 
 
 Inputs should be well defined and distinct.
 For example, users are likely to ask questions to a blockchain AI Agent over different timeframes.
-But a tool with too many timeframe inputs might confuse the LLM of the AI Agent, as well as timeframe names too similar.
+But a tool with too many timeframe inputs might confuse the LLM of the AI Agent, as well as timeframe names being too similar.
 
 In our NFT market stats tool, we use 3 different timeframe inputs for different data, and we make sure their names are explicit and distinct :
 
@@ -257,7 +263,7 @@ Below we dynamically name the outputs of a token price, fdv and market cap in qu
         ...
 ```
 
-You should also remove from the output some data coming from the data sources but that you’re not interested in. This will improve speed and lower cost of the LLM inference.
+You should also remove from the output some data coming from the data sources but that you’re not interested in. This will improve speed and lower the cost of the LLM inference.
 Below, we remove 2 data points from the output of our portfolio tracker tool (unit and fingerprint of the token) :
 
 ```python
@@ -502,7 +508,7 @@ Please refer to the corresponding section of the documentation to learn how to [
 For your blockchain AI Agent, you would  :
 * activate all your related tools
 * provide an adequate system prompt
-* pick a performant LLM able to interpret complex outputs (e.g. gpt4o). You can also choose of a LLM with vision task capabilities, for example if you want your blockchain AI Agent to analyse trading charts.
+* pick a performant LLM able to interpret complex outputs (e.g. gpt4o). You can also choose a LLM with vision task capabilities, for example if you want your blockchain AI Agent to analyse trading charts.
 * look for interesting knowledge to add to the AI Agent
 
 Here is an example system prompt for our Cardano AI Agent, that includes the following :
@@ -557,7 +563,7 @@ To use your blockchain AI Agent well, have a look at the tools it accesses.
 
 Below are some prompt examples for our Cardano AI Agent. They demonstrate how to trigger tools, how to include inputs in prompts, how to ask for particular information, how to ask for a specific formatting of the data, and how easy it is to interact with the blockchain AI Agent and the data it can access. Notice how each prompt includes somehow some keywords to help triggering the appropriate tool, and clearly states inputs when needed.
 
-These prompts are from the preview screenshots of our Taptools Cardano tools available in the Shinkai AI Store. You can see most of our Cardano AI Agent answers on these screenshots on their respective pages. Some prompts and answers can also be viewed in the demo video (link).
+These prompts are from the preview screenshots of our Taptools Cardano tools available in the Shinkai AI Store. You can see most of our Cardano AI Agent answers on these screenshots on their respective pages. Some prompts and answers can also be viewed in the demo video at the top of this page.
 
 Here we simply trigger the trading chart generator, giving clearly the values to use as inputs (ticker, candle_interval, num_intervals) :
 ```
@@ -608,7 +614,7 @@ You can then use some Scheduled Tasks to execute these tools regularly.
 
 You can read this [email integration tutorial](/advanced/tutorials/ancient-egyptian-email).
 You can watch this [X/Twitter integration video](https://www.youtube.com/watch?v=3pcEAB17ci4).
-And you can find 2 examples of Telegram bot deployment in these videos ([NASA Agent demo](https://youtu.be/Yct9NNzXlXM?feature=shared&t=709), link).
+And you can find an example of Telegram bot deployment in the video at the top of this page, as well as in this [NASA Agent demo](https://youtu.be/Yct9NNzXlXM?feature=shared&t=709).
 
 Note that you can easily fork these tools and adapt the code to your needs.
 For example the default Telegram bot tool in the Shinkai AI Store answers to all new messages at once, but you can easily make it reply to each message one by one (as seen in the video demos).
