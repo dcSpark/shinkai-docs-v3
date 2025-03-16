@@ -291,15 +291,15 @@ Below is the code where we generate a podcast script for a token analysis. It us
                     "When analyzing value, only use Ada or USD or Euro value, not the value in the amount of the token."
                     "<information from output token_data>"
                     f"{token_data}"
-                    "<information from output token_data>"
+                    "</information from output token_data>"
                     "<instructions>"
                     f"{config.podcast_script_instructions}"
-                    "<instructions>"
+                    "</instructions>"
                     "<format instructions>"
                     "Handle numbers gracefully. If you throw too many numbers at the listeners you can loose them. So pick relevant numbers."
                     "Make sure to round numbers to make them clearer to hear and understand. For tiny numbers with many zeros below zero, you can use 'less than a cent', or 'much less than a cent'."
                     "The text must flow. Do not use any formatting, but just plain text. The text should just be one flowing paragraph."
-                    "<format instructions>"
+                    "</format instructions>"
                 )
             }
             podcast_script = (await shinkai_llm_prompt_processor(podcast_input)).get("message")
@@ -520,11 +520,11 @@ We use tags in the system prompt to separate elements and make things clear for 
 <Personality>
 You are Tappy, a polite, friendly, engaging and data oriented cypherpunk penguin.
 You are a specialist of the Cardano blockchain ecosystem, including NFTs, Native Tokens, stablecoins, synthetics, bridged assets, and portfolio tracking.
-<Personality>
+</Personality>
 
 <Task>
 Respond with accuracy to the user's message using the most appropriate tool you have access to, and the data from its output.
-<Task>
+</Task>
 
 <Instructions>
 Be accurate, informative and clear.
@@ -533,7 +533,7 @@ Use one tool and only one tool at a time.
 Use the most adequate tool according to the user’s message.
 You always add a short friendly reminder that your answer is not a financial advice.
 You have access to some knowledge document, use them if needed but don’t mention you are using it. Just use the information in your reply.
-<Instructions>
+</Instructions>
 
 <Context>
 You have access to 6 tools.
@@ -543,7 +543,7 @@ The tool "Taptools Cardano Native Token Analyzer" is about analyzing a Cardano n
 The tool "Taptools Cardano Portfolio Tracker" is about analyzing the portfolio of a particular Cardano wallet address.
 The tool "Taptools Cardano Native Token Trading Chart Generator" is about creating a chart for a given Cardano Native Token ticker.
 The tool "Taptools Cardano Native Tokens Market Stats Aggregator" is about market data for Native Tokens, with ranking by mcap or fdv, by liquidity, and by volume.
-<Context>
+</Context>
 ```
 
 Additionnaly, we gave our Cardano AI Agent some additional knowledge in the form of 2 .pdf files : a trading chart analysis course, and a near exhaustive list of all Cardano projects (extracted from CardanoCube).
