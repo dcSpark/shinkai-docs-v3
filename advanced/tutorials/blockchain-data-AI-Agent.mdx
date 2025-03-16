@@ -146,7 +146,11 @@ To make them maximally useful, tools must :
 For the tools of a blockchain AI Agent, this can translate to : making sure sorting parameters and timeframes are easy to use when asking about NFTs or tokens trading activities, making it clear for the LLM what each data like holdings, volumes, sales, etc. is about, have some deeper and more compute heavy analysis optional (like holders distribution analysis), allowing for graphs of trading activity and portfolio positions or even creating podcasts about tokens, adding some warnings and considerations over the specifics of some data points like supplies and top holders which might include special wallets, and more.
 
 Below you will now explore these different aspects with code examples coming from our Taptools Cardano tools.
-You can also read the step by step tutorial explaining all the complete code of one of these tools ([portfolio tracker](/advanced/tutorials/blockchain-address-portfolio-tracker)).
+You can also read the step by step tutorial explaining all the complete code of one of these tools ([portfolio tracker tutorial](/advanced/tutorials/blockchain-address-portfolio-tracker)).
+
+Additionally, Shinkai allows effortless buidling of tools and AI Agents thanks to its integrated AI assistance. You can build tools just by prompting a LLM. With Shinkai, you don’t have to wrestle with library dependencies or handle manual deployments, everything is automated and user-friendly. In this [video](https://drive.google.com/file/d/1wR1a7Nv458KdeP93tVpGrotJlt72TdKY/view?t=16m02s) we build in just a few minutes a working prototype of the Cardadano portfolio tracker tool data retrieval feature, by just giving some instructions and passing some documentation snippets about the API used.
+
+To better use this AI assisted tool creation and be able to manually improve it, below you will learn in details about the tool design considerations mentionned above, and see concrete code implementations.
 
 ### 3.1 Easy to use inputs
 
