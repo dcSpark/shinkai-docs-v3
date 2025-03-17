@@ -550,7 +550,7 @@ def extract_text_from_shape(shape) -> List[str]:
 
 Define a function to read the presentation from either URL or local file path. It's a step to check the file is readable :
 
-```python
+```python [expandable]
 async def read_presentation(file_path: str, working_file_path: str) -> OUTPUT:
     try:
         # If the file is from a URL, download it
