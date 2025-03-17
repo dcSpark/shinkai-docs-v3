@@ -486,110 +486,137 @@ Define 3 functions to extract text from text blocks, tables and charts :
 
 ```python
 def extract_text_from_text_frame(text_frame) -> str:
-    return ' '.join([run.text for paragraph in text_frame.paragraphs for run in paragraph.runs if run.text])
+   return ' '.join([run.text for paragraph in text_frame.paragraphs for run in paragraph.runs if run.text])  # Extracts and joins all text runs from paragraphs in a text frame
 
 def extract_text_from_table(table) -> str:
-    cell_texts = []
-    for row in table.rows:
-        for cell in row.cells:
-            cell_texts.append(extract_text_from_text_frame(cell.text_frame))
-    return ' | '.join(cell_texts)
+   cell_texts = []  # List to store text from each cell
+   for row in table.rows:
+       for cell in row.cells:
+           cell_texts.append(extract_text_from_text_frame(cell.text_frame))  # Extract text from each cell's text frame
+   return ' | '.join(cell_texts)  # Join all cell texts with pipe separators
 
 def extract_text_from_chart(chart) -> str:
-    title = extract_text_from_text_frame(chart.chart_title.text_frame) if chart.has_title else ""
-    x_axis = extract_text_from_text_frame(chart.category_axis.title.text_frame) if chart.category_axis.has_title else ""
-    y_axis = extract_text_from_text_frame(chart.value_axis.title.text_frame) if chart.value_axis.has_title else ""
-    return f"Title: {title}, X-Axis: {x_axis}, Y-Axis: {y_axis}"
+   title = extract_text_from_text_frame(chart.chart_title.text_frame) if chart.has_title else ""  # Get chart title if it exists
+   x_axis = extract_text_from_text_frame(chart.category_axis.title.text_frame) if chart.category_axis.has_title else ""  # Get x-axis title if it exists
+   y_axis = extract_text_from_text_frame(chart.value_axis.title.text_frame) if chart.value_axis.has_title else ""  # Get y-axis title if it exists
+   return f"Title: {title}, X-Axis: {x_axis}, Y-Axis: {y_axis}"  # Format chart data as a string
 ```
 
 Create a function to extract the content from shapes using the functions defined above, plus use Tesseract OCR for picture shapes :
 
 ```python [expandable]
 def extract_text_from_shape(shape) -> List[str]:
-    results = []
+    results = []  # Initialize an empty list to store extracted text
     
+    # Check if the shape contains a text frame
     if shape.has_text_frame:
-        text = extract_text_from_text_frame(shape.text_frame)
-        if text.strip():
-            results.append(f"Text Shape: {text}")
+        text = extract_text_from_text_frame(shape.text_frame)  # Extract text from the text frame
+        if text.strip():  # If text is not empty after stripping whitespace
+            results.append(f"Text Shape: {text}")  # Add it to results with a prefix
+    
+    # Check if the shape contains a table
     elif shape.has_table:
-        table_text = extract_text_from_table(shape.table)
-        if table_text.strip():
-            results.append(f"Table: {table_text}")
+        table_text = extract_text_from_table(shape.table)  # Extract text from the table
+        if table_text.strip():  # If table text is not empty
+            results.append(f"Table: {table_text}")  # Add it to results with a prefix
+    
+    # Check if the shape contains a chart
     elif shape.has_chart:
-        chart_text = extract_text_from_chart(shape.chart)
+        chart_text = extract_text_from_chart(shape.chart)  # Extract text from the chart
+        # Check if chart text has content beyond empty labels
         if chart_text.replace("Title: , X-Axis: , Y-Axis: ", "").strip():
-            results.append(f"Chart: {chart_text}")
+            results.append(f"Chart: {chart_text}")  # Add it to results with a prefix
+    
+    # Check if the shape is a picture
     elif shape.shape_type == MSO_SHAPE_TYPE.PICTURE:
         try:
-            image_data = shape.image.blob
-            image = Image.open(io.BytesIO(image_data))
-            text = pytesseract.image_to_string(image)
-            if text.strip():
-                results.append(f"Image Text: {text.strip()}")
+            image_data = shape.image.blob  # Get the image data as binary
+            image = Image.open(io.BytesIO(image_data))  # Open image from binary data
+            text = pytesseract.image_to_string(image)  # Use OCR to extract text from image
+            if text.strip():  # If OCR found text
+                results.append(f"Image Text: {text.strip()}")  # Add it to results with a prefix
         except Exception as e:
-            pass
-    elif shape.shape_type == MSO_SHAPE_TYPE.GROUP:
-        for sub_shape in shape.shapes:
-            sub_texts = extract_text_from_shape(sub_shape)
-            if sub_texts:
-                results.extend(sub_texts)
+            pass  # Silently ignore any errors in image processing
     
-    return results
+    # Check if the shape is a group of shapes
+    elif shape.shape_type == MSO_SHAPE_TYPE.GROUP:
+        for sub_shape in shape.shapes:  # Iterate through all shapes in the group
+            sub_texts = extract_text_from_shape(sub_shape)  # Recursively process each sub-shape
+            if sub_texts:  # If any text was found
+                results.extend(sub_texts)  # Add all results to the main list
+    
+    return results  # Return the list of all extracted text items
 ```
 
 Define a function to read the presentation from either URL or local file path. It's a step to check the file is readable :
 
 ```python
-async def _read_presentation(file_path: str, working_file_path: str) -> OUTPUT:
+async def read_presentation(file_path: str, working_file_path: str) -> OUTPUT:
     try:
+        # If the file is from a URL, download it
         if file_path.startswith('http://') or file_path.startswith('https://'):
-            response = requests.get(file_path)
-            with open(working_file_path, 'wb') as f:
-                f.write(response.content)
+            response = requests.get(file_path)  # Send HTTP request to get the file
+            with open(working_file_path, 'wb') as f:  # Open destination file in binary write mode
+                f.write(response.content)  # Write the downloaded content to the file
+        # If it's a local file path, copy it to the working location
         else:
-            with open(file_path, 'rb') as f:
-                with open(working_file_path, 'wb') as w:
-                    w.write(f.read())
-        o = OUTPUT()
-        o.status = "success"
-        return o
+            with open(file_path, 'rb') as f:  # Open source file in binary read mode
+                with open(working_file_path, 'wb') as w:  # Open destination file in binary write mode
+                    w.write(f.read())  # Read the entire source file and write to destination
+        
+        # Create a success response
+        o = OUTPUT()  # Initialize result object
+        o.status = "success"  # Set status to indicate successful operation
+        return o  # Return the result
+    
     except Exception as e:
-        o = OUTPUT()
-        o.status = "error"
-        o.message = f"Failed to read presentation: {str(e)}"
-        return o
+        # Handle any errors that occur during file operations
+        o = OUTPUT()  # Initialize result object
+        o.status = "error"  # Set status to indicate error
+        o.message = f"Failed to read presentation: {str(e)}"  # Include error details in message
+        return o  # Return the error result
 ```
 ### 1.2 Retrieving the content shape by shape and slide by slide
 
 Create a function that applies the content extraction slide by slide and shape by shape :
 
 ```python [expandable]
-async def _retrieve_presentation(working_file_path: str) -> OUTPUT:
+async def *retrieve*presentation(working_file_path: str) -> OUTPUT:
+    # Check if the file exists
     if not os.path.exists(working_file_path):
         o = OUTPUT()
         o.status = "error"
         o.message = "No presentation file loaded."
         return o
+    
     try:
+        # Load the presentation file
         prs = Presentation(working_file_path)
         text_content = []
+        
+        # Iterate through each slide
         for i, slide in enumerate(prs.slides, start=1):
             slide_content = []
+            
+            # Extract text from all shapes in the slide
             for shape in slide.shapes:
                 shape_texts = extract_text_from_shape(shape)
                 if shape_texts:
                     slide_content.extend(shape_texts)
             
+            # Add slide number and content if there's any text
             if slide_content:
                 text_content.append(f"Slide {i}")
                 text_content.extend(slide_content)
         
+        # Create successful output object with extracted content
         o = OUTPUT()
         o.content_of_the_presentation = text_content
         o.status = "success"
         return o
+        
     except Exception as e:
+        # Handle any errors during processing
         o = OUTPUT()
         o.status = "error"
         o.message = f"Failed to process presentation: {str(e)}"
@@ -602,20 +629,23 @@ Implement a validation function to stop the tool and log errors if there are iss
 
 ```python
 def validate_config(config: CONFIG) -> List[str]:
-    """
-    Validate configuration dependencies.
+    """ Validate configuration dependencies.
     Returns a list of error messages if any issues are found.
     """
-    errors = []
+    errors = []  # Initialize empty list to collect error messages
+    
     # Validate tesseract_path
     if not config.tesseract_path:
+        # Check if path is empty or None
         errors.append("Tesseract path is not provided.")
     elif not os.path.isfile(config.tesseract_path):
+        # Check if path points to an actual file
         errors.append(f"Tesseract path does not point to a file: {config.tesseract_path}")
     elif not os.access(config.tesseract_path, os.X_OK):
+        # Check if file has executable permissions
         errors.append(f"Tesseract executable is not executable: {config.tesseract_path}")
     
-    return errors
+    return errors  # Return collected error messages
 ```
 
 ### 1.4 Run function to execute all the processes
@@ -624,48 +654,47 @@ Define a run function using all the functions defined above. At the end add a st
 ```python [expandable]
 async def run(config: CONFIG, inputs: INPUTS) -> OUTPUT:
     # Perform configuration validation
-    errors = validate_config(config)
+    errors = validate_config(config)  # Validates the provided configuration
     if errors:
         o = OUTPUT()
-        o.status = "error"
-        o.message = "Configuration errors: " + "; ".join(errors)
+        o.status = "error"  # Set error status
+        o.message = "Configuration errors: " + "; ".join(errors)  # Combines all errors into a single message
         return o
-
+    
     # Set Tesseract path after validation
-    pytesseract.pytesseract.tesseract_cmd = config.tesseract_path
-
-    home_path = await get_home_path()
-    working_file_path = os.path.join(home_path, 'working.pptx')
-
+    pytesseract.pytesseract.tesseract_cmd = config.tesseract_path  # Configure OCR tool path from config
+    
+    home_path = await get_home_path()  # Asynchronously get the home directory
+    working_file_path = os.path.join(home_path, 'working.pptx')  # Create path for temporary working file
+    
     if not inputs.file_path:
         o = OUTPUT()
-        o.status = "error"
-        o.message = "No file path provided"
+        o.status = "error"  # Set error status
+        o.message = "No file path provided"  # Error if no input file specified
         return o
-
-    read_result = await _read_presentation(inputs.file_path, working_file_path)
+    
+    read_result = await read_presentation(inputs.file_path, working_file_path)  # Read and copy presentation to working file
     if read_result.status == "error":
-        return read_result
-
-    process_result = await _retrieve_presentation(working_file_path)
+        return read_result  # Early return if reading fails
+    
+    process_result = await retrieve_presentation(working_file_path)  # Extract content from the working presentation
     if process_result.status == "error":
-        return process_result
-
-    slides_content = process_result.content_of_the_presentation or []
+        return process_result  # Early return if processing fails
+    
+    slides_content = process_result.content_of_the_presentation or []  # Get slide content or empty list if None
+    
     if not slides_content:
         o = OUTPUT()
-        o.status = "warning"
-        o.message = "No text content found in the presentation"
+        o.status = "warning"  # Set warning status
+        o.message = "No text content found in the presentation"  # Warning if presentation has no text
         o.content_of_the_presentation = []
         return o
-
-            output = OUTPUT()
-    output.content_of_the_presentation = slides_content
-    output.status = "success"
+    
+    output = OUTPUT()
+    output.content_of_the_presentation = slides_content  # Store extracted content
+    output.status = "success"  # Set success status
     return output
 ```
-
-
 
 ## Part 2 : Adding a LLM prompt processor to generate a lesson text
 
