@@ -21,15 +21,15 @@ While we use a Cardano example, the same tool structure can be applied to any bl
 
 Before you begin, ensure you have :
 
-* the lastest version of the Shinkai Desktop App installed
-* the App opened at the tool creation UI
+* the latest version of the Shinkai Desktop App installed
+* the App open at the tool creation UI
 * a Taptools API key
 
 ## Step 0 : Working prototype tool using the Shinkai AI assisted tool creation UI
 
-Shinkai allows effortless buidling of tools and AI Agents thanks to its integrated in AI assistance. You can build the tool by just prompting a LLM. With Shinkai, you don’t have to wrestle with library dependencies or handle manual deployments, everything is automated and user-friendly.
+Shinkai allows effortless building of tools and AI Agents thanks to its integrated in AI assistance. You can build the tool by just prompting a LLM. With Shinkai, you don’t have to wrestle with library dependencies or handle manual deployments, everything is automated and user-friendly.
 
-In this [video](https://drive.google.com/file/d/1wR1a7Nv458KdeP93tVpGrotJlt72TdKY/view?t=16m02s) we build in just a few minutes a working prototype of the Cardadano portfolio tracker tool data retrieval feature, by just giving some instructions and passing some documentation snippets about the API used.
+In this [video](https://drive.google.com/file/d/1wR1a7Nv458KdeP93tVpGrotJlt72TdKY/view?t=16m02s) we build in just a few minutes a working prototype of the Cardano portfolio tracker tool data retrieval feature, by simply providing instructions and including snippets of the API documentation.
 
 This prompting process was used to build all the features of the tool, with some manual improvements of the code.
 
@@ -170,7 +170,7 @@ We improve the formatting of percentage changes by multiplying by 100, rounding,
                     position[timeframe] = f"{sign}{round(change_value * 100, 2)} %"
 ```
 
-### 8.3: Rouding values and calculations in quote currency
+### 8.3: Rounding values and calculations in quote currency
 
 For better formatting, we round some values.
 We also calculate some values in quote currency.
@@ -187,7 +187,7 @@ Note the dynamic naming of the output key : using inputs.quote_currency allows t
 ```
 
 ### 8.4: Clearing the output of unneccessary elements
-We remove from the output some data coming from the API call but that we're not interested in (unit and fingerprint of the token).
+We remove data from the output that comes from the API call but is not of interest (unit and fingerprint of the token).
 
 ```python
             position.pop("unit", None)
@@ -377,7 +377,7 @@ Feel free to extend this tool further by adding additional features or integrati
 
 ## Screenshots
 
-Below are 4 screenshots of our portofiolio tracker tool being used in Shinkai.
+Below are 4 screenshots of our portfiolio tracker tool being used in Shinkai.
 
 ![portfolio tracker tool 1](/images/taptools_portfolio_2.png)
 

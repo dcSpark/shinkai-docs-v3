@@ -1,5 +1,5 @@
 ---
-title: 'Combing Shinkai tools : from PowerPoint to audio'
+title: 'Combining Shinkai tools : from PowerPoint to audio'
 icon: 'screwdriver-wrench'
 ---
 
@@ -17,7 +17,7 @@ You will learn how to :
 * implement text to speech
 * use the created tool
 
-This tutorial is a step by step guide on how to implement the full tool.
+This tutorial is a step-by-step guide on how to implement the full tool.
 You can find the complete code below for reference, but we will go over its elements one by one. And you can see some usage examples in the last section of this tutorial (Part 5 : Using the tool).
 
 ```python Full Code [expandable]
@@ -236,7 +236,7 @@ async def run(config: CONFIG, inputs: INPUTS) -> OUTPUT:
         "</task>"
         "<context>"
         "The content comes from text extraction and OCR from a powerpoint, and is provided shape by shape and slide by slide."
-        "Because of this the content form each slide might be a bit disorganised or sparse. You need to take your time step by step to reconnect the different pieces of content and understand how they fit together."
+        "Because of this the content form each slide might be a bit disorganised or sparse. You need to take your time step-by-step to reconnect the different pieces of content and understand how they fit together."
         "This content might also contain special characters coming from the text extraction formatting. Make sure to handle these special characters gracefully, they shouldn't appear in the text for an audio lesson."
         "</context>"
         "<lesson instructions>"
@@ -249,7 +249,7 @@ async def run(config: CONFIG, inputs: INPUTS) -> OUTPUT:
         f"{inputs.additional_lesson_generation_instructions}"
         "</additional_instructions>"
         "<format instructions>"
-        "Ensure the output is in one continuous paragraph without any special formatting or extra characters. Do not use and \ n formatting, just make it one long endless paragraph. It's should be flowing text. You can still include sections in it but present them orally, not with special formatting."
+        "Ensure the output is in one continuous paragraph without any special formatting or extra characters. Do not use and \ n formatting, just make it one long endless paragraph. It should be flowing text. You can still include sections in it but present them orally, not with special formatting."
         "The text must flow. Do not use any formatting, but just plain text."
         "</format instructions>"
         "<content>"
@@ -389,9 +389,9 @@ The output must contain the extracted content, the generated text, the optional 
 </output instructions>
 ```
 
-Alternatively, you can build the tool progressively, step by step, by first building the content extraction part, then adding the lesson text generation, and finally the audio generation. Each step can be done with AI assistance and/or manually.
+Alternatively, you can build the tool progressively, step-by-step, by first building the content extraction part, then adding the lesson text generation, and finally the audio generation. Each step can be done with AI assistance and/or manually.
 
-Below, you can study a step by step implemention of the tool.
+Below, you can study a step-by-step implemention of the tool.
 
 ## Part 1 : Extracting the text content from a .pptx file
 
@@ -436,9 +436,9 @@ The output must contain the extracted content, error logs and a status.
 ```
 At the very least such prompt should create a good code flow for the intended feature, from which you can debug, edit, improve.
 
-Similar prompts were actually used to build the full code above, with step by step improvements through prompting and few manual coding.
+Similar prompts were actually used to build the full code above, with step-by-step improvements through prompting and few manual coding.
 
-Below you'll find a full description on how to code the content extraction feature.
+Below you'll find a full description of how to code the content extraction feature.
 
 ### 1.1 Defining the text extraction process
 
@@ -741,7 +741,7 @@ The output must contain the extracted content, the generated text, error logs an
 
 At the very least such prompt should add a good code flow for the intended additional feature, from which you can debug, edit, improve.
 
-Similar prompts were actually used to add this next feature, with step by step improvements through prompting and few manual coding.
+Similar prompts were actually used to add this next feature, with step-by-step improvements through prompting and few manual coding.
 
 Below you'll find a full description of the code to add a lesson text generation feature.
 
@@ -775,7 +775,7 @@ class OUTPUT:
 
 ### 2.2 Using an elaborate prompt to generate optimal lesson text
 
-In the run function, add a step to define a detailed prompt for the text generation. Give some context describing the type of content the LLM will use and its specifities. Include formatting instructions. Include the optional additional instructions coming from the user. Organise it well and use tags to make things clear for the LLM :
+In the run function, add a step to define a detailed prompt for the text generation. Give some context describing the type of content the LLM will use and its specificities. Include formatting instructions. Include the optional additional instructions coming from the user. Organise it well and use tags to make things clear for the LLM :
 
 ```python [expandable]
     # Step 2: Formulate the prompt for the LLM
@@ -788,14 +788,14 @@ In the run function, add a step to define a detailed prompt for the text generat
         "</task>"
         "<context>"
         "The content comes from text extraction and OCR from a powerpoint, and is provided shape by shape and slide by slide."
-        "Because of this the content form each slide might be a bit disorganised or sparse. You need to take your time step by step to reconnect the different pieces of content and understand how they fit together."
+        "Because of this the content form each slide might be a bit disorganised or sparse. You need to take your time step-by-step to reconnect the different pieces of content and understand how they fit together."
         "This content might also contain special characters coming from the text extraction formatting. Make sure to handle these special characters gracefully, they shouldn't appear in the text for an audio lesson."
         "</context>"
         "<lesson instructions>"
         "Do your best to understand in detailed the content of each slide, taking into consideration that it might be a bit disorganised due to the text extraction process."
         "The lesson should be very detailed and precise, and go over absolutely all the content in an organised manner. Be sure to use the entirety of the content for the lesson."
         "The lesson should be clear and engaging."
-        "Make sure to introduce it when you move on to a new (sub)topic, so that the listener easily follow along."
+        "Make sure to introduce it when you move on to a new (sub)topic, so that the listener can easily follow along."
         "</lesson instructions>"
         "<additional_instructions>"
         f"{inputs.additional_lesson_generation_instructions}"
@@ -886,7 +886,7 @@ The output must contain the extracted content, the generated text, the optional 
 ```
 At the very least such prompt should add a good code flow for the intended last feature, from which you can debug, edit, improve.
 
-Similar prompts were actually used to add this next feature, with step by step improvements through prompting and few manual coding.
+Similar prompts were actually used to add this next feature, with step-by-step improvements through prompting and few manual coding.
 
 Below you'll find a full description of the code to add the audio file generation.
 

@@ -7,7 +7,7 @@ icon: 'diagram-project'
 ## Introduction
 
 In this tutorial, you will learn how to create in Shinkai a blockchain ecosystem data aware AI Agent.
-Such AI Agent would be able to talk about up-to-date blockchain data, including topics like tokens and NFT data, DEXs activity and liquidity pools details, portfolio of addresses, stablecoins pegs, etc.
+Such AI Agent would be able to talk about up-to-date blockchain data, including topics like tokens and NFT data, DEXs activity and liquidity pools details, portfolio of addresses, stablecoin pegs, etc.
 
 You will learn about :
 * choosing data sources
@@ -20,7 +20,7 @@ Our concrete example will be a Cardano blockchain AI Agent, which accesses data 
 We will refer to the code of these tools (search for 'Taptools' in the Shinkai AI Store).
 You can see the capabilities of this Cardano AI Agent in [this video](https://drive.google.com/file/d/1wR1a7Nv458KdeP93tVpGrotJlt72TdKY/view?usp=sharing).
 
-This tutorial is a detailed overview of the design and implementation process of such a blockchain data aware AI Agent, but not a step by step guide on how to code all of its tools.
+This tutorial is a detailed overview of the design and implementation process of such a blockchain data aware AI Agent, but not a step-by-step guide on how to code all of its tools.
 
 
 ## Prerequisites
@@ -36,14 +36,14 @@ To best follow this tutorial, you will need :
 ## Part 1 : Choosing data sources
 
 A blockchain AI Agent needs external source(s) of real time on-chain data, as such up-to-date information is obviously not part of the training data of the underlying LLM.
-The first step in desiging the AI Agent is to choose appropriate sources of data to enable the desired capabilities of the AI Agent.
+The first step in designing the AI Agent is to choose appropriate sources of data to enable the desired capabilities of the AI Agent.
 
 Some possible sources of live on-chain data are :
 
 * local indexer with data fetching capabilities :
 
 The blockchain AI Agent would get data by querying directly your local indexer, most likely linked to your local node.
-For Cardano, such indexers include : kupo, koios, utxorpc, cardano-graphql, among others. The Agent tools would then format the data as needed. Such indexers might also be hosted by service prodivers.
+For Cardano, such indexers include : kupo, koios, utxorpc, cardano-graphql, among others. The Agent tools would then format the data as needed. Such indexers might also be hosted by service providers.
 * blockchain data provider services :
 
 The blockchain AI Agent would get data by calling API endpoints from specialised data providers. Such providers likely run their own nodes and implement their own data formatting on top of raw on-chain data.
@@ -66,7 +66,7 @@ Concretely, our Cardano AI Agent will use tools that call endpoints of the Tapto
 
 ### 2.1 Choosing tools
 
-To create an advanced blockchain data AI Agent with various capabilities, you will need multiple tools. According to the users's prompt, the AI Agent will use the most appropriate of its tools to answer and excute the required task(s).
+To create an advanced blockchain data AI Agent with various capabilities, you will need multiple tools. According to the users' prompt, the AI Agent will use the most appropriate of its tools to answer and execute the required task(s).
 This leads to some requirements.
 
 Tools should be :
@@ -78,7 +78,7 @@ Each tool should cover a unique but complete set of capabilities and/or data. Th
 
 It should be easy for the AI Agent to know with high accuracy which tool to use for a given task.
 
-According to these princicples, below are the 6 tools that our Cardano blockchain AI Agent uses (available in Shinkai AI Store), and that allow it to speak about the NFT market, about the tokens trading activities, about the peg stability of stablecoins, synthetics and bridged assets, and also allow it to plot trading charts, to analyze a given token, and to give details of the portfolio of any address :
+According to these principles, below are the 6 tools that our Cardano blockchain AI Agent uses (available in Shinkai AI Store), and that allow it to speak about the NFT market, about the tokens trading activities, about the peg stability of stablecoins, synthetics and bridged assets, and also allow it to plot trading charts, to analyze a given token, and to give details of the portfolio of any address :
 
 * Cardano Native Tokens Market Stats Aggregator : 
 
@@ -94,7 +94,7 @@ This tool generates a candlestick chart of token price (in Ada) and trading volu
 
 * Cardano Depeg Scanner :
 
-This tool aggregates data for Cardano stablecoins, synthetics, and bridged assets. It performs a depeg scan. It outputs a .csv file with the aggregated data. You can define your own alert threshold in the configuration for each asset. You can easily add or remove tokens to track from the code. You can chose a timeframe for trading stats in your prompt. This tool can answer any question related to the data it formats in the generated .csv file.
+This tool aggregates data for Cardano stablecoins, synthetics, and bridged assets. It performs a depeg scan. It outputs a .csv file with the aggregated data. You can define your own alert threshold in the configuration for each asset. You can easily add or remove tokens to track from the code. You can choose a timeframe for trading stats in your prompt. This tool can answer any question related to the data it formats in the generated .csv file.
 
 * Cardano Portfolio Tracker ([tutorial](/advanced/tutorials/blockchain-address-portfolio-tracker)) :
 
@@ -146,11 +146,11 @@ To make them maximally useful, tools must :
 For the tools of a blockchain AI Agent, this can translate to : making sure sorting parameters and timeframes are easy to use when asking about NFTs or tokens trading activities, making it clear for the LLM what each data like holdings, volumes, sales, etc. is about, have some deeper and more compute heavy analysis optional (like holders distribution analysis), allowing for graphs of trading activity and portfolio positions or even creating podcasts about tokens, adding some warnings and considerations over the specifics of some data points like supplies and top holders which might include special wallets, and more.
 
 Below you will now explore these different aspects with code examples coming from our Taptools Cardano tools.
-You can also read the step by step tutorial explaining all the complete code of one of these tools ([portfolio tracker tutorial](/advanced/tutorials/blockchain-address-portfolio-tracker)).
+You can also read the step-by-step tutorial explaining all the complete code of one of these tools ([portfolio tracker tutorial](/advanced/tutorials/blockchain-address-portfolio-tracker)).
 
-Additionally, Shinkai allows effortless buidling of tools and AI Agents thanks to its integrated AI assistance. You can build tools just by prompting a LLM. With Shinkai, you don’t have to wrestle with library dependencies or handle manual deployments, everything is automated and user-friendly. In this [video](https://drive.google.com/file/d/1wR1a7Nv458KdeP93tVpGrotJlt72TdKY/view?t=16m02s) we build in just a few minutes a working prototype of the Cardadano portfolio tracker tool data retrieval feature, by just giving some instructions and passing some documentation snippets about the API used.
+Additionally, Shinkai allows effortless building of tools and AI Agents thanks to its integrated AI assistance. You can build tools just by prompting a LLM. With Shinkai, you don’t have to wrestle with library dependencies or handle manual deployments, everything is automated and user-friendly. In this [video](https://drive.google.com/file/d/1wR1a7Nv458KdeP93tVpGrotJlt72TdKY/view?t=16m02s) we build in just a few minutes a working prototype of the Cardano portfolio tracker tool data retrieval feature, by just giving some instructions and passing some documentation snippets about the API used.
 
-To better use this AI assisted tool creation and be able to manually improve it, below you will learn in details about the tool design considerations mentionned above, and see concrete code implementations.
+To better use this AI assisted tool creation and be able to manually improve it, below you will learn in details about the tool design considerations mentioned above, and see concrete code implementations.
 
 ### 3.1 Easy to use inputs
 
@@ -192,10 +192,10 @@ async def run(config: CONFIG, inputs: INPUTS) -> OUTPUT:
 
 ### 3.2 Explicit outputs
 
-The way AI Agent tools work is that their outputs are passed as context to the LLM behind the AI Agent. It is content added to the users' prompts. For a blockchain AI Agent we need to make sure all data coming from the tools are clearly understable and non ambiguous. This means naming explicitly all elements of the outputs, adding units (in some cases dynamically), making % obvious, etc.
+The way AI Agent tools work is that their outputs are passed as context to the LLM behind the AI Agent. It is content added to the users' prompts. For a blockchain AI Agent we need to make sure all data coming from the tools are clearly understandable and non ambiguous. This means naming explicitly all elements of the outputs, adding units (in some cases dynamically), making % obvious, etc.
 Below are some examples.
 
-For example, in the portfolio tracker tool, we create an output 'portfolio_positions' as a dictionnary, to then edit its components :
+For example, in the portfolio tracker tool, we create an output 'portfolio_positions' as a dictionary, to then edit its components :
 
 ```python
 class OUTPUT:
@@ -296,7 +296,7 @@ Below is the code where we generate a podcast script for a token analysis. It us
                     f"{config.podcast_script_instructions}"
                     "</instructions>"
                     "<format instructions>"
-                    "Handle numbers gracefully. If you throw too many numbers at the listeners you can loose them. So pick relevant numbers."
+                    "Handle numbers gracefully. If you throw too many numbers at the listeners you can lose them. So pick relevant numbers."
                     "Make sure to round numbers to make them clearer to hear and understand. For tiny numbers with many zeros below zero, you can use 'less than a cent', or 'much less than a cent'."
                     "The text must flow. Do not use any formatting, but just plain text. The text should just be one flowing paragraph."
                     "</format instructions>"
@@ -433,7 +433,7 @@ def validate_config(config: CONFIG) -> List[str]:
 
 Blockchain data might need some extra explanation, context, note, consideration or even warning when given to the users.
 
-To make sure your blockchain AI Agent delivers well informative data, you can harcode some notes in the outputs of its tools. They will be included in the context window when the LLM of the AI Agent uses the tools to answer the users' prompts, and will ensure the data is introduced with some precisions you care about.
+To make sure your blockchain AI Agent delivers well informative data, you can hardcode some notes in the outputs of its tools. They will be included in the context window when the LLM of the AI Agent uses the tools to answer the users' prompts, and will ensure the data is introduced with some precisions you care about.
 
 Below are examples of notes added to some metrics in our Cardano Native Token Analyzer tool.
 
@@ -546,7 +546,7 @@ The tool "Taptools Cardano Native Tokens Market Stats Aggregator" is about marke
 </Context>
 ```
 
-Additionnaly, we gave our Cardano AI Agent some additional knowledge in the form of 2 .pdf files : a trading chart analysis course, and a near exhaustive list of all Cardano projects (extracted from CardanoCube).
+Additionally, we gave our Cardano AI Agent some additional knowledge in the form of 2 .pdf files : a trading chart analysis course, and a near exhaustive list of all Cardano projects (extracted from CardanoCube).
 
 ## Part 5 : Using the blockchain AI Agent
 
@@ -567,7 +567,7 @@ Here we simply trigger the trading chart generator, giving clearly the values to
 ```
 Plot ticker IAG, 1d candles, 365 intervals
 ```
-Here we trigger the depeg scanner tool, mentionning "bridged" as it is one of the keywords for the tool :
+Here we trigger the depeg scanner tool, mentioning "bridged" as it is one of the keywords for the tool :
 ```
 How many BTC are bridged to Cardano ?
 ```
@@ -612,7 +612,7 @@ You can then use some Scheduled Tasks to execute these tools regularly.
 
 You can read this [email integration tutorial](/advanced/tutorials/ancient-egyptian-email).
 You can watch this [X/Twitter integration video](https://www.youtube.com/watch?v=3pcEAB17ci4).
-And you can find an example of Telegram bot deployment in the Cardano data AI Agent demo video [here](https://drive.google.com/file/d/1wR1a7Nv458KdeP93tVpGrotJlt72TdKY/view?t=5m50s) and [here](https://drive.google.com/file/d/1wR1a7Nv458KdeP93tVpGrotJlt72TdKY/view?t=19m20s), as well as a detailed step by step guide in this [NASA Agent demo](https://youtu.be/Yct9NNzXlXM?feature=shared&t=709).
+And you can find an example of Telegram bot deployment in the Cardano data AI Agent demo video [here](https://drive.google.com/file/d/1wR1a7Nv458KdeP93tVpGrotJlt72TdKY/view?t=5m50s) and [here](https://drive.google.com/file/d/1wR1a7Nv458KdeP93tVpGrotJlt72TdKY/view?t=19m20s), as well as a detailed step-by-step guide in this [NASA Agent demo](https://youtu.be/Yct9NNzXlXM?feature=shared&t=709).
 
 Note that you can easily fork these tools and adapt the code to your needs.
 For example the default Telegram bot tool in the Shinkai AI Store answers to all new messages at once, but you can easily make it reply to each message one by one (as seen in the video demos).

@@ -1,0 +1,367 @@
+---
+title: 'R Script Executor with LLM-Powered Insights'
+icon: 'gear-code'
+---
+
+
+## Introduction
+
+In this tutorial you will build a tool to quickly run R scripts from Shinkai, and use it to easily interact with your scripts text outputs via a LLM.
+
+You will learn how to :
+
+* use an executable path to run another software from Shinkai
+* use LLMs to interact with your R scripts text outputs
+* build the tool using the Shinkai AI assistance
+* code the tool
+* integrate error logging at each step
+
+## Prerequisites
+
+Before starting this tutorial :
+1. Install and open Shinkai Desktop
+2. Install R
+3. Create an R project with at least 1 script
+4. Note these 3 paths : Rscript executable, R script to run, R project root directory
+
+This tutorial is split into 3 parts, and you can skip to the one that interests you without missing essential context.
+
+Note : The purpose of the path of the project root directory in input is to ensure the R script runs with its original working directory context, which helps maintain reliable file access patterns, especially if the R script uses relative file paths (e.g. data/file.csv). Without this, the script would still execute, but its ability to find and interact with project files would be compromised. Well organised R projects do use a project root directory and relative file paths to keep things organised and functional.
+
+
+## Part 1 : Building a R script executor tool using Shinkai AI assisted tool creation UI
+
+Shinkai offers an effortless tool building experience thanks to its AI assisted tool creation UI, where even libraries dependencies and tool metadata are handled automatically.
+
+In the tool creation UI :
+* select a performant LLM (e.g. gpt_4o, shinkai_free_trial)
+* select a programming language (we'll use Python in this tutorial)
+* write a prompt describing the tool well and execute it
+
+For a good result your prompt should be detailed and clearly describe :
+* the task the tool should accomplish and how
+* what you would want in configuration versus inputs
+* how to handle errors
+
+Below is an example of a promt to generate a full prototype of the R script executor tool. It uses tags to make things clear for the LLM.
+
+```text Prompt [expandable]
+<task>
+Create a tool to exectute R scripts from their project root directory using the Rscript executable, and log their outputs and errors.
+</task>
+
+<input instructions>
+The tool has 2 inputs, both in string format.
+The path of the R script.
+The path of the R project root directory.
+</input instructions>
+
+<configuration instructions>
+1 configurations : the path to the Rscript executable. String format.
+</configuration instructions>
+
+<instructions>
+Make sure to run a clean R environment.
+</instructions>
+
+<error logging instructions>
+Implement good error logging at each step.
+Check one by one that the provided files and folders paths exist, collect the errors for all and show all errors if there are several.
+Display error if the R script execution fails.
+Make all error messages clear and informative.
+</error logging instructions>
+
+<output instructions>
+The tool has 2 outputs : the output of the R script execution, and the error messages.
+</output instructions>
+```
+
+Such prompt can create the tool successfully.
+At the very least it should create a good code flow for the intended tool, from which you can debug, edit, improve (both using prompts and manual code editing).
+If you get error messages, you can copy paste them to the AI assistance eventually with added instructions and it should be able to fix the tool.
+Once the tool is working, make sure to edit the metadata to make it as informative and useful as possible.
+
+Below is the detailed code and metadata of a R script executor tool.
+
+## Part 2 : Full code for a R script executor tool
+
+The tool does the following :
+
+* sets up configuration, input, and output classes
+
+* checks if R executable, script, and project directory exist
+
+* switches to the project directory
+
+* prepares and runs the R script using subprocess
+
+* captures outputs and errors from the script
+
+* returns to the original directory
+
+* returns the results (success/failure, output, errors)
+
+Here is an annotated code for the tool, including explanations for all steps.
+
+```python Full Code [expandable]
+from typing import List  # Imports the List type for type hinting
+import subprocess  # Allows us to run external programs like R
+import os  # Provides functions to interact with the operating system
+import os.path  # Gives us tools to work with file paths
+
+# Configuration class to hold settings
+class CONFIG:
+    r_executable_path: str  # Path to the Rscript program executable
+    # This class holds the location of the R program on your computer.
+    # Example: r_executable_path = "C:\Program Files\R\R-4.3.3\bin\Rscript.exe"
+    # Rscript is specifically designed for command-line execution of R scripts.
+
+# Input class to hold the parameters needed for running the script
+class INPUTS:
+    r_script_path: str  # Path to the R script file we want to run
+    # This is where your R script (.R file) is located
+    # Example: r_script_path = "C:\Users\gille\Desktop\shinkai_test\scripts\mtcars_model_example.R"
+    
+    project_root_directory: str  # Directory where the project is located
+    # This is the main folder of your project
+    # Example: project_root_directory = "C:\Users\gille\Desktop\shinkai_test"
+
+# Output class to hold the results
+class OUTPUT:
+    status: str  # Will hold "success" or "failure" message
+    printed_output: str  # Will store any text output from the R script
+    error_message: List[str]  # Will store a list of error messages that occur
+    # This class collects all results and errors from running the R script
+
+# The main function that runs the R script
+async def run(config: CONFIG, inputs: INPUTS) -> OUTPUT:
+    # This is an async function, which means it can run without blocking other code
+    # It takes configuration and input parameters and returns an output object
+    
+    output = OUTPUT()  # Create a new empty output object to store results
+    errors = []  # Create an empty list to collect any error messages
+    
+    # Safety check 1: Make sure the R program exists at the specified path
+    if not os.path.isfile(config.r_executable_path):
+        # os.path.isfile checks if a file exists at the given location
+        # If the R program isn't found, add an error message to our list
+        errors.append(f"R executable path does not exist: {config.r_executable_path}")
+    
+    # Safety check 2: Make sure the R script exists at the specified path
+    if not os.path.isfile(inputs.r_script_path):
+        # If the R script file isn't found, add an error message
+        errors.append(f"R script path does not exist: {inputs.r_script_path}")
+    
+    # Safety check 3: Make sure the project directory exists
+    if not os.path.isdir(inputs.project_root_directory):
+        # os.path.isdir checks if a directory (folder) exists
+        # If the project folder isn't found, add an error message
+        errors.append(f"Project root directory does not exist: {inputs.project_root_directory}")
+    
+    # If there are any errors, store them and return without running the script
+    if errors:
+        output.error_message = errors  # Store all errors as a list
+        output.status = "Failure : see error messages"  # Set status to failure
+        return output  # Return early - don't try to run the script
+    
+    # Save the current working directory so we can go back to it later
+    original_working_directory = os.getcwd()  # getcwd = get current working directory
+    
+    # Change to the project directory before running the R script
+    os.chdir(inputs.project_root_directory)  # chdir = change directory
+    
+    try:
+        # This try/except block helps catch any unexpected errors
+        
+        # Determine the null device based on the operating system
+        # A null device is where we can send output we want to ignore
+        null_device = "NUL" if os.name == "nt" else "/dev/null"
+        # "nt" means Windows, which uses "NUL" as its null device
+        # Other systems (like Mac/Linux) use "/dev/null"
+        
+        # Escape the R script path for Windows by doubling backslashes
+        # This prevents Windows-style paths like "C:\folder" from causing errors
+        escaped_r_script_path = inputs.r_script_path.replace("\\", "\\\\")
+        
+        # Build the R command to suppress extra PDF files
+        # When R generates plots, it might save them as PDFs, especially when run from python
+        # We send these to the null device to avoid cluttering the directory
+        r_command = f"pdf('{null_device}'); source('{escaped_r_script_path}'); dev.off()"
+        # pdf() - starts a PDF device to capture plots
+        # source() - runs the R script
+        # dev.off() - closes the PDF device
+        
+        # Start the R program with our script using subprocess
+        process = subprocess.Popen(
+            [config.r_executable_path, "--no-save", "--vanilla", "-e", r_command],
+            # These arguments tell R:
+            # --no-save: don't save the workspace when exiting
+            # --vanilla: don't load/save preferences
+            # -e: execute the provided command
+            stdout=subprocess.PIPE,  # Capture standard output (print statements)
+            stderr=subprocess.PIPE   # Capture error messages
+        )
+        
+        # Wait for the process to finish and get its output
+        stdout, stderr = process.communicate()
+        # communicate() waits for the process to complete and
+        # returns the captured output and error messages
+        
+        # Check if the script ran successfully
+        if process.returncode != 0:
+            # A return code of 0 means success, anything else is an error
+            # If not successful, store the error message
+            output.error_message = [f"R script execution failed with error: {stderr.decode('utf-8')}"]
+            # decode('utf-8') converts the binary output to readable text
+            output.status = "Failure : see error messages"
+        else:
+            # If successful, store the output
+            output.printed_output = stdout.decode('utf-8')
+            output.status = "Success"
+            
+    except Exception as e:
+        # This catches any other unexpected errors that might occur
+        output.error_message = [f"An error occurred while executing the R script: {str(e)}"]
+        output.status = "Failure : see error messages"
+        
+    finally:
+        # The finally block always runs, whether there was an error or not
+        # Always go back to the original directory
+        os.chdir(original_working_directory)
+    
+    # Return the results object with all output and error information
+    return output
+```
+
+And here is good metadata for the tool. Make sure to :
+* Give concrete examples for inputs and configurations. Be super explicit (e.g. example of a R script file path). It helps users and yourself know or recall the precise formats (or values, options, etc.) required or possible.
+* Pick useful keywords.
+* Write a clear but thorough tool description.
+
+```python Metadata [expandable]
+{
+  "homePage": "",
+  "configurations": {
+    "type": "object",
+    "properties": {
+      "r_executable_path": {
+        "description": "Path to the Rscript executable (e.g. C:\\Program Files\\R\\R-4.3.3\\bin\\Rscript.exe). Rscript is specifically designed for command-line execution of R scripts.",
+        "type": "string"
+      }
+    },
+    "required": [
+      "r_executable_path"
+    ]
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "project_root_directory": {
+        "description": "Path to the project root directory (e.g. C:\\Users\\gille\\Desktop\\shinkai_test).",
+        "type": "string"
+      },
+      "r_script_path": {
+        "description": "Path to the R script to be executed (e.g. C:\\Users\\gille\\Desktop\\shinkai_test\\scripts\\mtcars_model_example.R).",
+        "type": "string"
+      }
+    },
+    "required": [
+      "r_script_path",
+      "project_root_directory"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "error_message": {
+        "description": "List of error messages that occur",
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "printed_output": {
+        "description": "Text output from the R script",
+        "type": "string"
+      },
+      "status": {
+        "description": "Success or failure message",
+        "type": "string"
+      }
+    },
+    "required": []
+  },
+  "sqlTables": [],
+  "sqlQueries": [],
+  "oauth": [],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": "",
+  "keywords": [
+    "R",
+    "script",
+    "run",
+    "execute"
+  ],
+  "version": "1.0.0"
+}
+```
+
+## Part 3 : Using the tool, interacting with R scripts text outputs from Shinkai
+
+First, enter your Rscript executable path in the tool configuration.
+
+In Shinkai chat you can use the tool :
+* select an adequate LLM : a performant LLM able to understand complex and potentially long context (especially if executing advanced R scripts), or a tailored LLM specifically performant on the type of outputs your R script creates
+* type '/' to access the list of available tools
+* select the R Script Executor tool
+* add your 2 inputs paths : R script and R project root directory
+* add a prompt to interact with the text outputs of the R script
+* press 'enter' or click on the arrow to send
+
+When you execute the tool, the full text output (a.k.a. prints, or console logs) of your R script execution is passed as context to the LLM answering you. This R output contains line by line the script executed, the resulting outputs, the errors.
+
+So you can ask questions about :
+* The R script itself
+* The text outputs of its execution (results and eventual errors)
+
+Here are some prompt examples :
+* "I am trying to learn how this R script functions. Explain me its global process, and then each steps more in details."
+* "Based on this R script and its execution results, what steps could I add to get more detailed error logs ?"
+* "Remind me which paramaters are used for 'given task/step/function/etc.' in this R script. And based on the results suggest better parameters."
+* "Among all the generated models by this R script, which one is the most accurate ? Show me its parameters and accuracy results."
+* Any question about the data the script outputs in the console.
+
+Below are some response examples from the R Script Executor tool.
+
+Answering which linear model is the best :
+![R_script_executor_1](/images\R_script_executor_1.png)
+
+Summarizing :
+![R_script_executor_2](/images\R_script_executor_2.png)
+
+Showing an extract of the data :
+![R_script_executor_3](/images\R_script_executor_3.png)
+
+Error handling :
+![R_script_executor_4](/images\R_script_executor_4.png)
+
+## Next Steps
+
+Consider adding the functionality to display and open files generated by R scripts (plots, images, maps, data files, models, etc.).
+
+Alternatively, integrate the tool as-is with an AI agent that can access additional tools for tasks like reading and analyzing various file types within an R project directory.
+
+
+
+
+
+
+
+
+
+
