@@ -1,0 +1,295 @@
+---
+title: 'Submitting a PR in the Agents Knowledgebase'
+description: 'A step-by-step guide for contributing to the Shinkai Agent Knowledge Base repository'
+icon: 'robot'
+---
+
+# Creating a New Service in Shinkai Agent Knowledge Base
+
+This document provides instructions for creating a new service in the [Shinkai Agent Knowledge Base repository](https://github.com/dcSpark/shinkai-agent-knowledge-base). It outlines the steps followed to create the Uniswap V3 SDK service and can be used as a guide for creating other services.
+
+## Prerequisites
+
+Before creating a new service, you need:
+
+1. The name of the service you want to add
+2. Official documentation URL(s) for the service
+3. A brief description of the service
+4. Understanding of the service's core functionality
+5. Access to the Shinkai Agent Knowledge Base repository
+6. What are the examples/documentation or test-cases that need to be covered.
+7. Any additional instructions to be added on the unofficial-documentation.
+
+
+## Step 1: Add the Service to config.json
+
+Add an entry for your service in the `config.json` file at the root of the repository:
+
+```json
+{
+    "name": "Your-Service-Name",
+    "path": "./src/your-service-name",
+    "output": "./dist/protocols/your-service-name.md",
+    "url": "/protocols/your-service-name.md",
+    "description": "Brief description of your service",
+    "officialURL": "https://link-to-official-docs.com"
+}
+```
+
+## Step 2: Create the Service Directory Structure
+
+1. Create a new directory for your service within the repository (run these commands from the repository root):
+
+```bash
+# Ensure you are in the root directory of the shinkai-agent-knowledge-base repository checkout
+mkdir -p ./src/your-service-name/dist
+mkdir -p ./src/your-service-name/tests
+mkdir -p ./src/your-service-name/official-docs
+mkdir -p ./src/your-service-name/unofficial-docs
+```
+
+2. Copy template files (verify these files exist in `./src/template/` first):
+
+```bash
+# Ensure you are in the root directory of the shinkai-agent-knowledge-base repository checkout
+cp ./src/template/.env.example ./src/your-service-name/
+cp ./src/template/readme.md ./src/your-service-name/
+```
+
+## Step 3: Create the index.ts File
+
+Create an `index.ts` file in your service directory (`./src/your-service-name/`) that defines the documentation structure.
+
+*(Note: Verify that the `documentation-builder.ts` script exists at `../documentation-builder.ts` relative to your `index.ts` file, i.e., in the `src/` directory.)*
+
+```typescript
+import { Documentation, buildDocumentation } from "../documentation-builder.ts";
+
+const outputFileName = 'your-service-name.md';
+
+const documents: Documentation = [
+    {
+        type: 'section', title: 'Your Service Name',
+        description: `
+Description of your service.
+`,
+        path: undefined,
+    },
+    
+    { type: 'doc', path: '/unofficial-docs/installation.md' },
+
+    {
+        type: 'example',
+        path: '/tests/example1.ts',
+        title: 'Example 1 Title',
+        description: `Description of example 1`
+    },
+
+    { type: 'doc', path: '/unofficial-docs/concept1.md' },
+
+    {
+        type: 'example', 
+        path: '/tests/example2.ts',
+        title: 'Example 2 Title',
+        description: `Description of example 2`
+    },
+
+    { type: 'doc', path: '/official-docs/official-doc1.md' },
+
+    // Add more examples and docs as needed
+];
+
+const __dirname = import.meta.dirname || '';
+await buildDocumentation(documents, __dirname, outputFileName);
+```
+
+## Step 4: Create Documentation Files
+
+1. Create unofficial documentation files in the `unofficial-docs` directory:
+   - Add the files requested by the user
+   - Add files that are important to achive coverage of the test-cases that are not part of the offical documentation
+   - They must be valid markdown files
+   - Each file should cover one topic
+   - You can have more files than included in the final documentation
+
+2. Create official documentation files in the `official-docs` directory:
+   - These should be based on the official documentation
+   - Focus on key concepts and functionality
+   - They must be valid markdown files
+   - Each file should cover one topic
+   - You can have more files than included in the final documentation
+
+## Step 5: Create Example Files
+
+
+0. Each file must have a implementation and test file. E.g.,
+* make-sandwich.ts
+* make-sandwich.test.ts
+
+The implementation file, only has a single fully working deno code, and follows the structure "Basic example structure"
+
+The test file has at least one possitve Deno test, based on the "Base test example structure"
+
+Create example files in the `tests` directory (`./src/your-service-name/tests/`) that demonstrate how to use the service:
+
+1. Basic example structure:
+
+```typescript
+// Define types for inputs and outputs
+type Config = {};
+
+type Inputs = {
+  // Input parameters
+};
+
+type Output = {
+  // Output structure
+};
+
+// Main function that will be called
+export async function run(config: Config, inputs: Inputs): Promise<Output> {
+  // Implementation
+}
+```
+
+2. Important considerations:
+   - Use Deno for imports (not npm)
+   - Libraries get automatically installed when running `deno run -A file`
+   - For examples requiring a private key, use the test account but note that transactions will fail due to lack of funds
+   - Implement mock functionality where needed to demonstrate concepts without requiring actual API calls
+
+3. Read `./src/jupiter/tests` to understand a good test structure. *(Note: Verify this example directory exists in the repository.)*
+
+
+## Step 6: Create Test Files
+
+Create test files (`.test.ts`) for each example file:
+
+1. Basic test file structure:
+
+```typescript
+import "jsr:@std/dotenv/load";
+
+import { assertEquals, assertExists, assertRejects } from "https://deno.land/std@0.220.1/assert/mod.ts";
+import { run } from "./example.ts";
+
+// Test the functionality
+Deno.test('Test Name', async () => {
+    const result = await run({}, {
+        // Test inputs
+    });
+
+    // Assertions to verify the result
+    assertExists(result.output1);
+    assertEquals(result.ouput2 > 0, true);
+    // More assertions...
+});
+
+// Test error handling
+Deno.test('Error Handling Test', async () => {
+    await assertRejects(
+        async () => {
+            await run({}, {
+                // Invalid inputs
+            } as any);
+        },
+        Error,
+        "Expected error message"
+    );
+});
+```
+
+2. Run the tests:
+
+```bash
+deno test -A example.test.ts
+```
+
+3. Try to make the test pass, without MOCK data.
+If there is not a obvios fix, just let the test fail and request more context or documentation to make it work.
+
+3. Write the test results output in a `RESULTS.md` file in the ./src/{service}/tests/ directory
+
+## Step 7: Generate Documentation
+
+Run the documentation generation command from the repository root:
+
+*(Note: Verify that the `build-docs.ts` and `build-index.ts` scripts exist in the root directory.)*
+
+```bash
+deno run -A build-docs.ts && deno run -A build-index.ts
+```
+
+This will:
+1. Process your service's documentation
+2. Generate markdown files
+3. Update the index files
+4. These files should be commited as well
+
+## Step 8: Revision and Commit/Push PR
+
+0. Verify the config.json is setup.
+1. Make sure the Tests are ran and RESULTS.md is created.
+2. Check the `deno run -A build-docs.ts && deno run -A build-index.ts` runs succesfully.
+3. This should update the file specified in the `output` field of your service's entry in `config.json` (e.g., `./dist/protocols/your-service-name.md`).
+4. Now the Service is ready to be committed.
+
+## Example: Uniswap V3 SDK Service
+
+The Uniswap V3 SDK service was created following these steps:
+
+1. Added to `config.json`:
+```json
+{
+    "name": "Uniswap-SDK-V3",
+    "path": "./src/uniswap-sdk-v3",
+    "output": "./dist/protocols/uniswap-sdk-v3.md",
+    "url": "/protocols/uniswap-sdk-v3.md",
+    "description": "Uniswap V3 SDK provides abstractions to assist with interacting with the Uniswap v3 smart contracts in a Typescript/Javascript environment. It uses the Core SDK to gain access to abstractions that are common amongst the Uniswap SDKs.",
+    "officialURL": "https://docs.uniswap.org/sdk/v3/overview"
+}
+```
+
+2. Created example files:
+   - `quote.ts`: Get a price quote for a token pair
+   - `swap.ts`: Swap tokens using Uniswap V3
+   - `pools.ts`: Work with Uniswap V3 pools
+
+3. Created documentation files:
+   - `installation.md`: Installation and setup instructions
+   - `routes.md`: Working with routes
+   - `pools.md`: Working with pools
+   - `swaps.md`: Executing swaps
+
+4. Created test files:
+   - `quote.test.ts`: Tests for quote functionality
+   - `swap.test.ts`: Tests for swap functionality
+   - `pools.test.ts`: Tests for pool functionality
+
+5. Documented test results in `RESULTS.md`
+
+6. Generated documentation using `deno run -A build-docs.ts && deno run -A build-index.ts`
+
+## Required Inputs for Each Service
+
+When creating a new service, you need to provide:
+
+1. **Service Information**:
+   - Name
+   - Description
+   - Official documentation URL
+
+2. **Core Concepts**:
+   - What are the main features of the service?
+   - What are the key concepts users need to understand?
+
+3. **Example Use Cases**:
+   - What are common tasks users perform with this service?
+   - What examples would be most helpful?
+
+4. **Documentation Structure**:
+   - How should the documentation be organized?
+   - What official documentation should be included?
+   - What unofficial documentation needs to be created?
+
+By following these instructions and providing the required inputs, you can create a new service in the Shinkai Agent Knowledge Base repository.
