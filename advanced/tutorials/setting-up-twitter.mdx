@@ -1,0 +1,108 @@
+---
+title: 'Setting Up an X/Twitter account for posting with Shinkai Tools'
+description: 'A guide for setting up account-id and secret in order to use the Shinkai X/Twitter Post tool'
+icon: 'bird'
+---
+
+<iframe 
+  width="560" 
+  height="315" 
+  src="https://www.youtube.com/embed/0qcmVqhertY" 
+  title="Setting Up Twitter for Shinkai Tools" 
+  frameborder="0" 
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+  allowfullscreen
+></iframe>
+
+This guide will walk you through the process of setting up your Twitter account for integration with Shinkai Tools, allowing you to post directly from the chat interface or through agents.
+
+## Step 1: Create a Twitter Account
+
+First, ensure you have a Twitter account. If you don't already have one, visit [Twitter's signup page](https://twitter.com/signup) and follow the registration process.
+
+![Create Twitter Account](/images/setup-twitter-tutorial/sign_up.png)
+
+## Step 2: Access the Twitter Developer Portal
+
+Navigate to the Twitter Developers site at [developer.twitter.com](https://developer.twitter.com/).
+
+![Twitter Developer Portal](/images/setup-twitter-tutorial/developer_01.png)
+
+## Step 3: Accept the Developer Terms
+
+Read through and accept the Twitter Developer Agreement and Policy. This is required to access the developer features.
+
+![Accept Terms](/images/setup-twitter-tutorial/developer_02.png)
+
+## Step 4: Configure User Authentication Settings
+
+In the Developer Portal, locate and navigate to "User Authentication Settings" in your project settings.
+
+![User Authentication Settings](/images/setup-twitter-tutorial/developer_03.png)
+
+## Step 5: Configure App Permissions and URLs
+
+Set the app permissions to "Read and Write" and select "Native App" as the app type. 
+
+For the configuration, set the Callback URL and Website URL as shown in the example below. These are essential for the authentication flow.
+
+### Configuration Settings Table
+
+Use the following settings when configuring your Twitter app:
+
+| Setting | Value |
+|---------|-------|
+| App Permissions | Read and Write |
+| App Type | Native App |
+| Callback URI / Redirect URL | https://secrets.shinkai.com/redirect |
+| Website URL | shinkai.com |
+
+![Set URLs and Permissions](/images/setup-twitter-tutorial/developer_04.png)
+
+Make sure to enter these values exactly as shown in the table above. The callback URI is particularly important for the authentication flow to work correctly.
+
+
+## Step 6: Obtain API Credentials
+
+After saving your settings, locate and copy both the CLIENT ID and CLIENT SECRET. Keep these secure as they will be used to authenticate your application.
+
+![Copy Credentials](/images/setup-twitter-tutorial/developer_05.png)
+
+## Step 7: Finalize Twitter Setup
+
+Ensure all settings are saved properly. Your Twitter developer account setup is now complete!
+
+![Setup Complete](/images/setup-twitter-tutorial/developer_06.png)
+
+## Step 8: Configure Shinkai Tools
+
+Now, navigate to Shinkai Tools. Search for the "Twitter Post" tool and click on its configuration option.
+
+Enter your "Client ID" and "Client Secret" in the appropriate fields inside the Oauth & Permissions tab, then enable the tool.
+
+![Configure Shinkai Tool](/images/setup-twitter-tutorial/shinkai_01.png)
+![Configure Shinkai Tool Oauth](/images/setup-twitter-tutorial/shinkai_02.png)
+
+## Step 9: Initial Authentication
+
+Open a chat in Shinkai and type "Twitter Post" to activate the tool. You'll be prompted to log in to your Twitter account to authorize the connection. Complete this authentication process.
+
+![Prompt Authentication](/images/setup-twitter-tutorial/shinkai_03.png)
+
+![Initial Authentication](/images/setup-twitter-tutorial/authorize.png)
+
+## Step 10: Start Using the Integration
+
+That's it! You've successfully set up the Twitter integration with Shinkai Tools. You can now post to Twitter directly from your chat interface.
+
+![Integration Complete](/images/setup-twitter-tutorial/done.png)
+
+## Troubleshooting
+
+If you encounter any issues during setup:
+- Ensure all URLs are correctly entered
+- Verify your Client ID and Client Secret are copied without any extra spaces
+- Check that your Twitter Developer account has the appropriate access level
+- Make sure you've completed the authentication process
+
+For additional support, please contact Shinkai Tools support team or talk to us over our Discord Server.
