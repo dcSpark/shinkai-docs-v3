@@ -6,24 +6,64 @@ icon: 'microchip'
 
 **AI agents** are systems or programs designed to autonomously perform tasks, make decisions, and interact with their environments to achieve specific goals set by users. 
 
-Unlike traditional chatbots, AI agents handle complex, multi-step tasks with minimal human input, continuously improving their performance. 
+Unlike traditional chatbots, AI agents handle complex, multi-step tasks with minimal human input, continuously improving their performance.
 
-### How AI Agents Work
+## What Makes Something an AI Agent?
+
+AI agents are distinguished by their ability to:
+
+1. **Make autonomous decisions** about how to accomplish goals
+2. **Use tools and external systems** to gather information or take actions
+3. **Break down complex tasks** into manageable steps
+4. **Learn from interactions** to improve future performance
+
+### Workflows vs. Agents
+
+When discussing AI agents, it's helpful to understand the distinction between two approaches:
+
+- **Workflows**: Systems where AI models and tools follow predefined code paths and sequences
+- **Agents**: Systems where AI models dynamically direct their own processes and tool usage, maintaining control over how they accomplish tasks
+
+This distinction helps clarify when to use more structured approaches versus when to leverage the full autonomous capabilities of agents.
+
+## How AI Agents Work
+
 AI agents are designed to break down complex problems into smaller, manageable subtasks. 
-They use knowledge from real-time data and learning to evaluate options and make decisions. 
+They use knowledge from real-time data and learning to evaluate options and make decisions.
+
+The typical process includes:
+
+1. **Understanding the goal**: The agent interprets what the user wants accomplished
+2. **Planning**: The agent creates a strategy to achieve the goal
+3. **Executing actions**: The agent interacts with tools, APIs, or other resources
+4. **Monitoring progress**: The agent evaluates results and adjusts its approach
+5. **Completing the task**: The agent delivers the final result to the user
 
 ### Shinkai's AI Agents
+
 AI Agents in Shinkai work as follows:
 
 1. **Task Input**: The agent receives a specific task or goal from a user.
 2. **Information Acquisition**: The agent gathers necessary information from its knowledge, memory or external sources (tools).
 3. **Task Decomposition**: The agent breaks down the main goal into smaller, manageable tasks.
 4. **Execution**: The agent performs these tasks autonomously, adapting its approach as needed based on feedback and results from previous actions.
-5. **Response Delivery**: The agent returns a response to the user, who also adapts and improve by prompting the agent. This process feeds the agent with new knowledge to improve its performance in the future.
+5. **Response Delivery**: The agent returns a response to the user, who also adapts and improves by prompting the agent. This process feeds the agent with new knowledge to improve its performance in the future.
 
 ![Agents](/images/agents.svg)
 
+## When to Use AI Agents
+
+AI agents are most valuable when:
+
+- Tasks require multiple steps that can't be predetermined
+- The goal is clear, but the exact path to achieve it may vary
+- Access to external tools or data sources is needed
+- The system needs to adapt to changing conditions or feedback
+
+For simpler tasks with clear, predictable steps, a more structured workflow approach may be more efficient and reliable than a fully autonomous agent.
+
 ## AI Agents vs. Traditional Chatbots
+
 While both AI agents and chatbots rely on artificial intelligence, they differ significantly in task complexity, adaptability, and interaction style.
 
 ### Key Differences
@@ -43,7 +83,21 @@ While both AI agents and chatbots rely on artificial intelligence, they differ s
 
 AI agents are increasingly utilized across various fields, including:
 
-- **Customer support**: AI agents are used in customer service to provide 24/7 support and handle inquiries, manage refunds, and offer product suggestions.
+- **Customer support**: AI agents are used in customer service to provide 24/7 support, handle inquiries, manage refunds, and offer product suggestions.
 - **Data analysis and insights**: AI agents analyze large datasets to extract valuable insights and predict market trends and consumer behavior.
 - **Personalized recommendations**: E-commerce platforms use AI agents for recommendation systems that suggest products based on user behavior and preferences.
 - **Project management**: AI agents can optimize project management by scheduling tasks and allocating resources efficiently.
+- **Software development**: AI agents can assist with debugging, code review, and implementing solutions to technical issues.
+- **Financial analysis**: AI agents can monitor market trends, detect anomalies, and provide investment recommendations.
+
+## Building Blocks of AI Agents in Shinkai
+
+In Shinkai, AI agents are constructed from several core components:
+
+1. **AI Models**: The foundation of intelligence, ranging from local to cloud-based models
+2. **System Prompts**: Instructions that guide the agent's behavior and focus
+3. **Tools**: External capabilities that allow the agent to interact with systems and data
+4. **Context**: Relevant documents and information the agent can access
+5. **Memory**: The ability to retain information from previous interactions
+
+By combining these elements effectively, Shinkai enables users to create powerful, purpose-built AI agents for specific tasks and workflows.
