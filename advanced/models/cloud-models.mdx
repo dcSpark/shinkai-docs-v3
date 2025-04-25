@@ -1,0 +1,109 @@
+---
+title: 'Cloud AI Models'
+description: 'Connect to powerful cloud AI providers without hardware limitations'
+icon: 'cloud'
+---
+
+## Cloud AI Providers in Shinkai
+
+Shinkai allows you to connect to powerful cloud-based AI models without any special hardware requirements. Just connect your API keys and start using state-of-the-art AI models on any device.
+
+<Tip>
+Cloud AI models are perfect for users without powerful hardware or those who need access to the latest, most capable AI models.
+</Tip>
+
+## Benefits of Cloud AI Models
+
+- **No Hardware Requirements**: Run on any device, even with limited specs
+- **Access to Cutting-Edge Models**: Use the latest models as soon as they're released
+- **Specialized Capabilities**: Access models optimized for specific tasks
+- **Quick Setup**: Start using AI immediately with just an API key
+
+## Supported Cloud Providers
+
+Shinkai supports multiple cloud AI providers, each with their own strengths:
+
+<CardGroup cols={2}>
+  <Card
+    title="OpenAI"
+    icon="robot"
+    href="/advanced/models/gpt"
+  >
+    Connect to GPT-4o, GPT-4o mini, and other OpenAI models
+  </Card>
+  <Card
+    title="Claude by Anthropic"
+    icon="robot"
+    href="/advanced/models/claude"
+  >
+    Connect to Claude Opus, Sonnet, and Haiku models
+  </Card>
+</CardGroup>
+
+<CardGroup cols={2}>
+  <Card
+    title="Gemini by Google"
+    icon="robot"
+    href="/advanced/models/gemini"
+  >
+    Connect to Gemini Pro, Gemini Flash, and other Google models
+  </Card>
+  <Card
+    title="Groq"
+    icon="robot"
+    href="/advanced/models/groq"
+  >
+    Connect to high-performance, low-latency Groq models
+  </Card>
+</CardGroup>
+
+<CardGroup cols={2}>
+  <Card
+    title="OpenRouter"
+    icon="robot"
+    href="/advanced/models/openrouter"
+  >
+    Access 200+ AI models through a single API key
+  </Card>
+  <Card
+    title="Together AI"
+    icon="robot"
+    href="/advanced/models/together-ai"
+  >
+    Connect to over 100 open-source models
+  </Card>
+</CardGroup>
+
+## Quick Guide: Adding a Cloud AI Provider
+
+<Steps>
+  <Step title="Get an API key">
+    Sign up with your preferred provider and generate an API key.
+    
+    | Provider | API Key URL |
+    |----------|-------------|
+    | OpenAI | https://platform.openai.com/api-keys |
+    | Claude | https://console.anthropic.com/settings/keys |
+    | Gemini | https://aistudio.google.com/app/apikey |
+    | Groq | https://console.groq.com/keys |
+    | OpenRouter | https://openrouter.ai/settings/keys |
+    | Together AI | https://api.together.ai/ |
+  </Step>
+  
+  <Step title="Add the provider in Shinkai">
+    In Shinkai > Go to `AIs` > `+ Add AI` > `+ Manually Add AI`
+    1. Select your provider (e.g., OpenAI, Claude, etc.)
+    2. Choose your preferred model
+    3. Enter your API key
+    4. Customize the AI Name (if desired)
+    5. Click `Add AI`
+    
+    <Frame>
+      <img src="/images/add-gpt4.jpg" style={{ borderRadius: '0.5rem' }} />
+    </Frame>
+  </Step>
+</Steps>
+
+<Info>
+Cloud AI providers typically charge based on usage (tokens processed). Check each provider's pricing page for specific details.
+</Info>

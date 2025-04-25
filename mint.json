@@ -89,13 +89,15 @@
           "group": "Installing AI Models",
           "pages": [
             "advanced/model-install",
+            "advanced/models/local-models",
+            "advanced/models/cloud-models",
+            "advanced/models/ollama",
             "advanced/models/gpt",
-            "advanced/models/openrouter",
+            "advanced/models/claude",
             "advanced/models/gemini",
             "advanced/models/groq",
-            "advanced/models/ollama",
-            "advanced/models/together-ai",
-            "advanced/models/claude"
+            "advanced/models/openrouter",
+            "advanced/models/together-ai"
           ]
         },
         "advanced/sheets",

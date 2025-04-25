@@ -1,0 +1,96 @@
+---
+title: 'Local AI Models'
+description: 'Run AI models directly on your device for enhanced privacy and control'
+icon: 'computer'
+---
+
+## Local AI Processing in Shinkai
+
+Shinkai allows you to run powerful AI models directly on your device through **Ollama**, providing several key benefits:
+
+- **Enhanced Privacy**: Your data never leaves your device
+- **Full Control**: Configure and customize your AI models to your needs
+- **No API Costs**: Use AI without ongoing subscription fees
+- **Offline Capabilities**: Use AI features even without internet access
+
+<Info>
+While local AI processing offers privacy benefits, it requires sufficient system resources. For users with limited hardware, Shinkai also offers [Cloud AI Models](/advanced/models/cloud-models) with no special hardware requirements.
+</Info>
+
+## System Requirements for Local AI
+
+Local AI models vary in their resource requirements based on model size and complexity:
+
+| Model Size | Typical RAM | Recommended CPU | GPU | Example Use Cases |
+|------------|-------------|-----------------|-----|-------------------|
+| Small (2-7B) | 8GB+ | 4+ cores | Optional | General chat, basic text tasks |
+| Medium (8-13B) | 16GB+ | 8+ cores | Recommended | More complex reasoning, coding |
+| Large (30B+) | 24GB+ | 8+ cores | Required | Advanced analysis, specialized tasks |
+
+<Note>
+Don't worry if your hardware doesn't meet these specifications! Shinkai provides [Cloud AI Models](/advanced/models/cloud-models) that work on any device.
+</Note>
+
+## Installing Local AI Models with Ollama
+
+<Steps>
+    <Step title="Install Ollama on your device">
+    First, you need to install Ollama. Visit the [Ollama website](https://ollama.ai/) and download the version for your operating system (Mac, Windows, or Linux).
+    </Step>
+    
+    <Step title="Launch Shinkai and access AI models">
+    Open Shinkai > Click the `AIs` icon in the left sidebar > Browse the recommended models or click "Show all models" to see the full list of available local models.
+    
+    <Frame>
+      <img src="/images/models-list.jpg" style={{ borderRadius: '0.5rem' }} />
+    </Frame>
+    </Step>
+    
+    <Step title="Select and install a model">
+    Choose a model that fits your hardware capabilities. In the size column, smaller models (e.g., 7B) require fewer resources than larger ones (e.g., 70B).
+    
+    Click the `Install` button next to your chosen model > Wait for the download to complete
+    </Step>
+</Steps>
+
+## Advanced: Installing Custom Ollama Models
+
+For users who want to install specific Ollama models not listed in Shinkai:
+
+<Steps>
+    <Step title="Pull the model using terminal">
+    Open your terminal and run:
+    ```bash
+    ollama pull <model-name>
+    ```
+    
+    For example:
+    ```bash
+    ollama pull llama2:13b
+    ```
+    </Step>
+    
+    <Step title="Add the model to Shinkai">
+    In Shinkai > Go to `AIs` > `+ Add AI` > `+ Manually Add AI`
+    1. Select **Ollama** as the Model Provider
+    2. Select the model you pulled from the Model Type dropdown
+    3. Customize the AI Name (if desired)
+    4. Click `Add AI`
+    
+    <Frame>
+      <img src="/images/ollama-installed.jpg" style={{ borderRadius: '0.5rem' }} />
+    </Frame>
+    </Step>
+</Steps>
+
+## Popular Local AI Models
+
+| Model | Strengths | Typical Size Options |
+|-------|-----------|----------------------|
+| Llama 3 | All-around performer, great instruction-following | 8B, 70B |
+| Mistral | Efficient reasoning, good code generation | 7B, 8x7B |
+| Gemma | Efficient for lightweight devices | 2B, 7B |
+| CodeLlama | Specialized for coding tasks | 7B, 13B, 34B |
+| Phi | Compact but powerful | 2B |
+
+For more detailed information about specific models and their parameters, see our [AI Model Parameters Guide](/advanced/custom-ai#understanding-ai-models).

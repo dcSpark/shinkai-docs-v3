@@ -1,11 +1,32 @@
 ---
 title: 'Connect AI Providers'
-description: 
+description: 'Choose between local and cloud AI models based on your needs'
 icon: 'magnifying-glass'
 ---
 
-## Installing Local AIs Manually
-The list of AI models in Shinkai is powered by Ollama and is continously growing. Although, if you want to install another model, you can do it easily:
+## Choose Your AI Model Type
+
+Shinkai supports two types of AI models:
+
+<CardGroup cols={2}>
+  <Card
+    title="Local AI Models"
+    icon="computer"
+    href="/advanced/models/local-models"
+  >
+    Run AI directly on your device for enhanced privacy and control
+  </Card>
+  <Card
+    title="Cloud AI Models"
+    icon="cloud"
+    href="/advanced/models/cloud-models"
+  >
+    Connect to powerful cloud providers without hardware limitations
+  </Card>
+</CardGroup>
+
+## Installing AI Models Manually
+Shinkai supports a variety of AI models, both local (via Ollama) and cloud-based. You can easily add any supported model:
 
 > Click the `AIs` option on the left side menu > Click the `+ Manually Add AI` button on the upper-right corner.
 
@@ -16,7 +37,7 @@ The list of AI models in Shinkai is powered by Ollama and is continously growing
 <Frame>
   <img src="/images/manual-ai-b.jpg" style={{ borderRadius: '0.5rem' }} />
 </Frame>
-There are several model options available to choose from: **OpenAI, Together AI, Ollama, Gemini, Groq, OpenRouter, Exo, and Claude**.
+There are several model options available to choose from: **OpenAI, Together AI, Ollama, Gemini, Groq, OpenRouter, and Claude**.
 
 
 
