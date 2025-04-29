@@ -34,7 +34,7 @@
   },
   "tabs": [
     {
-      "name": "Developer Guide", 
+      "name": "Developer API Reference", 
       "url": "api-reference"
     }
   ],
@@ -98,7 +98,6 @@
             "advanced/models/claude"
           ]
         },
-        "advanced/sheets",
         "advanced/shinkai-identity",
         "advanced/connect-identity",
         "advanced/agents"
@@ -107,25 +106,11 @@
     {
       "group": "Tutorials",
       "pages": [
-        "advanced/tutorials/ancient-egyptian-email",
         "advanced/tutorials/blockchain-address-portfolio-tracker",
         "advanced/tutorials/blockchain-data-AI-Agent",
         "advanced/tutorials/combining-tools-from-pptx-presentation-to-audio-lesson",
         "advanced/tutorials/running-R-scripts-from-Shinkai",
         "advanced/tutorials/setting-up-twitter"
-      ]
-    },
-    {
-      "group": "Experimental Features",
-      "pages": [
-        "advanced/overview",
-        {
-          "group": "Playground",
-          "pages": [
-        "advanced/workflows",
-        "advanced/custom-workflows"
-          ]
-        }
       ]
     },
     {
