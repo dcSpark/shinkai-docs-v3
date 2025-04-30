@@ -64,40 +64,30 @@
       "group": "Basic Features",
       "pages": [
         "first-steps",
-        {
-          "group": "Chats",
-          "pages": [
-            "basics/ai-chats",
-            "basics/chat-settings"
-          ]
-        },
+        "basics/ai-chats",
         "basics/files-manager",
+        "basics/tools",
+        "basics/metadata",
         {
-          "group": "Shinkai Tools",
+          "group": "Cloud AI Models",
           "pages": [
-            "basics/tools",
-            "basics/metadata"
+            "basics/model-install",
+            "basics/models/gpt",
+            "basics/models/openrouter",
+            "basics/models/gemini",
+            "basics/models/groq",
+            "basics/models/ollama",
+            "basics/models/together-ai",
+            "basics/models/claude"
           ]
         }
       ]
-      }, 
+    },
     {
       "group": "Advanced Features",
       "pages": [
         "advanced/custom-ai",
-        {
-          "group": "Installing AI Models",
-          "pages": [
-            "advanced/model-install",
-            "advanced/models/gpt",
-            "advanced/models/openrouter",
-            "advanced/models/gemini",
-            "advanced/models/groq",
-            "advanced/models/ollama",
-            "advanced/models/together-ai",
-            "advanced/models/claude"
-          ]
-        },
+        "advanced/chat-settings",
         "advanced/shinkai-identity",
         "advanced/connect-identity",
         "advanced/agents"

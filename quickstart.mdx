@@ -1,95 +1,54 @@
 ---
-title: 'Installation and Setup Guide'
-description: 'Start experiencing the power of Shinkai in under 5 minutes'
+title: 'Installation'
+description: 'Start experiencing the power of Shinkai in 2 clicks'
 icon: 'wrench'
 ---
 <Info>
- Minimum System Requirements: 
+ Minimum System Requirements (Remote AI): 
+
+ Windows/Linux -> CPU: 2 Cores | RAM: 8 GB | GPU: Not Required
+
+ MacOs -> Processor M1+ (Not Intel compatible)
+</Info>
+
+<Info>
+ Minimum System Requirements (w/ Local AI): 
 
  Windows/Linux -> CPU: 4 Cores | RAM: 8 GB | GPU: NVIDIA or AMD with 4GB VRAM
 
  MacOs -> Processor M1+ (Not Intel compatible)
 </Info>
+
 ## Shinkai Desktop App
 Getting started with Shinkai is quick and easy. Follow these steps to install and set up Shinkai on your device.
 
+<video
+  autoPlay="true"
+  muted="true"
+  loop="true"
+  playsInline="true"
+  className="w-full aspect-video"
+  src="/videos/initial-screen.mp4"
+/>
+
+
 ### 1. Download the app to your device. 
-Visit the [Shinkai website](https://www.shinkai.com/) and click on the "**Download**" button. Shinkai supports Windows, Mac, and Linux platforms.
+Visit the [Shinkai website](https://www.shinkai.com/) and click on the "**Download**" button. Shinkai supports Windows and Mac platforms (Linux coming soon).
 
 <Frame>
-  [<img src="/images/download.png"  style={{ borderRadius: '0.5rem' }}/>](https://www.shinkai.com/)
+  [<img src="/images/new_download.png"  style={{ borderRadius: '0.5rem' }}/>](https://www.shinkai.com/)
 </Frame>
 
 ### 2. Install the app
 Once downloaded, run the installation file and follow the on-screen instructions to install Shinkai.
 
+<Frame>
+  <img src="/images/new_welcome.png"  style={{ borderRadius: '0.5rem' }}/>
+</Frame>
+
 ### 3. Launch Shinkai
-After installation, open the Shinkai app. The first time you launch it, you'll be guided through a quick setup process.
+After installation, open the Shinkai app. The first time you launch it, this will be the main screen that you'll see.
 
 <Frame>
-  <img src="/images/welcome.jpg"  style={{ borderRadius: '0.5rem' }}/>
+  <img src="/images/shinkai_landing.png"  style={{ borderRadius: '0.5rem' }}/>
 </Frame>
-
-
-## Setting up Shinkai
-To start using your local AI with Shinkai you will need to install local AI agents or models. 
-
-After initializing your app you will be prompted to **install recommended models** according to your decice specs. You can see the full list of models available by clicking '**Show all models**.'
-
-<Frame>
-  <img src="/images/models-setup.jpg"  style={{ borderRadius: '0.5rem' }}/>
-</Frame>
-
-
-
-<AccordionGroup>
-
-<Accordion icon="robot" title="AI model guideline according to your RAM">
-  As a general rule, here is a brief guideline for model installation **according to your machine specs**: 
-
-    **8GB RAM** ➡ choose 7B models or smaller.
-    _e.g., Gemma2 2b, Codegemma, Falcon, etc._
-
-    **16GB RAM** ➡ choose 7B, 13B models or smaller.
-    _e.g., Llama 3.1 8b, Mistral Nemo 12b, Nexusraven, etc._
-
-    **32GB RAM** ➡ choose 7B, 13B, 15B, 30B models or smaller.
-    _e.g., Codestral, etc._
-
-    **64GB RAM** ➡ choose 7B, 13B, 15B, 30B models or smaller. You might be able to go higher than that.
-    _e.g., Alfred, etc._
-
-    **96GB RAM+** ➡ any model size should work for you. 🦾
-</Accordion>
-<Accordion icon="laptop" title="Which AI model should I install?">
-  As a general rule: 
-  
-  👟 For **lightweight, fast AI needs** (short conversations, basic text generation): Go with _Gemma2 2b_ or _LLaVA Phi 3_.
-  
-  ⚖️  For **balance between complexity and speed**: _Llama 3.1 8b_ is the best choice.
-  
-  🧠  For **handling large documents and complex reasoning**: Opt for _Mistral Nemo 12b_, but keep in mind it will require more resources and be slower.
-
-  _Ultimately, your choice depends on the type of content, performance requirements, and hardware limitations you have in your setup._
-</Accordion>
-<Accordion icon="book-open" title="Understanding the 'b' in model names">
-  The "**b**" in model names refers to the **number of parameters in the model, measured in billions**. Parameters are the variables the model uses to make predictions, learn language patterns, and generate outputs.
-
-    👀 **The more parameters a model has, the more complex patterns it can learn**, but this also means:
-    - Increased resource consumption (memory, disk space, computational power)
-    - Longer inference time (slower responses, unless optimized)
-
-    👇 Here’s a general guideline for understanding parameter sizes:
-
-    **2b - 8b models** are smaller, faster, and can handle simpler tasks. They’re more lightweight and good for smaller, real-time tasks.
-
-    **10b - 70b models** are larger, slower, and better for complex, nuanced tasks. They have better performance on language understanding and generation, but are resource-intensive.
-
-    💻 _You have to keep in mind your own machine's specs when selecting a model._
-</Accordion>
-
-</AccordionGroup>
-
-<Tip>
-Learn more about AI Models [here](/advanced/custom-ai)
-</Tip>

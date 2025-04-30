@@ -9,7 +9,7 @@ icon: 'message'
 The first options of the side menu are reserved for chats. The first one leads you directly into a **new chat creation**, while the second opens the view of **all chats**. 
 
 <Frame>
-  <img src="/images/chat.jpg" style={{ borderRadius: '0.5rem' }} />
+  <img src="/images/chat.png" style={{ borderRadius: '0.5rem' }} />
 </Frame>
 
 ### Creating a new AI chat
@@ -17,15 +17,20 @@ When creating a new chat there are different settings you can adjust:
 
 <AccordionGroup>
   <Accordion icon="robot" title="Select your AI model">
-    The first dropdown menu displays all the models you have installed, allowing you to change from one model to the next easily. 
-    Learn more about [AI Model installation here](/quickstart#setting-up-shinkai). 
+    The first dropdown menu displays all the models and agents you have installed, allowing you to change them easily. 
+    Learn more about [AI Model installation here](/quickstart#setting-up-shinkai) or [Agent Creation](/agent_creation). 
   </Accordion>
 
    <Accordion icon="paperclip" title="Upload a file">
     You can upload files to the chat to help the AI understand specific contexts and to ensure getting more accurate responses.  
 
-    <Note>File formats supported: `csv, docx, json, md, pdf, txt, xlsx`.</Note>  
+    <Note>Most used file formats supported: `csv, docx, json, md, pdf, txt, xlsx`.</Note>  
+  </Accordion>
 
+  <Accordion icon="toolbox" title="Activate Tools">
+    You can enable tool usage which allow the AI to perform specific tasks and interact with different systems. When activated, these tools enhance the AI's capabilities, allowing it to assist you with tasks like navigating the web, file operations, data analysis, or external API interactions.
+
+    <Note>The available tools depend on your configuration and installed tools in the Tool section.</Note>  
   </Accordion>
 
   <Accordion icon="books" title="Prompts Library">
@@ -33,18 +38,8 @@ When creating a new chat there are different settings you can adjust:
 
     <Tip>You can create new `custom prompts` by clicking the ➕ plus icon at the upper right corner.</Tip>
     <Frame>
-      <img src="/images/prompt-library.jpg" style={{ borderRadius: '0.5rem' }} />
+      <img src="/images/prompt-library.png" style={{ borderRadius: '0.5rem' }} />
     </Frame>  
-  </Accordion>
-
-   <Accordion icon="sitemap" title="Add workflow">
-    Shinkai comes with algorithmic instructions –or workflows– ready to use, helping you optimize tasks and processes. 
-    Just click on the workflow icon and it will display the `Workflow Library` where you can select the workflow you'd like to apply in your prompt. 
-    
-    Clicking the <Icon icon="plus" iconType="duotone" /> plus icon at the top right corner will lead you to the [Playground](/advanced/workflows), where you can create custom workflows adapted to your needs. 
-    <Frame>
-      <img src="/images/workflows.jpg" style={{ borderRadius: '0.5rem' }} />
-    </Frame>
   </Accordion>
 
   <Accordion icon="folder-closed" title="Local AI files">
