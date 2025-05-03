@@ -1,0 +1,327 @@
+---
+title: 'Integrating Human-in-the-loop components to your tools'
+description: 'A tutorial for setting up Shinkai Tools with human-controlled steps.'
+icon: 'user'
+---
+
+This tutorial will walk you through the process of adding Human-in-the-loop steps to your Shinkai Tools, allowing you to gain greater control and modularity over your AI workflows.
+
+As a concrete example, this tutorial will teach you how to enhance the Smart Search Engine tool with human feedback steps to create a more modular searching tool that :
+* generates sub-questions
+* allows you to edit them
+* lets you confirm before processing.
+
+
+## Step 1 : Install the required Shinkai Tools
+
+First, ensure you have installed in your Shinkai Desktop App the following tools, all available on Shinkai AI Store :
+* Smart Search Engine
+* Confirmation Dialog Human-in-the-loop
+* Clarification Dialog Human-in-the-loop
+* Options Selection Human-in-the-loop
+
+![AI Store Human-in-the-loop tools](/images/store_human_in_the_loop.png)
+
+## Step 2 : Configure each tool
+
+Head over to Shinkai Tools, and configure each of the above tools to your liking. Note that it's not required to fill out each configuration as some have defaults built into the tools.
+
+For the Smart Search Engine, you can for example configure :
+* the maximum number of sources to return
+* the search engine to use
+
+![Configure Smart Search Engine](/images/smart_search_engine_configuration.png)
+
+For Human-in-the-loop tools, you can for example configure :
+* the size of the dialog windows to adapt to your screen
+* default title, text, and buttons labels of the dialog window
+
+![Configure Human-in-the-loop tools](/images/human_in_the_loop_configure.png)
+
+## Step 3: Set up the Shinkai AI assisted tool builder
+
+Head over to the Shinkai Tools tab. Select the AI 'shinkai_free_trial', or any high-performing LLM for coding (e.g. gpt_4_1). Select a programming language for the tool. Here, we will use Python. Activate the following tools :
+* Smart Search Engine
+* Confirmation Dialog Human-in-the-loop
+* Clarification Dialog Human-in-the-loop
+* Options Selection Human-in-the-loop
+* Shinkai LLM Prompt Processor
+
+![Configure Shinkai AI-assisted tool builder](/images/smart_search_engine_tool_builder.png)
+
+
+## Step 4: Prompt the AI with detailed instructions
+
+In the prompt window, type a detailed step by step prompt to give clear instructions to the AI about the functionality of the tool to create.
+Clearly explain :
+* the overall goal of the tool
+* the steps
+* how to integrate the Human-in-the-loop components
+
+Below is an example of a well-crafted prompt that should allow the AI to create a functioning tool :
+
+```text Prompt [expandable]
+<task>
+Create an advanced Smart Search Engine tool creating and researching sub-questions based on a single user-provided initial question. Smartly integrate Human-in-the-loop questions to ask how many sub-questions to create, to allow editing of sub-questions, and to confirm any research to be made.
+</task>
+
+<initial input instructions>
+The user will simply start by asking a question to research.
+</initial input instructions>
+
+<sub-question creation instructions>
+Ask the user how many sub-questions to create.
+</sub-question creation instructions>
+
+<sub-question editing instructions>
+Allow the user to give feedback on any sub-question created. Process the feedback, revise the sub-question based on the feedback, propose the edited sub-question.
+</sub-question editing instructions>
+
+<sub-question confirmation instructions>
+Before processing any sub-question, ask the user to confirm.
+</sub-question confirmation instructions>
+
+<Human-in-the-loop instructions>
+Each time you use a Human-in-the-loop component, make sure it is explicit, clear, informative.
+Make smart use of the text of the dialog to show in detail what the feedback is about, and use short, appropriate labels for the buttons.
+Make sure to use well the feedback or options given or selected by the user.
+The output to use for the clarification Human-in-the-loop tool is 'clarification_response'.
+The output to use for the confirmation and the option selection Human-in-the-loop tools is 'user_choice'.
+Use the prompt processor to process any feedback.
+Make sure to perform all the human-controlled options, feedback and confirmation before processing any search, so that the user doesn't have to wait for a search to be finished to give their inputs for the next one.
+</Human-in-the-loop instructions>
+
+<final answer instructions>
+The tool must research the initial question, as well as each validated sub-question.
+It presents a detailed answer based on the answers to all of these questions.
+</final answer instructions>
+
+<output instructions>
+The output should show the final detailed answer, as well as a summary of which final sub-questions were researched.
+Also, add a configuration to include or exclude in the output the individual answers to each sub-question.
+</output instructions>
+```
+
+Here is an example functioning tool code you might get with the prompt above from the 1st try, using gpt_4_1 :
+
+```python AI generated tool code [expandable]
+# /// script
+# dependencies = [
+#   "requests",
+# ]
+# ///
+
+from typing import Any, Optional, List, Dict
+from shinkai_local_tools import (
+    shinkai_llm_prompt_processor,
+    clarification_dialog_human_in_the_loop,
+    confirmation_dialog_human_in_the_loop,
+)
+
+class CONFIG:
+    show_individual_answers: bool
+
+class INPUTS:
+    initial_question: str
+
+class OUTPUT:
+    final_answer: str
+    researched_subquestions_summary: List[str]
+    individual_answers: Optional[Dict[str, str]]
+
+async def ask_number_of_subquestions(initial_question: str) -> int:
+    clarification = await clarification_dialog_human_in_the_loop({
+        "title": "Number of Sub-questions",
+        "question": (
+            f"Your research question is:\n\n\"{initial_question}\"\n\n"
+            "How many sub-questions would you like to generate to help research this question? "
+            "Please enter a number (for example, 3)."
+        ),
+        "label_submit_button": "Set Number",
+        "label_ignore_button": "Cancel",
+    })
+    # Try to extract a positive integer from the user's answer
+    response = clarification.get("clarification_response", "").strip()
+    try:
+        n = int(response)
+        if n < 1:
+            n = 1
+    except Exception:
+        n = 3
+    return n
+
+async def generate_subquestions(initial_question: str, n: int) -> List[str]:
+    prompt = (
+        f"Given the research question:\n\"{initial_question}\"\n"
+        f"Generate {n} concise and relevant sub-questions that, if answered, would help address the main question. "
+        "Output each sub-question as a separate line, without numbering."
+    )
+    result = await shinkai_llm_prompt_processor({
+        "prompt": prompt,
+        "format": "text"
+    })
+    message = result.get("message", "")
+    subquestions = [line.strip("-•. ").strip() for line in message.splitlines() if line.strip()]
+    # Only keep up to n subquestions, in case of LLM over-generation
+    return subquestions[:n]
+
+async def edit_subquestion(subq: str) -> str:
+    clarification = await clarification_dialog_human_in_the_loop({
+        "title": "Edit Sub-question",
+        "question": (
+            f"The following sub-question was generated:\n\n\"{subq}\"\n\n"
+            "If you would like to edit or improve this sub-question, please enter your feedback. "
+            "Otherwise, you can leave this blank and submit to keep it as is."
+        ),
+        "label_submit_button": "Edit/Keep",
+        "label_ignore_button": "Skip Editing"
+    })
+    feedback = clarification.get("clarification_response", "").strip()
+    if not feedback:
+        return subq
+    # Use LLM to process feedback and generate improved sub-question
+    prompt = (
+        f"Original sub-question:\n\"{subq}\"\n\n"
+        f"User feedback for improvement or rewording:\n\"{feedback}\"\n\n"
+        "Rewrite the sub-question based on the user's feedback. Output only the improved sub-question."
+    )
+    result = await shinkai_llm_prompt_processor({
+        "prompt": prompt,
+        "format": "text"
+    })
+    edited = result.get("message", "").strip()
+    return edited if edited else subq
+
+async def confirm_subquestion(subq: str) -> bool:
+    confirmation = await confirmation_dialog_human_in_the_loop({
+        "title": "Confirm Sub-question for Research",
+        "text": (
+            f"Do you want to include the following sub-question for research?\n\n\"{subq}\""
+        ),
+        "label_yes_button": "Include",
+        "label_no_button": "Exclude"
+    })
+    choice = confirmation.get("user_choice", "").strip().lower()
+    return choice == "include"
+
+async def answer_question(question: str) -> str:
+    prompt = (
+        f"Research and answer the following question in a detailed and informative manner:\n\n\"{question}\""
+    )
+    result = await shinkai_llm_prompt_processor({
+        "prompt": prompt,
+        "format": "text"
+    })
+    answer = result.get("message", "").strip()
+    return answer
+
+async def run(config: CONFIG, inputs: INPUTS) -> OUTPUT:
+    output = OUTPUT()
+    initial_question = inputs.initial_question.strip()
+
+    # Step 1: Ask how many sub-questions to generate
+    num_subq = await ask_number_of_subquestions(initial_question)
+
+    # Step 2: Generate sub-questions
+    subquestions = await generate_subquestions(initial_question, num_subq)
+
+    # Step 3: For each sub-question, allow user to edit and confirm inclusion
+    final_subquestions = []
+    for sq in subquestions:
+        # Allow user to edit the sub-question
+        edited_sq = await edit_subquestion(sq)
+        # Ask for confirmation to include for research
+        include = await confirm_subquestion(edited_sq)
+        if include:
+            final_subquestions.append(edited_sq)
+
+    # Always include the initial question as the "main" question to research
+    questions_to_research = [initial_question] + final_subquestions
+
+    # Step 4: Research all questions (main + confirmed sub-questions)
+    answers = {}
+    for q in questions_to_research:
+        answers[q] = await answer_question(q)
+
+    # Step 5: Build final answer and output structure
+    # Compose a detailed answer using the initial question + sub-questions' answers
+    main_answer = answers[initial_question]
+    subq_answers = [
+        f"Sub-question: \"{sq}\"\nAnswer: {answers[sq]}"
+        for sq in final_subquestions
+    ]
+    detailed_answer = (
+        f"Main Question:\n\"{initial_question}\"\n\n"
+        f"Comprehensive Answer:\n{main_answer}\n\n"
+    )
+    if final_subquestions:
+        detailed_answer += "Researched Sub-questions and their Answers:\n\n"
+        for sq in final_subquestions:
+            detailed_answer += (
+                f"Sub-question:\n\"{sq}\"\n"
+                f"Answer:\n{answers[sq]}\n\n"
+            )
+
+    output.final_answer = detailed_answer
+    output.researched_subquestions_summary = final_subquestions
+    if config.show_individual_answers:
+        output.individual_answers = answers
+    else:
+        output.individual_answers = None
+    return output
+```
+
+Note that in the above code, the AI decided not to use the Options Selection tool, instead making good use of the Clarification and Confirmation tools.
+
+## Step 5: Test the tool
+
+Check in the preview if the input and config fields make sense. Enter a question. Click 'Run'.
+
+![Try Enhanced Smart Search Engine Tool](/images/smart_search_engine_tool_test.png)
+
+You should then interact with a multi-step flow featuring Human-in-the-loop interactions, enabling you to fine-tune the searches to be performed.
+
+![Try Enhance Smart Search Engine Tool](/images/smart_search_engine_tool_test_2.png)
+
+## Step 6 : Troubleshooting
+
+When testing the tool, if your feedback or selections through the Human-in-the-loop components are not being applied, verify that the code correctly uses the output of the relevant Human-in-the-loop component.
+Because this is a common issue when the AI confuses output names, the prompt provided earlier in this tutorial includes a reminder of the output names for each Human-in-the-loop component.
+
+## Step 7 : Fine-tuning your enhanced tool
+
+Now that you have a working prototype of your new tool with Human-in-the-loop controls, fine-tune it to your liking.
+You can :
+* add further useful Human-in-the-loop steps
+* add steps using the Options Selection tool
+* edit the content of the dialogs (title, text, buttons labels)
+* edit the prompts that process the feedbacks from the user
+* implement typical tool improvements (e.g., better names for inputs, crafting precise outputs, adding informative error handling, editing the metadata)
+
+
+## Options Selection trick
+
+To create a tool flow with predefined options while allowing users to add their own, combine the Options Selection and Clarification tools as follows.
+In your prompt, instruct the AI to :
+1. use the Options Selection tool to propose the options but to also include a 'Custom' option button.
+2. make this 'Custom' option trigger the Clarification tool to allow the user to describe the option they want to use.
+
+
+## Considerations : 1 tool with Human-in-the-loop components VS. AI agent with several tools
+
+An AI agent with several tools can replicate Human-in-the-loop interactions by asking users questions before triggering its available tools.
+
+It is a design choice to implement an AI workflow as a tool with built-in Human-in-the-loop components or as an AI agent with several tools.
+
+Here are the potential benefits of using a tool with built-in Human-in-the-loop components :
+* **Precise & Predictable Workflow** : Coded steps ensure granular control and consistent execution, unlike dynamic agent decisions.
+* **Streamlined User Flow** : Guides users through a clear, predefined sequence with focused dialogs, setting clear expectations.
+* **Simpler Development & Debugging** : Encapsulated logic within one tool simplifies coding, troubleshooting, and adding features or error handling.
+* **Deep Interaction Customization** : Easily tailor dialog text, prompts, and button labels for each specific human input point within the code.
+* **Enhanced Reusability & Sharing** : Self-contained tools are easy to manage, share (e.g., via Shinkai Store), and use as a single unit without complex setup.
+* **Potentially Faster Execution** : Direct, coded logic can avoid the overhead of agent analysis and tool selection steps.
+
+## Support and sharing your tools
+
+For additional support, please contact Shinkai Tools support team or join us and the community on our Discord server.
+Engage with others to share your tools and ideas.
