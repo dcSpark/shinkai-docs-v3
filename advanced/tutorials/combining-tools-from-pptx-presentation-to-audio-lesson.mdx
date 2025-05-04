@@ -11,14 +11,15 @@ This tool is available in the [Shinkai AI Store](https://store.shinkai.com/produ
 
 You will learn how to :
 
-* build and add features both using the Shinkai AI assistance and manually
-* combine Shinkai tools efficiently (optional features, customizability, config validation, error handling, design decisions)
+* build a tool and add features step by step using the Shinkai AI-assisted tool builder.
+* combine Shinkai tools efficiently (optional features, customizability, config validation, error handling)
 * implement Optical Character Recognition
 * implement text to speech
 * use the created tool
 
 This tutorial is a step-by-step guide on how to implement the full tool.
-You can find the complete code below for reference, but we will go over its elements one by one. And you can see some usage examples in the last section of this tutorial (Part 5 : Using the tool).
+
+You can find the complete code below for reference, but we will see how to use the AI-assisted tool builder and how to prompt the AI to recreate its elements one by one. Additionally, you can see some usage examples in the last section of this tutorial (Part 7 : Using the tool).
 
 ```python Full Code [expandable]
 # /// script
@@ -232,10 +233,10 @@ async def run(config: CONFIG, inputs: INPUTS) -> OUTPUT:
         "You are a domain expert teacher extremely good at creating university level educational material."
         "</personality>"
         "<task>"
-        "Create the text for an audio lesson of the following content extracted from a powerpoint."
+        "Create the text for an audio lesson of the following content extracted from a PowerPoint."
         "</task>"
         "<context>"
-        "The content comes from text extraction and OCR from a powerpoint, and is provided shape by shape and slide by slide."
+        "The content comes from text extraction and OCR from a PowerPoint, and is provided shape by shape and slide by slide."
         "Because of this the content form each slide might be a bit disorganised or sparse. You need to take your time step-by-step to reconnect the different pieces of content and understand how they fit together."
         "This content might also contain special characters coming from the text extraction formatting. Make sure to handle these special characters gracefully, they shouldn't appear in the text for an audio lesson."
         "</context>"
@@ -303,7 +304,11 @@ async def run(config: CONFIG, inputs: INPUTS) -> OUTPUT:
     return output
 ```
 
-Now let's see how to recreate this tool and learn its features and implementation details.
+While trying to build such a complex tool in one go with the AI assistance might sound faster, building it step-by-step can be quicker, deliver a better tool, and be cheaper, because :
+* the LLM works on smaller instructions and is less likely to get confused, leading to a better implementation of your instructions
+* if needed, prompting the LLM to edit, fix, improve the code generated so far is faster and cheaper because there is less code to interpret and regenerate each time (compared to editing a full code for the entire tool)
+
+We will see how to recreate this tool both ways : in one go and step-by-step.
 
 ## Prerequisites
 
@@ -312,24 +317,22 @@ To follow this tutorial, you will need :
 * the latest version of [Shinkai Desktop](https://www.shinkai.com/) installed
 * to install [Tesseract](https://github.com/UB-Mannheim/tesseract/wiki) for OCR
 * to install the [ElevenLabs text-to-speech tool](https://store.shinkai.com/product/local:::__official_shinkai:::eleven_labs_text_to_speech) from the Shinkai AI Store and configure it
-* an ElevenLabs [API key](https://elevenlabs.io/developers)
+* an ElevenLabs [API key](https://elevenlabs.io/developers) with sufficient credits
 
-## Part 0 : Trying to build the full tool in 1 go with Shinkai AI assisted tool creation UI
+## Part 0 : Trying to build the full tool in one go with Shinkai AI-assisted tool builder
 
-Shinkai offers an effortless tool building experience thanks to its AI assisted tool creation UI, where even libraries dependencies and tool metadata are handled automatically.
+You can try to build a working prototype of the full tool using 1 detailed prompt and a performant LLM.
 
-You could try to build a working prototype of the full tool using 1 detailed prompt and a performant LLM.
+In the tool creation UI, select a performant LLM (e.g. gpt_4_1, shinkai_free_trial), select Python, activate the 2 tools 'shinkai_llm_prompt_processor' and 'eleven_labs_text_to_speech', write a prompt describing the tool well, and execute it.
 
-In the tool creation UI, select a performant LLM (e.g. gpt_4o, shinkai_free_trial), select Python, activate the 2 tools "shinkai_llm_prompt_processor" and "eleven_labs_text_to_speech", write a prompt describing the tool well, and execute it.
-
-For a good result your prompt should be detailed and clearly describe :
+For a good result, your prompt should be detailed and clearly describe :
 * the goal of the tool to create and its steps
 * how each of the selected tools should be used
 * what you would want in configuration versus inputs
 * which feature should be optional
 * how to handle errors
 
-Below is an example of a promt to generate a full prototype of our PowerPoint to audio lesson tool. It uses tags to make things clear for the LLM. At the very least such prompt will create a good code flow for the intended tool, from which you can debug, edit, improve.
+Below is an example of a prompt to generate a full prototype of our PowerPoint to audio lesson tool. It uses tags to make things clear for the LLM. At the very least, such prompt will create a good code flow for the intended tool, from which you can debug, edit, improve.
 
 ```text [expandable]
 <task>
@@ -353,7 +356,7 @@ Use strings for both.
 </configuration instructions>
 
 <instructions for step 1>
-Extract the text content of the .pptx file slide by side and shape by shape.
+Extract the text content of the .pptx file slide by slide and shape by shape.
 Use Tesseract OCR to extract text from picture shapes.
 The executable path of Tesseract will be set in configuration.
 </instructions for step 1>
@@ -389,13 +392,13 @@ The output must contain the extracted content, the generated text, the optional 
 </output instructions>
 ```
 
-Alternatively, you can build the tool progressively, step-by-step, by first building the content extraction part, then adding the lesson text generation, and finally the audio generation. Each step can be done with AI assistance and/or manually.
+![Build the tool in one go](/images/pptx_to_audio_prompt_one_go.png)
+
+Alternatively, you can build the tool progressively, step-by-step, by first building the content extraction part, then adding the lesson text generation, then the audio generation, and finally adding general improvements.
 
 Below, you can study a step-by-step implemention of the tool.
 
 ## Part 1 : Extracting the text content from a .pptx file
-
-### 1.0 Using Shinkai AI assisted tool creation UI
 
 You can try to build the content extraction feature first using the AI assistance, and then later on add the other features.
 
@@ -434,275 +437,28 @@ Each step should have its own informative error messaging.
 The output must contain the extracted content, error logs and a status.
 </output instructions>
 ```
-At the very least such prompt should create a good code flow for the intended feature, from which you can debug, edit, improve.
+
+![Build the tool first step](/images/pptx_to_audio_prompt_first_step.png)
+
+At the very least, such prompt should create a good code flow for the intended feature, from which you can debug, edit, improve.
 
 Similar prompts were actually used to build the full code above, with step-by-step improvements through prompting and few manual coding.
 
-Below you'll find a full description of how to code the content extraction feature.
-
-### 1.1 Defining the text extraction process
-
-Import what will be needed :
-
-```python
-# /// script
-# dependencies = [
-#   "requests",
-#   "python-pptx",
-#   "pytesseract",
-#   "pillow",
-# ]
-# ///
-
-from typing import Optional, List
-import os
-import requests
-from pptx import Presentation
-from pptx.enum.shapes import MSO_SHAPE_TYPE
-import pytesseract
-from PIL import Image
-import io
-from shinkai_local_support import get_home_path
-```
-
-Define the configuration for the Tesseract executable path and the input for .pptx file path :
-
-```python
-class CONFIG:
-    tesseract_path: str
-
-class INPUTS:
-    file_path: str
-```
-
-Create the output class for the content, error messages and status :
-
-```python
-class OUTPUT:
-    content_of_the_presentation: Optional[List[str]]
-    status: str
-    message: Optional[str]
-```
-
-Define 3 functions to extract text from text blocks, tables and charts :
-
-```python
-def extract_text_from_text_frame(text_frame) -> str:
-   return ' '.join([run.text for paragraph in text_frame.paragraphs for run in paragraph.runs if run.text])  # Extracts and joins all text runs from paragraphs in a text frame
-
-def extract_text_from_table(table) -> str:
-   cell_texts = []  # List to store text from each cell
-   for row in table.rows:
-       for cell in row.cells:
-           cell_texts.append(extract_text_from_text_frame(cell.text_frame))  # Extract text from each cell's text frame
-   return ' | '.join(cell_texts)  # Join all cell texts with pipe separators
-
-def extract_text_from_chart(chart) -> str:
-   title = extract_text_from_text_frame(chart.chart_title.text_frame) if chart.has_title else ""  # Get chart title if it exists
-   x_axis = extract_text_from_text_frame(chart.category_axis.title.text_frame) if chart.category_axis.has_title else ""  # Get x-axis title if it exists
-   y_axis = extract_text_from_text_frame(chart.value_axis.title.text_frame) if chart.value_axis.has_title else ""  # Get y-axis title if it exists
-   return f"Title: {title}, X-Axis: {x_axis}, Y-Axis: {y_axis}"  # Format chart data as a string
-```
-
-Create a function to extract the content from shapes using the functions defined above, plus use Tesseract OCR for picture shapes :
-
-```python [expandable]
-def extract_text_from_shape(shape) -> List[str]:
-    results = []  # Initialize an empty list to store extracted text
-    
-    # Check if the shape contains a text frame
-    if shape.has_text_frame:
-        text = extract_text_from_text_frame(shape.text_frame)  # Extract text from the text frame
-        if text.strip():  # If text is not empty after stripping whitespace
-            results.append(f"Text Shape: {text}")  # Add it to results with a prefix
-    
-    # Check if the shape contains a table
-    elif shape.has_table:
-        table_text = extract_text_from_table(shape.table)  # Extract text from the table
-        if table_text.strip():  # If table text is not empty
-            results.append(f"Table: {table_text}")  # Add it to results with a prefix
-    
-    # Check if the shape contains a chart
-    elif shape.has_chart:
-        chart_text = extract_text_from_chart(shape.chart)  # Extract text from the chart
-        # Check if chart text has content beyond empty labels
-        if chart_text.replace("Title: , X-Axis: , Y-Axis: ", "").strip():
-            results.append(f"Chart: {chart_text}")  # Add it to results with a prefix
-    
-    # Check if the shape is a picture
-    elif shape.shape_type == MSO_SHAPE_TYPE.PICTURE:
-        try:
-            image_data = shape.image.blob  # Get the image data as binary
-            image = Image.open(io.BytesIO(image_data))  # Open image from binary data
-            text = pytesseract.image_to_string(image)  # Use OCR to extract text from image
-            if text.strip():  # If OCR found text
-                results.append(f"Image Text: {text.strip()}")  # Add it to results with a prefix
-        except Exception as e:
-            pass  # Silently ignore any errors in image processing
-    
-    # Check if the shape is a group of shapes
-    elif shape.shape_type == MSO_SHAPE_TYPE.GROUP:
-        for sub_shape in shape.shapes:  # Iterate through all shapes in the group
-            sub_texts = extract_text_from_shape(sub_shape)  # Recursively process each sub-shape
-            if sub_texts:  # If any text was found
-                results.extend(sub_texts)  # Add all results to the main list
-    
-    return results  # Return the list of all extracted text items
-```
-
-Define a function to read the presentation from either URL or local file path. It's a step to check the file is readable :
-
-```python [expandable]
-async def read_presentation(file_path: str, working_file_path: str) -> OUTPUT:
-    try:
-        # If the file is from a URL, download it
-        if file_path.startswith('http://') or file_path.startswith('https://'):
-            response = requests.get(file_path)  # Send HTTP request to get the file
-            with open(working_file_path, 'wb') as f:  # Open destination file in binary write mode
-                f.write(response.content)  # Write the downloaded content to the file
-        # If it's a local file path, copy it to the working location
-        else:
-            with open(file_path, 'rb') as f:  # Open source file in binary read mode
-                with open(working_file_path, 'wb') as w:  # Open destination file in binary write mode
-                    w.write(f.read())  # Read the entire source file and write to destination
-        
-        # Create a success response
-        o = OUTPUT()  # Initialize result object
-        o.status = "success"  # Set status to indicate successful operation
-        return o  # Return the result
-    
-    except Exception as e:
-        # Handle any errors that occur during file operations
-        o = OUTPUT()  # Initialize result object
-        o.status = "error"  # Set status to indicate error
-        o.message = f"Failed to read presentation: {str(e)}"  # Include error details in message
-        return o  # Return the error result
-```
-### 1.2 Retrieving the content shape by shape and slide by slide
-
-Create a function that applies the content extraction slide by slide and shape by shape :
-
-```python [expandable]
-async def *retrieve*presentation(working_file_path: str) -> OUTPUT:
-    # Check if the file exists
-    if not os.path.exists(working_file_path):
-        o = OUTPUT()
-        o.status = "error"
-        o.message = "No presentation file loaded."
-        return o
-    
-    try:
-        # Load the presentation file
-        prs = Presentation(working_file_path)
-        text_content = []
-        
-        # Iterate through each slide
-        for i, slide in enumerate(prs.slides, start=1):
-            slide_content = []
-            
-            # Extract text from all shapes in the slide
-            for shape in slide.shapes:
-                shape_texts = extract_text_from_shape(shape)
-                if shape_texts:
-                    slide_content.extend(shape_texts)
-            
-            # Add slide number and content if there's any text
-            if slide_content:
-                text_content.append(f"Slide {i}")
-                text_content.extend(slide_content)
-        
-        # Create successful output object with extracted content
-        o = OUTPUT()
-        o.content_of_the_presentation = text_content
-        o.status = "success"
-        return o
-        
-    except Exception as e:
-        # Handle any errors during processing
-        o = OUTPUT()
-        o.status = "error"
-        o.message = f"Failed to process presentation: {str(e)}"
-        return o
-```
-
-### 1.3 Validate the configuration
-
-Implement a validation function to stop the tool and log errors if there are issues with the Tesseract OCR implementation.
-
-```python
-def validate_config(config: CONFIG) -> List[str]:
-    """ Validate configuration dependencies.
-    Returns a list of error messages if any issues are found.
-    """
-    errors = []  # Initialize empty list to collect error messages
-    
-    # Validate tesseract_path
-    if not config.tesseract_path:
-        # Check if path is empty or None
-        errors.append("Tesseract path is not provided.")
-    elif not os.path.isfile(config.tesseract_path):
-        # Check if path points to an actual file
-        errors.append(f"Tesseract path does not point to a file: {config.tesseract_path}")
-    elif not os.access(config.tesseract_path, os.X_OK):
-        # Check if file has executable permissions
-        errors.append(f"Tesseract executable is not executable: {config.tesseract_path}")
-    
-    return errors  # Return collected error messages
-```
-
-### 1.4 Run function to execute all the processes
-Define a run function using all the functions defined above. At the end add a step to check if the extracted content is empty or not. It's a useful step because later the tool will use this extracted content to generate a lesson text, and this check will ensure there is a content, and stop the tool and inform the user if there isn't, saving compute and time.
-
-```python [expandable]
-async def run(config: CONFIG, inputs: INPUTS) -> OUTPUT:
-    # Perform configuration validation
-    errors = validate_config(config)  # Validates the provided configuration
-    if errors:
-        o = OUTPUT()
-        o.status = "error"  # Set error status
-        o.message = "Configuration errors: " + "; ".join(errors)  # Combines all errors into a single message
-        return o
-    
-    # Set Tesseract path after validation
-    pytesseract.pytesseract.tesseract_cmd = config.tesseract_path  # Configure OCR tool path from config
-    
-    home_path = await get_home_path()  # Asynchronously get the home directory
-    working_file_path = os.path.join(home_path, 'working.pptx')  # Create path for temporary working file
-    
-    if not inputs.file_path:
-        o = OUTPUT()
-        o.status = "error"  # Set error status
-        o.message = "No file path provided"  # Error if no input file specified
-        return o
-    
-    read_result = await read_presentation(inputs.file_path, working_file_path)  # Read and copy presentation to working file
-    if read_result.status == "error":
-        return read_result  # Early return if reading fails
-    
-    process_result = await retrieve_presentation(working_file_path)  # Extract content from the working presentation
-    if process_result.status == "error":
-        return process_result  # Early return if processing fails
-    
-    slides_content = process_result.content_of_the_presentation or []  # Get slide content or empty list if None
-    
-    if not slides_content:
-        o = OUTPUT()
-        o.status = "warning"  # Set warning status
-        o.message = "No text content found in the presentation"  # Warning if presentation has no text
-        o.content_of_the_presentation = []
-        return o
-    
-    output = OUTPUT()
-    output.content_of_the_presentation = slides_content  # Store extracted content
-    output.status = "success"  # Set success status
-    return output
-```
+You should get code that :
+* imports libraries and the shinkai tools needed (e.g. Tesseract, ElevenLabs)
+* defines the configuration for the Tesseract executable path
+* creates the output class for the content, error messages and status
+* define 3 functions to extract text from text blocks, tables and charts
+* creates a function to extract the content from shapes using the functions defined above, plus use Tesseract OCR for picture shapes
+* defines a function to read the presentation from either URL or local file path
+* creates a function that applies the content extraction slide by slide and shape by shape
+* implement a validation function to stop the tool and log errors if there are issues with the Tesseract OCR implementation
+* defines a run function using all the functions defined above. 
+* includes a step to check if the extracted content is empty or not. It's a useful step because later the tool will use this extracted content to generate a lesson text, and this check will ensure there is a content, and stop the tool and inform the user if there isn't, saving compute and time.
 
 ## Part 2 : Adding a LLM prompt processor to generate a lesson text
 
-### 2.0 Using Shinkai AI assisted tool creation UI
-
-Now you can use the AI assisted tool creation to add a step which generates the lesson text, using the slides content extracted in the first step.
+Now you can use the AI-assisted tool builder to add a step that generates the lesson text, using the slides content extracted in the first step.
 
 To do so, activate the tool 'shinkai_llm_prompt_processor', and use a prompt similar to this one :
 
@@ -739,122 +495,25 @@ The output must contain the extracted content, the generated text, error logs an
 </output instructions>
 ```
 
-At the very least such prompt should add a good code flow for the intended additional feature, from which you can debug, edit, improve.
+![Build the tool second step](/images/pptx_to_audio_prompt_second_step.png)
+
+At the very least, such prompt should add a good code flow for the intended additional feature, from which you can debug, edit, improve.
 
 Similar prompts were actually used to add this next feature, with step-by-step improvements through prompting and few manual coding.
 
-Below you'll find a full description of the code to add a lesson text generation feature.
+You should get code that :
 
+* adds to the imports the 'shinkai_llm_prompt_processor' tool
+* adds an input for additional instructions to generate the lesson text, so that the user can customize it. Set default to 'none'.
+* adds an output for the generated lesson
+* adds a step to defined a detailed prompt to generate optimal lesson text. Give some context describing the type of content the LLM will use and its specificities. Include formatting instructions. Include the optional additional instructions coming from the user. Organise it well and use tags to make things clear for the LLM.
+* calls the LLM prompt processor tool using the prompt defined above.
+* cleans the text generated lesson text from special characters, in case the LLM includes some despite our prompt format instructions
+* includes the cleaned generated text in the output.
 
-### 2.1 Setting up the lesson text generation feature
+## Part 3 : Adding an optional text-to-speech feature to create an audio file of the lesson
 
-Import the 'shinkai_llm_prompt_processor' tool. Also add 're' to the imports, it will be used to clean the generated text. 
-
-```python
-import re
-from shinkai_local_tools import shinkai_llm_prompt_processor
-```
-
-Add an input for additional instructions to generate the lesson text, so that the user can customize it. Set default to 'none'.
-
-```python
-class INPUTS:
-    file_path: str
-    additional_lesson_generation_instructions: Optional[str] = "none"
-```
-
-Add an output for the generated lesson :
-
-```python
-class OUTPUT:
-    content_of_the_presentation: Optional[List[str]]
-    status: str
-    message: Optional[str]
-    lesson_about_the_presentation: Optional[str]
-```
-
-### 2.2 Using an elaborate prompt to generate optimal lesson text
-
-In the run function, add a step to define a detailed prompt for the text generation. Give some context describing the type of content the LLM will use and its specificities. Include formatting instructions. Include the optional additional instructions coming from the user. Organise it well and use tags to make things clear for the LLM :
-
-```python [expandable]
-    # Step 2: Formulate the prompt for the LLM
-    prompt = (
-        "<personality>"
-        "You are a domain expert teacher extremely good at creating university level educational material."
-        "</personality>"
-        "<task>"
-        "Create the text for an audio lesson of the following content extracted from a powerpoint."
-        "</task>"
-        "<context>"
-        "The content comes from text extraction and OCR from a powerpoint, and is provided shape by shape and slide by slide."
-        "Because of this the content form each slide might be a bit disorganised or sparse. You need to take your time step-by-step to reconnect the different pieces of content and understand how they fit together."
-        "This content might also contain special characters coming from the text extraction formatting. Make sure to handle these special characters gracefully, they shouldn't appear in the text for an audio lesson."
-        "</context>"
-        "<lesson instructions>"
-        "Do your best to understand in detailed the content of each slide, taking into consideration that it might be a bit disorganised due to the text extraction process."
-        "The lesson should be very detailed and precise, and go over absolutely all the content in an organised manner. Be sure to use the entirety of the content for the lesson."
-        "The lesson should be clear and engaging."
-        "Make sure to introduce it when you move on to a new (sub)topic, so that the listener can easily follow along."
-        "</lesson instructions>"
-        "<additional_instructions>"
-        f"{inputs.additional_lesson_generation_instructions}"
-        "</additional_instructions>"
-        "<format instructions>"
-        "Ensure the output is in one continuous paragraph without any special formatting or extra characters. Do not use and \ n formatting, just make it one long endless paragraph. It's should be flowing text. You can still include sections in it but present them orally, not with special formatting."
-        "The text must flow. Do not use any formatting, but just plain text."
-        "</format instructions>"
-        "<content>"
-        "Here is the content to use for the lesson: "
-        f"{' '.join(slides_content)}"
-        "</content>"
-    )
-```
-
-### 2.3 Calling the LLM prompt processor tool
-
-Just under, add a step to call the LLM prompt processor tool, using the prompt defined above.
-
-```python
-    # Step 3: Use the LLM to generate the audio lesson text
-    llm_response = await shinkai_llm_prompt_processor({"prompt": prompt, "format": "text"})
-    generated_text = llm_response['message']
-```
-### 2.4 Cleaning the text
-
-Along with the previously defined functions at the top of the code, add a function to clean the generated lesson text from special characters, in case the LLM includes some despite our prompt format instructions :
-
-```python
-def clean_special_characters(text: str) -> str:
-    text = re.sub(r'\n+', ' ', text)
-    text = re.sub(r'#+\s*', ' ', text)
-    text = re.sub(r'\*+', ' ', text)
-    text = re.sub(r'\s+', ' ', text)
-    return text.strip()
-```
-
-Add a step in the run function to use it :
-
-```python
-    # Step 4: Clean any special characters from the generated text
-    cleaned_text = clean_special_characters(generated_text)
-```
-
-Edit the outputs of the run function to also include the cleaned generated text.
-
-```python
-    output = OUTPUT()
-    output.content_of_the_presentation = slides_content
-    output.lesson_about_the_presentation = cleaned_text
-    output.status = "success"
-    return output
-```
-
-## Part 3 : Adding an optional text to speech feature to create an audio file of the lesson
-
-### 3.0 Using Shinkai AI assisted tool creation UI
-
-Now you can use the AI assisted tool creation to add a final optional step which generates an audio file of the cleaned lesson text generated by the 2nd feature of the tool.
+Now you can use the AI-assisted tool builder to add a final optional step which generates an audio file of the cleaned lesson text generated by the 2nd feature of the tool.
 
 To do so, activate the tool 'eleven_labs_text_to_speech', and use a prompt similar to this one :
 
@@ -884,107 +543,76 @@ Each step should have its own informative error messaging.
 The output must contain the extracted content, the generated text, the optional audio file, error logs and a status.
 </output instructions>
 ```
-At the very least such prompt should add a good code flow for the intended last feature, from which you can debug, edit, improve.
+
+![Build the tool third step](/images/pptx_to_audio_prompt_third_step.png)
+
+At the very least, such prompt should add a good code flow for the intended last feature, from which you can debug, edit, improve.
 
 Similar prompts were actually used to add this next feature, with step-by-step improvements through prompting and few manual coding.
 
-Below you'll find a full description of the code to add the audio file generation.
+You should get code that :
+* adds the 'eleven_labs_text_to_speech' tool to the import, and also 'shutil' (used for file operations).
+* adds to the the config the option to generate the audio 
+* adds to the output the optional audio file
+* defines a function to get the name of the .pptx file. It will be used to save the audio file with the same name.
+* adds a step to the validate_config function to also check the configuration of the optional audio generation.
+* adds a step to the run functions to call the 'eleven_labs_text_to_speech' tool. This step is optional according to the configuration.
+* adds a step to change the name of the audio file generated by the text-to-speech tool : make it more user-friendly by simply using the name of the original .pptx file.
+* includes an error message if the audio file generation failed.
 
-### 3.1 Setting up the audio file generation feature
+Note: You can modify the tool to use another text-to-speech provider, including local options, by adjusting the relevant code.
 
-Near the start of the code add the 'eleven_labs_text_to_speech' tool to the import. And also 'shutil' (used for file operations).
+## Part 4 : Troubleshooting
 
-```python
-import shutil
-from shinkai_local_tools import shinkai_llm_prompt_processor, eleven_labs_text_to_speech
+If the tool created or modified by the AI assistance generates errors when you run it, consider these steps:
+
+* **Provide Feedback** : Copy the error message and the relevant code snippet back into the AI tool builder chat. Explain what input caused the error and ask the AI to fix it.
+* **Use a More Capable LLM** : Some LLMs are better at coding tasks than others. If you're using a less capable model, try switching to one known for stronger coding abilities.
+* **Refine Your Prompts** : Make your instructions even more specific. Break down complex requests into smaller sub-tasks. Clearly define expected inputs, outputs, and error conditions for each part.
+* **Isolate the Problem** : If the multi-step tool fails, try running only the first step (e.g., text extraction) by commenting out later steps or using a simpler version of the tool. Once the first step works, incrementally add back the next steps until you find where the error occurs.
+* **Examine Intermediate Outputs** : Modify the code temporarily to print or output intermediate results (like the raw extracted text before the LLM call, or the LLM output before cleaning/TTS) to see if the data looks as expected at each stage.
+* **Seek Community Support** : For additional help, contact the Shinkai support team or join the Shinkai community on Discord to ask questions and share your problem.
+
+## Part 5 : Perfecting your tools combination : useful prompts
+
+For complex tools that chain multiple steps and call other tools, careful design is crucial for usability, reliability, and maintainability. Here are common areas for refinement and example prompts you can use with the AI tool builder to improve your PPTX-to-audio tool :
+
+**Changing Configurations to Inputs :**
+Decide carefully what should be a fixed setting (config) versus a per-run choice (input). Things that change often belong in inputs.
+```text
+- Move Audio Option to Input : Change generate_audio from a CONFIG parameter to an INPUTS parameter. Type: string, valid values: 'yes' or 'no', default: 'no'. Add input validation for these values. Error message if invalid: "Invalid input for generate_audio: Must be 'yes' or 'no'." Keep rest unchanged.
+- Make Tesseract Path an Optional Input : Change tesseract_path from a mandatory CONFIG parameter to an optional INPUTS parameter. If not provided by the user, attempt to find Tesseract in the system PATH or use a reasonable default. Add validation to ensure the provided or found path points to a valid, executable file. Error message if invalid: "Invalid Tesseract path: Cannot find or execute the Tesseract binary." Keep rest unchanged.
+```
+**Renaming Parameters :**
+Ensure variable, function, and output names are explicit and unambiguous. This helps both users understand the tool's parameters and results and the AI interpret the results as well as understand how to apply code modification prompts correctly.
+```text
+- Rename Output Fields : Rename the output field content_of_the_presentation to extracted_raw_text_content. Rename the output field lesson_about_the_presentation to generated_lesson_text. Update all internal references to these fields accordingly. Keep rest unchanged.
+- Rename Instruction Input : Rename the input field additional_lesson_generation_instructions to custom_llm_instructions. Update all internal references, including within the LLM prompt construction. Keep rest unchanged.
+```
+**Adding Optional Features :**
+Introduce new capabilities or customization options for the user.
+```text
+- Add Slide Selection Input : Add a new optional INPUTS parameter process_slides. Type: string, default: 'all'. Allow comma-separated slide numbers (e.g., '1,3,5-7'). Modify the text extraction logic to process only the specified slides. Add validation to ensure input is 'all' or valid numbers/ranges. Error message if invalid: "Invalid process_slides value: Must be 'all' or comma-separated slide numbers/ranges (e.g., '1,3,5-7')." Keep rest unchanged.
+- Add Voice Selection Input : Add a new optional INPUTS parameter audio_voice_id. Type: string, default: 'default' (or a sensible default voice ID from ElevenLabs). Pass this value to the eleven_labs_text_to_speech tool when called. (Note: Validation might occur within the ElevenLabs tool itself, but you could add a basic check if needed). Keep rest unchanged.
+```
+**Enhancing Validation and Error Handling :**
+Add checks for inputs and configurations early to fail fast and provide clear error messages. Make error reporting more specific.
+```text
+- Validate Input File Path : Enhance validation for the file_path input. Check if it ends with '.pptx' (case-insensitive). For local paths, verify the file exists. For URLs, perform a basic check if it looks like a valid HTTP/HTTPS URL (detailed check happens during download). Error message if basic checks fail: "Invalid file_path: Must be a valid local .pptx file path or a valid HTTP/HTTPS URL pointing to a .pptx file." Keep rest unchanged.
+- Include Specific LLM Error : Modify the error handling for the shinkai_llm_prompt_processor call. If the call fails or the LLM tool returns an error status, capture the specific error message provided by the LLM tool and include it in the main tool's OUTPUT.message. For example: "LLM processing failed: [Specific error message from LLM tool]". Keep rest unchanged.
+- Check Tesseract Path Early : Add validation in validate_config (or validate_inputs if moved) to explicitly check if the tesseract_path (whether from config or input) points to an existing, executable file before attempting any OCR. Error message: "Tesseract path check failed: Path '[path]' is not a valid executable file." Keep rest unchanged.
+```
+**Enhancing Output Flexibility :**
+Provide more detailed or intermediate outputs for debugging or advanced use cases.
+```text
+- Output Raw OCR Text Separately : Add a new OUTPUT field extracted_ocr_texts. Type: List[str]. During shape processing, when OCR is performed on an image, store the extracted text in this list in addition to adding it to the main extracted content. Make this output optional using a config. Keep rest unchanged.
+- Output LLM Prompt : Add a new OUTPUT field llm_prompt_used. Type: string. Before calling the shinkai_llm_prompt_processor, store the fully constructed prompt string in this output field for debugging purposes. Make this output optional using a config. Keep rest unchanged.
+- Output Intermediate Text : Add a new OUTPUT field raw_llm_generated_text. Type: string. Store the text received directly from the LLM before the clean_special_characters step is applied. Make this output optional using a config. Keep rest unchanged.
 ```
 
-Edit config and output classes to also include the option to generate the audio and the optional audio file.
+## Part 6 : Improving the metadata of the tool
 
-```python
-class CONFIG:
-    tesseract_path: str
-    generate_audio: str  # "yes" or "no"
-
-class OUTPUT:
-    content_of_the_presentation: Optional[List[str]]
-    status: str
-    message: Optional[str]
-    lesson_about_the_presentation: Optional[str]
-    audio_file: Optional[str]
-```
-
-Define a function to get the name of the .pptx file. It will be used to save the audio file with the same name.
-
-```python
-def get_base_filename(file_path: str) -> str:
-    """Extract the base filename without extension from a path"""
-    base_name = os.path.basename(file_path)
-    if '?' in base_name:
-        base_name = base_name.split('?')[0]
-    return os.path.splitext(base_name)[0]
-```
-
-Add a step to the validate_config function to also check the configuration of the optional audio generation.
-
-```python
-    # Validate generate_audio
-    if config.generate_audio.lower() not in ["yes", "no"]:
-        errors.append(f"Invalid config value for generate_audio: {config.generate_audio}. Must be 'yes' or 'no'.")
-```
-
-### 3.2 Calling the text to speech tool
-
-Add a step to the run function to use the 'eleven_labs_text_to_speech' tool. This step is optional according to the configuration. Add a step to change the name of the audio file generated by the text-to-speech tool : make it more user friendly by simply using the name of the original .pptx file. Also include an error message if the audio file generation failed.
-
-```python [expandable]
-    # Step 5: Convert the lesson text to audio if configured to do so
-    audio_file_path = None
-    if config.generate_audio.lower() == "yes":
-        try:
-            # Generate the audio with the TTS function
-            tts_response = await eleven_labs_text_to_speech({"text": cleaned_text})
-            generated_audio_path = tts_response['audio_file']
-            
-            # Get the base filename from the input file path and create the desired output path
-            base_filename = get_base_filename(inputs.file_path)
-            desired_audio_path = os.path.join(home_path, f"{base_filename}.mp3")
-            
-            # Rename the generated audio file to match the presentation name
-            if os.path.exists(generated_audio_path):
-                # Check if the destination file exists and remove it if it does
-                if os.path.exists(desired_audio_path):
-                    os.remove(desired_audio_path)
-                # Copy the generated file to the desired location with the new name
-                shutil.copy2(generated_audio_path, desired_audio_path)
-                # Remove the original generated file
-                os.remove(generated_audio_path)
-                audio_file_path = desired_audio_path
-            else:
-                audio_file_path = generated_audio_path  # Fallback to the original path if something went wrong
-        except Exception as e:
-            o = OUTPUT()
-            o.status = "error"
-            o.message = f"Failed to generate or rename audio: {str(e)}"
-            return o
-```
-
-Edit the outputs of the run function to also include the generated audio file.
-
-```python
-    output = OUTPUT()
-    output.content_of_the_presentation = slides_content
-    output.lesson_about_the_presentation = cleaned_text
-    output.audio_file = audio_file_path
-    output.status = "success"
-    return output
-```
-
-Please note that you could also modify the tool to use another text-to-speech provider, even a local one.
-
-## Part 4 : Improving the metadata of the tool
-
-Shinkai automated the tool metadata generation, but you can improve it.
+Shinkai automates tool metadata generation, but you can enhance it.
 
 Good tool metadata should include :
 * an explicit tool title
@@ -1008,7 +636,7 @@ It extracts content slide by slide and shape by shape.
 It uses OCR to extract text from image shapes (using Tesseract).
 It generates a detailed lesson text about the .pptx file using a LLM and optional additional instructions.
 Optionally, it generates a mp3 audio file of the lesson using ElevenLabs text-to-speech.
-This tool requires Tesseract to be installed for OCR. It also requires the tool “ElevenLabs Text to Speech” from the Shinkai AI Store, and an API key for ElevenLabs text-to-speech if choosing to generate audio files.
+This tool requires Tesseract to be installed for OCR. It also requires the tool “ElevenLabs Text-to-Speech” from the Shinkai AI Store, and an API key for ElevenLabs text-to-speech if choosing to generate audio files.
 You can download Tesseract from here : https://github.com/UB-Mannheim/tesseract/wiki. You can get an ElevenLabs API key here : https://elevenlabs.io/developers.
 ```
 
@@ -1105,27 +733,29 @@ Metadata JSON :
 }
 ```
 
+![Improve the metadata](/images/pptx_to_audio_metadata.png)
+
 Now the tool should be complete. Save it.
 
 Below you'll find usage examples.
 
-## Part 5 : Using the tool 'PPTX Content Extractor With OCR And Audio Lesson Generator'
+## Part 7 : Using the tool 'PPTX Content Extractor With OCR And Audio Lesson Generator'
 
-### 5.1 Installing extra components and setting up configurations
+### 7.1 Installing extra components and setting up configurations
 
-Install [Tesseract](https://elevenlabs.io/developers) for OCR, and set its executable path in the configuration of the 'PPTX Content Extractor With OCR And Audio Lesson Generator' tool.
+Install [Tesseract](https://github.com/UB-Mannheim/tesseract/wiki) for OCR, and set its executable path in the configuration of the 'PPTX Content Extractor With OCR And Audio Lesson Generator' tool.
 
 Install the 'eleven_labs_text_to_speech' tool from the [Shinkai AI Store](https://store.shinkai.com/product/local:::__official_shinkai:::eleven_labs_text_to_speech). Get an [ElevenLabs API key](https://elevenlabs.io/developers) with some credits. Go to the configuration tab of this ElevenLabs Shinkai tool and set your API key and pick a voice.
 
 Set audio generation to 'yes' or 'no' in the configuration of the 'PPTX Content Extractor With OCR And Audio Lesson Generator'.
 
-### 5.2 Usage examples
+### 7.2 Usage examples
 
-To generate an audio lesson of a .pptx file, have the audio generation set on 'yes' in configuration, and in your prompt simply mention the filename.
+To generate an audio lesson from a .pptx file, set audio generation to 'yes' in the configuration and include the filename in your prompt.
 
 ![pptx_lesson_generator5](/images\pptx_lesson_generator5.png)
 
-To simply interact through prompts with the content of the .pptx file, have the audio generation set on 'no', include the file path in your prompt, and add instructions.
+To interact with the .pptx file content through prompts, have the audio generation set on 'no', include the file path in your prompt, and add instructions.
 
 ![pptx_lesson_generator](/images\pptx_lesson_generator.png)
 
