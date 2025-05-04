@@ -12,7 +12,7 @@ You will learn how to :
 
 * use an executable path to run another software from Shinkai
 * use LLMs to interact with your R scripts text outputs
-* build the tool using the Shinkai AI assistance
+* build the tool using Shinkai AI-assisted tool builder
 * code the tool
 * integrate error logging at each step
 
@@ -29,14 +29,16 @@ This tutorial is split into 3 parts, and you can skip to the one that interests 
 Note : The purpose of the path of the project root directory in input is to ensure the R script runs with its original working directory context, which helps maintain reliable file access patterns, especially if the R script uses relative file paths (e.g. data/file.csv). Without this, the script would still execute, but its ability to find and interact with project files would be compromised. Well organised R projects do use a project root directory and relative file paths to keep things organised and functional.
 
 
-## Part 1 : Building a R script executor tool using Shinkai AI assisted tool creation UI
+## Part 1 : Building a R script executor tool using Shinkai AI-assisted tool builder
 
-Shinkai offers an effortless tool building experience thanks to its AI assisted tool creation UI, where even libraries dependencies and tool metadata are handled automatically.
+Shinkai offers an effortless tool building experience thanks to its AI-assisted tool builder, where even libraries dependencies and tool metadata are handled automatically.
 
 In the tool creation UI :
-* select a performant LLM (e.g. gpt_4o, shinkai_free_trial)
+* select a performant LLM (e.g., shinkai_code_gen, shinkai_free_trial, gpt_4_1)
 * select a programming language (we'll use Python in this tutorial)
 * write a prompt describing the tool well and execute it
+
+![R script executor prompt](/images/R_script_executor_builder_prompt.png)
 
 For a good result your prompt should be detailed and clearly describe :
 * the task the tool should accomplish and how
@@ -77,7 +79,7 @@ The tool has 2 outputs : the output of the R script execution, and the error mes
 ```
 
 Such prompt can create the tool successfully.
-At the very least it should create a good code flow for the intended tool, from which you can debug, edit, improve (both using prompts and manual code editing).
+At the very least, it should create a good code flow for the intended tool, from which you can debug, edit, improve (both using prompts and manual code editing).
 If you get error messages, you can copy paste them to the AI assistance eventually with added instructions and it should be able to fix the tool.
 Once the tool is working, make sure to edit the metadata to make it as informative and useful as possible.
 
@@ -315,6 +317,8 @@ And here is good metadata for the tool. Make sure to :
 
 First, enter your Rscript executable path in the tool configuration.
 
+![R script executor configuration](/images/R_script_executor_configuration.png)
+
 In Shinkai chat you can use the tool :
 * select an adequate LLM : a performant LLM able to understand complex and potentially long context (especially if executing advanced R scripts), or a tailored LLM specifically performant on the type of outputs your R script creates
 * type '/' to access the list of available tools
@@ -323,7 +327,9 @@ In Shinkai chat you can use the tool :
 * add a prompt to interact with the text outputs of the R script
 * press 'enter' or click on the arrow to send
 
-When you execute the tool, the full text output (a.k.a. prints, or console logs) of your R script execution is passed as context to the LLM answering you. This R output contains line by line the script executed, the resulting outputs, the errors.
+![R script executor usage](/images/R_script_executor_usage.png)
+
+When you execute the tool, the full text output (a.k.a. prints, or console logs) of your R script execution is passed as context to the LLM answering you. This R output contains line-by-line the script executed, the resulting outputs, the errors.
 
 So you can ask questions about :
 * The R script itself
@@ -338,16 +344,16 @@ Here are some prompt examples :
 
 Below are some response examples from the R Script Executor tool.
 
-Answering which linear model is the best :
+* Answering which linear model is the best :
 ![R_script_executor_1](/images\R_script_executor_1.png)
 
-Summarizing :
+* Summarizing :
 ![R_script_executor_2](/images\R_script_executor_2.png)
 
-Showing an extract of the data :
+* Showing an extract of the data :
 ![R_script_executor_3](/images\R_script_executor_3.png)
 
-Error handling :
+* Error handling :
 ![R_script_executor_4](/images\R_script_executor_4.png)
 
 ## Next Steps
