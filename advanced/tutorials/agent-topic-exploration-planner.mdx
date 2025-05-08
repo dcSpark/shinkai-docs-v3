@@ -1,0 +1,201 @@
+---
+title: 'Building Your Personal AI Learning Tutor Agent'
+description: 'A tutorial to set up a Shinkai AI Agent for personalized learning plan creation.'
+icon: 'graduation-cap'
+---
+
+This tutorial walks you through creating a Shinkai AI Agent that acts as a personal learning tutor. This agent will interactively help you build structured learning plans with curated resources for any topic.
+
+You'll build an AI tutor that :
+* Adapts to the depth of knowledge wanted.
+* Generates relevant subtopics.
+* Collects your feedback.
+* Finds top YouTube videos, websites, and research articles.
+* Organizes resources into a progressive learning plan.
+* Read online material and help you understand.
+* Export the learning plan.
+
+## Step 1 : Conceptualize Your Learning Tutor Agent
+
+Before diving into tools or Agent setup, first define your Agent's purpose and capabilities :
+
+* **Personality :** Helpful, enthusiastic, interactive.
+* **Core Task :** Collaboratively build a structured learning plan.
+* **Key Features :** Subtopic generation, resource finding (videos, sites, articles), transcript summarization, progressive content ordering, user feedback integration.
+* **Output :** A well-organized learning plan with clear descriptions and links.
+* **Extra Features :** Download a webpage, export learning plan to markdown file.
+
+Understanding these requirements will guide your tool selection and Instructions creation.
+
+## Step 2 : Install Required Shinkai Tools
+
+Based on your Agent's concept, ensure the following tools are installed in your Shinkai Desktop App. They are available on the [Shinkai AI Store](https://store.shinkai.com/) :
+
+* YouTube Search
+* YouTube Transcript Summarizer
+* Google Search
+* Arxiv Search
+* Download Pages
+* Markdown Exporter
+
+![Shinkai AI Store - Tool Installation](/images/learning_tutor_agent/store_youtube.png)
+
+Additional search tools are available in the Shinkai AI Store. You could add relevant spcecialized search tools to your Agent.
+
+Should you require a new tool, try Shinkai AI-assisted tool builder.
+
+## Step 3 : Configure Each Tool
+
+Next, navigate to the **Shinkai Tools** tab (wrench icon), and set up the configuration of each tool requiring it. While many tools have sensible defaults, review and adjust settings if needed.
+
+* **YouTube Search :** Enter your [SerpAPI key](https://serpapi.com/).
+* **Download Pages :** You can specify your Chrome path, but the tool most likely can detect it.
+* **Other Tools :** Here other tools don't require any setup.
+
+![Tool Configuration in Shinkai](/images/learning_tutor_agent/tool_config.png)
+
+Note that for additional tools, or for different Agents, you might have to configure more tools. Some tools can have advanced configurations.
+
+You will also be able to override the tools configuration specifically for your AI Agent in its own configuration.
+
+## Step 4 : Create a new AI Agent
+
+1.  In the Shinkai app, click the **Agents** button (robot icon) on the left-side menu.
+2.  Click **+ Add Agent**.
+
+## Step 5 : Define Agent Name and Description
+
+*   **Agent Name :** A unique explicit identifier (e.g., "Learning tutor")
+*   **Description :** A brief summary of its role (e.g., "AI tutor for creating personalized learning plans with videos, webpages and articles.").
+
+![Agent Persona Setup](/images/learning_tutor_agent/name_description_instructions.png)
+
+## Step 6 : Craft the Instructions
+
+The Instructions guide the Agent's behavior, tasks, and interaction style. Paste the following detailed prompt into the "Instructions" field :
+
+```text System Prompt for Learning Tutor Agent [expandable]
+<personality>
+You are a helpful enthusiastic tutor planning a learning journey on topics of interest for the user. You interact a lot with the user to make propositions and make sure the learning plan suits their need.
+</personality>
+
+<task>
+Your task is to interact with the user to build a comprehensive list of resources to explore, adapted to the complexity or depth wanted, and in an appropriate progressive order. Your learning plans include the best youtube videos on the topics, and if the user wants to, it also include informative well written websites, and deep research articles.
+</task>
+
+<process to follow>
+Step 0 : You first ask the user what level of information complexity or depth they want : entry level, intermediate, or advanced.
+Step 1 : Given a query on a topic, you first divide the topic into 3 to 5 relevant subtopics with the appropriate complexity level. You formulate the topics accordingly.
+Step 2 : You propose the subtopics to the user and gather feedback.
+Step 3 : For the original topic plus for every single subtopic you and the user agreed upon, you search on youtube for the best top videos about each topic. Remember to look for videos according to the user defined level of complexity.
+Step 4 : Wait for all the video searches to be finished.
+Step 5 :  For every single video you found, you then use the transcript summarizer. Make sure to use it for all the videos. If a transcript fails, you can retry it once, otherwise just keep proceeding with the others.
+Step 6 : Wait for all the transcripts to be done.
+Step 7 : You evaluate all the summaries together to define an ordered list of the best videos to watch that makes sense, is progressive for the user to learn the topic. Each subtopic should have 2 to 4 videos to watch.
+Step 8 : You present this first plan to the user, and ask if they would like some websites reading recommendations too, and on which topics of the learning plan.
+Step 9 : You use the google search tool to research each subtopic in the learning plan and agreed upon with the user. Remember to search according to the user defined level of complexity. You include in the learning plan the best web resource for each section.
+Step 10 : You present this learning plan to the user, and ask if they would like some further studying with research articles, and on which topics of the learning plan.
+Step 11 : You use the Arxiv search tool to research each subtopic in the learning plan and agreed upon with the user. You include in the learning plan, for each section, the best most cutting edge research articles on the subtopic.
+Step 12 : You present the final learning plan to the user. Adapt the plan according to the user defined level of complexity.
+Step 13 : You interact with the user to refine the plan, and to help them learn. You also have access to webpage download tool to help the user understand a particular web resource. You also have access to a Markdown eporter if the user wants to save the learning plan (then make sure the exported learning plan looks awesome and clear in markdown format.)
+</process to follow>
+
+<output>
+You return a comprehensive learning plan of adapted complexity or depth.
+It is organised by subtopics.
+It focuses first and foremost on a list of videos to watch.
+You present clearly what each video is about.
+And according to the user interest, each section potentially includes further web resource to read, and possibly deep research articles to study.
+Do not show any link to the youtube transcript summaries.
+Provide user friendly links to the youtube videos, to the web resources, and to the research articles.
+The writing style is adapted to the complexity or depth wanted by the user.
+</output>
+
+<interactions with the user>
+It's important that between each step you interact with the user.
+Make this flow smart, interactive, helpful.
+</interactions with the user>
+```
+
+Notice we use tags to facilitate the LLM understanding. It's not mandatory, but it's a good practice.
+
+## Step 7 : Select and Configure the LLM/AI
+
+Choose an LLM/AI to power your Agent and configure its parameters :
+* Select an LLM/AI : Pick a capable model (e.g., shinkai_free_trial, gpt_4_1). Note you can even pick an existing AI Agent.
+* Advanced options (optional) : enable/disable stream, adapt the parameters for tailored LLM behavior.
+
+![Advanced LLM options](/images/learning_tutor_agent/llm_advanced_options.png)
+
+
+## Step 8 : Add Agent Knowledge (optional)
+
+The "Knowledge" section lets you attach files/folders for the Agent to reference. For this specific tutor Agent, it's optional as it primarily fetches information dynamically. You could add files on general learning strategies if desired.
+
+## Step 9 : Enable Tools
+
+In the Agent's configuration screen, under "Tools", enable all tools installed in Step 2 :
+
+* YouTube Search
+* YouTube Transcript Summarizer
+* Google Search
+* Arxiv Search
+* Download Pages
+* Markdown Exporter
+
+The Agent can only use tools that are explicitly toggled on here.
+
+![Activating tools](/images/learning_tutor_agent/tools.png)
+
+Note that here you can override tools configuration specifically for this Agent. It won't affect the configuration of the tools for the rest of the platform.
+
+## Step 10 : Schedule task (optional)
+
+Shinkai lets you automate tasks execution by AI Agents on precise schedules.
+
+We don't need it for our Learning Tutor AI Agent, as we use an interactive process.
+
+## Step 11 : Save and Interact with Your Learning Tutor Agent
+
+Click Save.
+To use it, open a new chat.
+Select your learning_tutor from the model selector. Custom Agents appear at the top.
+
+![Agent selection](/images/learning_tutor_agent/agent_selection.png)
+
+You can now start interacting with your AI Learning Tutor.
+
+Initiate a conversation by stating a topic you want to learn. For instance :
+
+* You : "Hi ! I'd like to learn about Quantum Computing."
+
+The Agent should then begin its process : asking for a level of kownledge depth, proposing subtopics, asking for feedback, and guiding you through building the learning plan as defined in its Instructions.
+
+Below are screenshots of a session with our Learning Tutor AI Agent.
+
+![Starting chat](/images/learning_tutor_agent/chat_start.png)
+![Adjusting topics](/images/learning_tutor_agent/chat_topic_adjustments.png)
+![First learning plan](/images/learning_tutor_agent/chat_topic_first_plan.png)
+![Adding reading material](/images/learning_tutor_agent/chat_adding_reading_resources.png)
+![Downloading and explaining article](/images/learning_tutor_agent/chat_explaining_article.png)
+![Exporting learning plan](/images/learning_tutor_agent/chat_export.png)
+
+## Troubleshooting and Fine-tuning
+
+* **Agent Not Following Instructions** : Review the Instructions for clarity. Consider a more capable LLM or adjust Temperature.
+* **Tools Not Used Correctly** : Ensure tools are installed (Step 2), configured (Step 3), and enabled for this Agent (Step 8). The Instructions must clearly instruct tool usage.
+* **Long Waits** : Be patient ; resource fetching and summarization take time.
+* **Iterative Development** : Refine your Agent's Instructions based on interactions.
+
+## Considerations
+
+* **Tool Reliability/Quotas** : External tools may have limits or fail.
+* **Information Quality** : Always critically evaluate resources.
+
+## Conclusion
+
+You've now built a personalized AI Learning Tutor Agent in Shinkai !
+
+This demonstrates how combining conceptualization, tool setup, detailed instructions, and LLM configuration creates powerful, specialized AI assistants.
+
+For further assistance, explore the rest of Shinkai's documentation, contact support, or join the community on Discord.
