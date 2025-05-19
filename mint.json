@@ -97,13 +97,13 @@
     {
       "group": "Tutorials",
       "pages": [
+        "advanced/tutorials/setting-up-twitter",
+        "advanced/tutorials/agent-learning-tutor",
+        "advanced/tutorials/combining-tools-from-pptx-presentation-to-audio-lesson",
+        "advanced/tutorials/human-in-the-loop",
         "advanced/tutorials/blockchain-address-portfolio-tracker",
         "advanced/tutorials/blockchain-data-AI-Agent",
-        "advanced/tutorials/combining-tools-from-pptx-presentation-to-audio-lesson",
-        "advanced/tutorials/running-R-scripts-from-Shinkai",
-        "advanced/tutorials/setting-up-twitter",
-        "advanced/tutorials/human-in-the-loop",
-        "advanced/tutorials/agent-learning-tutor"
+        "advanced/tutorials/running-R-scripts-from-Shinkai"   
       ]
     },
     {
