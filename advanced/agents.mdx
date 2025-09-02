@@ -15,7 +15,7 @@ A **Custom Agent** in Shinkai packages:
 
 By configuring these elements, you create a specialized Agent suited to a specific use case or workflow. This differs from using a default or global model because it bundles everything the model needs—prompting rules, relevant documents, and tool access—into a single, easy-to-manage configuration.
 
-![Agent Overview](/images/soup_agent.png)
+![Agent Overview](/images/agent_tab.png)
 
 ### How to navigate the Agent Creation UI
 
@@ -97,10 +97,10 @@ These parameters can be tweaked individually or together to balance creativity, 
 2. **Select** which files or folders the Agent should have access to in its configuration screen (e.g., “Set Chat Context”).  
 3. **Confirm** your selection so the Agent can retrieve relevant information from them during the chat session.
 
-### 6.3 Example: “Soup Recipes.pdf”
-- If your Agent’s context includes a PDF with soup recipes, the LLM can pull relevant recipes or cooking instructions from it when a user asks.
+### 6.3 Example: “knwowledge_repair_mate.pdf”
+- If your Agent’s knowledge includes a PDF with knowledge of best DIY repair practices and tutorial resources, the LLM can pull top resources when searching guides, and include best recomendations in its answers.
 
-![Add Context Documents](/images/agent_context_doc.png)
+![Add Context Documents](/images/agent_knowledge.png)
 
 ---
 
@@ -108,7 +108,9 @@ These parameters can be tweaked individually or together to balance creativity, 
 
 To use an agent, navigate to a new chat and from the same selector where you choose the model, you can now select the agent you want to use. Custom agents will appear at the top of the list.
 
-![Agent Selector](/images/selecting_agent.png)
+![Agent Selector 1](/images/selecting_agent_1.png)
+
+![Agent Selector 2](/images/selecting_agent_2.png)
 
 ![Agent Chat](/images/chat_agent.png)
 
