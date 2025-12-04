@@ -32,7 +32,14 @@
   "feedback": {
     "thumbsRating": true
   },
+  "primaryTab": {
+    "name": "Shinkai App"
+  },
   "tabs": [
+    {
+      "name": "Shinkai Web",
+      "url": "shinkai-web"
+    },
     {
       "name": "Developer API Reference", 
       "url": "api-reference"
@@ -58,6 +65,30 @@
         "what-is-shinkai",
         "quickstart",
         "basics/ai-agents" 
+      ]
+    },
+    {
+      "group": "Get Started",
+      "pages": [
+        "shinkai-web/Welcome_1",
+        "shinkai-web/Quickstar_2",
+        "shinkai-web/Installation_3"
+      ]
+    },
+    {
+      "group": "Basic Features",
+      "pages": [
+        "shinkai-web/WhatsAIagent_4",
+        "shinkai-web/Overview_5",
+        "shinkai-web/AIChatsonWeb_6",
+        "shinkai-web/CreatingAgentsonWeb_7"
+      ]
+    },
+    {
+      "group": "Advanced Features",
+      "pages": [
+        "shinkai-web/AgentCollaboration_8",
+        "shinkai-web/x402PaymentsOnWeb_9"
       ]
     },
     {
