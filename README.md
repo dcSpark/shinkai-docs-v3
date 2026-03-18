@@ -1,25 +1,26 @@
 # Shinkai Docs
-This page is built using Mintlify. 
+This site is built with Docusaurus.
 
 ### Development
 
-Install the [Mintlify CLI](https://www.npmjs.com/package/mintlify) to preview the documentation changes locally. To install, use the following command
+Install dependencies and run the docs site locally from the repo root:
 
 ```
-npm i -g mintlify
-```
-
-Run the following command at the root of your documentation (where mint.json is)
-
-```
-mintlify dev
+npm install
+npm run start
 ```
 
 ### Publishing Changes
 
-Install our Github App to auto propagate changes from your repo to your deployment. Changes will be deployed to production automatically after pushing to the default branch. Find the link to install on your dashboard. 
+Build the static site with:
+
+```bash
+npm run build
+```
+
+The production output is generated in `build/` and can be deployed to any static hosting provider.
 
 #### Troubleshooting
 
-- Mintlify dev isn't running - Run `mintlify install` it'll re-install dependencies.
-- Page loads as a 404 - Make sure you are running in a folder with `mint.json`
+- Local preview is not starting: run `npm install` and then `npm run start`
+- Static build issues: run `npm run clear` and then `npm run build`

@@ -11,7 +11,7 @@ import {
   getAreaTabs,
   getTopbarLinks,
   getTopbarCta,
-} from "../../lib/mintNavigation";
+} from "../../lib/docsNavigation";
 
 export default function Navbar() {
   const { pathname } = useLocation();

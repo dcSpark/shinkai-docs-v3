@@ -1,7 +1,7 @@
 import MDXComponents from "@theme-original/MDXComponents";
-import * as MintCompat from "../components/MintCompat";
+import * as DocBlocks from "../components/DocBlocks";
 
 export default {
   ...MDXComponents,
-  ...MintCompat,
+  ...DocBlocks,
 };

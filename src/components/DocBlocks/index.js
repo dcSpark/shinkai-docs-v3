@@ -88,8 +88,8 @@ export function Frame({ children }) {
 export function CardGroup({ cols = 2, children }) {
   return (
     <div
-      className="not-prose my-6 grid grid-cols-[repeat(var(--mint-columns),minmax(0,1fr))] gap-4 max-[996px]:grid-cols-1"
-      style={{ "--mint-columns": String(cols) }}
+      className="not-prose my-6 grid grid-cols-[repeat(var(--doc-columns),minmax(0,1fr))] gap-4 max-[996px]:grid-cols-1"
+      style={{ "--doc-columns": String(cols) }}
     >
       {children}
     </div>
@@ -101,7 +101,11 @@ export function Card({ title, href, icon, children }) {
     <>
       {(icon || title) && (
         <div className="mb-[0.65rem] flex items-center gap-[0.65rem]">
-          {icon ? <span className="mr-0.5 inline-flex min-w-[1.2rem] items-center justify-center">{iconGlyph(icon)}</span> : null}
+          {icon ? (
+            <span className="mr-0.5 inline-flex min-w-[1.2rem] items-center justify-center">
+              {iconGlyph(icon)}
+            </span>
+          ) : null}
           {title ? <span className="font-bold">{title}</span> : null}
         </div>
       )}
@@ -162,7 +166,11 @@ export function Accordion({ title, icon, children }) {
   return (
     <details className="not-prose my-3 overflow-hidden rounded-[0.85rem] border border-[rgba(0,0,0,0.08)] bg-white/70 dark:border-[rgba(255,255,255,0.08)] dark:bg-white/[0.03]">
       <summary className="cursor-pointer list-none px-4 py-[0.9rem] font-semibold [&::-webkit-details-marker]:hidden">
-        {icon ? <span className="mr-0.5 inline-flex min-w-[1.2rem] items-center justify-center">{iconGlyph(icon)}</span> : null}
+        {icon ? (
+          <span className="mr-0.5 inline-flex min-w-[1.2rem] items-center justify-center">
+            {iconGlyph(icon)}
+          </span>
+        ) : null}
         <span>{title}</span>
       </summary>
       <div className="px-4 pb-4">{children}</div>

@@ -1,107 +1,97 @@
-{
-  "$schema": "https://mintlify.com/schema.json",
-  "name": "Shinkai Docs",
-  "logo": {
-    "dark": "/logo/logo-dark.svg",
-    "light": "/logo/logo-light.svg"
+module.exports = {
+  name: "Shinkai Docs",
+  logo: {
+    dark: "/logo/logo-dark.svg",
+    light: "/logo/logo-light.svg",
   },
-  "favicon": "/favicon.svg",
-  "colors": {
-    "primary": "#FE6162",
-    "light": "#FE6162",
-    "dark": "#FE6162",
-    "anchors": {
-      "from": "#FE6162",
-      "to": "#AEA89B"
-    }
-  },
-  "topbarLinks": [
+  favicon: "/favicon.svg",
+  topbarLinks: [
     {
-      "name": "Discord",
-      "url": "https://discord.gg/eJBhuTUQCU"
+      name: "Discord",
+      url: "https://discord.gg/eJBhuTUQCU",
     },
     {
-      "name": "Github",
-      "url": "https://github.com/dcSpark/shinkai-apps"
-    }
+      name: "Github",
+      url: "https://github.com/dcSpark/shinkai-apps",
+    },
   ],
-  "topbarCtaButton": {
-    "name": "Get Shinkai",
-    "url": "https://www.shinkai.com/get-shinkai"
+  topbarCtaButton: {
+    name: "Get Shinkai",
+    url: "https://www.shinkai.com/get-shinkai",
   },
-  "feedback": {
-    "thumbsRating": true
+  docAreas: {
+    primaryTab: {
+      name: "Shinkai App",
+      to: "/",
+    },
+    secondaryTabs: [
+      {
+        name: "Shinkai Web",
+        to: "/shinkai-web/Welcome_1",
+      },
+      {
+        name: "Developer API Reference",
+        to: "/api-reference/introduction",
+      },
+    ],
   },
-  "primaryTab": {
-    "name": "Shinkai App"
-  },
-  "tabs": [
+  anchors: [
     {
-      "name": "Shinkai Web",
-      "url": "shinkai-web"
+      name: "Blog",
+      icon: "newspaper",
+      url: "https://blog.shinkai.com/",
     },
     {
-      "name": "Developer API Reference", 
-      "url": "api-reference"
-    }
-  ],
-  "anchors": [
-    {
-      "name": "Blog",
-      "icon": "newspaper",
-      "url": "https://blog.shinkai.com/"
+      name: "Discord",
+      icon: "discord",
+      url: "https://discord.gg/eJBhuTUQCU",
     },
-    {
-      "name": "Discord",
-      "icon": "discord",
-      "url": "https://discord.gg/eJBhuTUQCU"
-    }
   ],
-  "navigation": [
+  navigation: [
     {
-      "group": "Get Started",
-      "pages": [
+      group: "Get Started",
+      pages: [
         "introduction",
         "what-is-shinkai",
         "quickstart",
-        "basics/ai-agents" 
-      ]
+        "basics/ai-agents",
+      ],
     },
     {
-      "group": "Get Started",
-      "pages": [
+      group: "Get Started",
+      pages: [
         "shinkai-web/Welcome_1",
         "shinkai-web/Quickstar_2",
-        "shinkai-web/Installation_3"
-      ]
+        "shinkai-web/Installation_3",
+      ],
     },
     {
-      "group": "Basic Features",
-      "pages": [
+      group: "Basic Features",
+      pages: [
         "shinkai-web/WhatsAIagent_4",
         "shinkai-web/Overview_5",
         "shinkai-web/AIChatsonWeb_6",
-        "shinkai-web/CreatingAgentsonWeb_7"
-      ]
+        "shinkai-web/CreatingAgentsonWeb_7",
+      ],
     },
     {
-      "group": "Advanced Features",
-      "pages": [
+      group: "Advanced Features",
+      pages: [
         "shinkai-web/AgentCollaboration_8",
-        "shinkai-web/x402PaymentsOnWeb_9"
-      ]
+        "shinkai-web/x402PaymentsOnWeb_9",
+      ],
     },
     {
-      "group": "Basic Features",
-      "pages": [
+      group: "Basic Features",
+      pages: [
         "first-steps",
         "basics/ai-chats",
         "basics/files-manager",
         "basics/tools",
         "basics/metadata",
         {
-          "group": "Cloud AI Models",
-          "pages": [
+          group: "Cloud AI Models",
+          pages: [
             "basics/model-install",
             "basics/models/gpt",
             "basics/models/openrouter",
@@ -109,43 +99,41 @@
             "basics/models/groq",
             "basics/models/ollama",
             "basics/models/together-ai",
-            "basics/models/claude"
-          ]
-        }
-      ]
+            "basics/models/claude",
+          ],
+        },
+      ],
     },
     {
-      "group": "Advanced Features",
-      "pages": [
+      group: "Advanced Features",
+      pages: [
         "advanced/custom-ai",
         "advanced/chat-settings",
         "advanced/shinkai-identity",
         "advanced/connect-identity",
         "advanced/AI-store-account",
-        "advanced/agents"
-      ]
+        "advanced/agents",
+      ],
     },
     {
-      "group": "Tutorials",
-      "pages": [
+      group: "Tutorials",
+      pages: [
         "advanced/tutorials/setting-up-twitter",
         "advanced/tutorials/agent-learning-tutor",
         "advanced/tutorials/combining-tools-from-pptx-presentation-to-audio-lesson",
         "advanced/tutorials/human-in-the-loop",
         "advanced/tutorials/blockchain-address-portfolio-tracker",
         "advanced/tutorials/blockchain-data-AI-Agent",
-        "advanced/tutorials/running-R-scripts-from-Shinkai"   
-      ]
+        "advanced/tutorials/running-R-scripts-from-Shinkai",
+      ],
     },
     {
-      "group": "API Documentation",
-      "pages": [
-        "api-reference/introduction"
-      ]
+      group: "API Documentation",
+      pages: ["api-reference/introduction"],
     },
     {
-      "group": "General",
-      "pages": [
+      group: "General",
+      pages: [
         "api-reference/general/post-v2add_llm_provider",
         "api-reference/general/post-v2add_ollama_models",
         "api-reference/general/post-v2change_node_name",
@@ -164,12 +152,12 @@
         "api-reference/general/get-v2scan_ollama_models",
         "api-reference/general/post-v2stop_llm",
         "api-reference/general/get-v2supported_embedding_models",
-        "api-reference/general/post-v2supported_embedding_models"
-      ]
+        "api-reference/general/post-v2supported_embedding_models",
+      ],
     },
     {
-      "group": "Jobs",
-      "pages": [
+      group: "Jobs",
+      pages: [
         "api-reference/jobs/post-v2add_file_to_inbox",
         "api-reference/jobs/get-v2all_inboxes",
         "api-reference/jobs/get-v2available_llm_providers",
@@ -184,12 +172,12 @@
         "api-reference/jobs/post-v2retry_message",
         "api-reference/jobs/post-v2update_job_config",
         "api-reference/jobs/post-v2update_job_scope",
-        "api-reference/jobs/post-v2update_smart_inbox_name"
-      ]
+        "api-reference/jobs/post-v2update_smart_inbox_name",
+      ],
     },
     {
-      "group": "Subscriptions",
-      "pages": [
+      group: "Subscriptions",
+      pages: [
         "api-reference/subscriptions/post-v2available_shared_items",
         "api-reference/subscriptions/post-v2available_shared_items_open",
         "api-reference/subscriptions/post-v2create_shareable_folder",
@@ -201,21 +189,21 @@
         "api-reference/subscriptions/post-v2subscribe_to_shared_folder",
         "api-reference/subscriptions/post-v2unshare_folder",
         "api-reference/subscriptions/post-v2unsubscribe",
-        "api-reference/subscriptions/post-v2update_shareable_folder"
-      ]
+        "api-reference/subscriptions/post-v2update_shareable_folder",
+      ],
     },
     {
-      "group": "Tool Offerings",
-      "pages": [
+      group: "Tool Offerings",
+      pages: [
         "api-reference/tool-offerings/get-v2get_all_tool_offerings",
         "api-reference/tool-offerings/post-v2get_tool_offering",
         "api-reference/tool-offerings/post-v2remove_tool_offering",
-        "api-reference/tool-offerings/post-v2set_tool_offering"
-      ]
+        "api-reference/tool-offerings/post-v2set_tool_offering",
+      ],
     },
     {
-      "group": "Vector File System",
-      "pages": [
+      group: "Vector File System",
+      pages: [
         "api-reference/vecfs/post-v2convert_files_and_save",
         "api-reference/vecfs/post-v2copy_folder",
         "api-reference/vecfs/post-v2copy_item",
@@ -227,29 +215,17 @@
         "api-reference/vecfs/post-v2retrieve_path_simplified",
         "api-reference/vecfs/get-v2retrieve_vector_resource",
         "api-reference/vecfs/post-v2search_items",
-        "api-reference/vecfs/post-v2upload_file_to_folder"
-      ]
+        "api-reference/vecfs/post-v2upload_file_to_folder",
+      ],
     },
     {
-      "group": "Wallet",
-      "pages": [
+      group: "Wallet",
+      pages: [
         "api-reference/wallet/post-v2create_local_wallet",
         "api-reference/wallet/post-v2pay_invoice",
         "api-reference/wallet/post-v2restore_coinbase_mpc_wallet",
-        "api-reference/wallet/post-v2restore_local_wallet"
-      ]
-    }
+        "api-reference/wallet/post-v2restore_local_wallet",
+      ],
+    },
   ],
-  "api": {
-    "baseUrl": "http://127.0.0.1:9550",
-    "playground": {
-      "mode": "show" 
-    }
-  },
-    
-  "footerSocials": {
-    "x": "https://x.com/ShinkaiLocalAI",
-    "github": "https://github.com/dcSpark/shinkai-apps",
-    "discord": "https://discord.com/invite/MmYd9zQquy"
-  }
-}
+};

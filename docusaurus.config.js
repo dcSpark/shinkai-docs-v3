@@ -1,8 +1,8 @@
-const mintConfig = require("./mint.json");
+const siteConfig = require("./site.config");
 
 /** @type {import('@docusaurus/types').Config} */
 module.exports = {
-  title: mintConfig.name,
+  title: siteConfig.name,
   tagline: "Shinkai documentation",
   favicon: "favicon.svg",
   url: "https://docs.shinkai.com",
@@ -44,10 +44,10 @@ module.exports = {
   themeConfig: {
     image: "logo/logo-light.svg",
     navbar: {
-      title: mintConfig.name,
+      title: siteConfig.name,
         logo: {
-          alt: mintConfig.name,
-          src: "logo/logo-light.svg",
+          alt: siteConfig.name,
+          src: siteConfig.logo.light.replace(/^\//, ""),
         },
       items: [
         { to: "/", label: "Docs", position: "left" },

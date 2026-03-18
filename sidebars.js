@@ -1,4 +1,4 @@
-const mintConfig = require("./mint.json");
+const siteConfig = require("./site.config");
 
 function toSidebarItem(entry) {
   if (typeof entry === "string") {
@@ -27,5 +27,5 @@ function toSidebarItem(entry) {
 }
 
 module.exports = {
-  docsSidebar: mintConfig.navigation.map(toSidebarItem).filter(Boolean),
+  docsSidebar: siteConfig.navigation.map(toSidebarItem).filter(Boolean),
 };

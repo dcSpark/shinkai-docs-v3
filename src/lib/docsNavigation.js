@@ -1,4 +1,4 @@
-import mintConfig from "../../mint.json";
+import siteConfig from "../../site.config";
 
 export const DOC_AREA = {
   APP: "app",
@@ -32,32 +32,32 @@ export function getAreaTabs() {
   return [
     {
       area: DOC_AREA.APP,
-      label: mintConfig.primaryTab.name,
-      to: "/",
+      label: siteConfig.docAreas.primaryTab.name,
+      to: siteConfig.docAreas.primaryTab.to,
     },
     {
       area: DOC_AREA.WEB,
-      label: mintConfig.tabs[0].name,
-      to: "/shinkai-web/Welcome_1",
+      label: siteConfig.docAreas.secondaryTabs[0].name,
+      to: siteConfig.docAreas.secondaryTabs[0].to,
     },
     {
       area: DOC_AREA.API,
-      label: mintConfig.tabs[1].name,
-      to: "/api-reference/introduction",
+      label: siteConfig.docAreas.secondaryTabs[1].name,
+      to: siteConfig.docAreas.secondaryTabs[1].to,
     },
   ];
 }
 
 export function getSidebarAnchors() {
-  return mintConfig.anchors;
+  return siteConfig.anchors;
 }
 
 export function getTopbarLinks() {
-  return mintConfig.topbarLinks;
+  return siteConfig.topbarLinks;
 }
 
 export function getTopbarCta() {
-  return mintConfig.topbarCtaButton;
+  return siteConfig.topbarCtaButton;
 }
 
 function pathBelongsToArea(candidate, area) {
@@ -81,10 +81,7 @@ function pathBelongsToArea(candidate, area) {
 
 function sidebarItemBelongsToArea(item, area) {
   if (item.type === "link") {
-    return (
-      pathBelongsToArea(item.href, area) ||
-      pathBelongsToArea(item.docId, area)
-    );
+    return pathBelongsToArea(item.href, area) || pathBelongsToArea(item.docId, area);
   }
 
   if (item.type === "category") {

@@ -11,7 +11,7 @@ import {
   getSidebarAnchors,
   getSidebarIconLabel,
   isSidebarItemActive,
-} from "../../../../lib/mintNavigation";
+} from "../../../../lib/docsNavigation";
 
 function AnchorIcon({ name }) {
   if (name === "Discord") {
