@@ -4,10 +4,9 @@
   "private": true,
   "description": "Shinkai documentation site powered by Docusaurus.",
   "scripts": {
-    "generate:openapi": "node scripts/generate-openapi-index.mjs",
-    "start": "npm run generate:openapi && docusaurus start",
-    "build": "npm run generate:openapi && docusaurus build",
-    "serve": "npm run generate:openapi && docusaurus serve",
+    "start": "docusaurus start",
+    "build": "docusaurus build",
+    "serve": "docusaurus serve",
     "clear": "docusaurus clear"
   },
   "dependencies": {
