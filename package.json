@@ -4,6 +4,9 @@
   "private": true,
   "description": "Shinkai documentation site powered by Docusaurus.",
   "scripts": {
+    "generate:openapi-index": "node scripts/generate-openapi-index.mjs",
+    "prestart": "npm run generate:openapi-index",
+    "prebuild": "npm run generate:openapi-index",
     "start": "docusaurus start",
     "build": "docusaurus build",
     "serve": "docusaurus serve",
@@ -13,6 +16,7 @@
     "@docusaurus/core": "3.8.1",
     "@docusaurus/preset-classic": "3.8.1",
     "@docusaurus/theme-common": "^3.9.2",
+    "js-yaml": "^4.1.1",
     "lucide-react": "^0.577.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0"
