@@ -1,0 +1,7 @@
+interface:
+  display_name: "Google Cloud Storage"
+  short_description: "Provision shared customer storage prefixes"
+  default_prompt: "Use $google-cloud-storage to provision a shared bucket and a customer prefix for this workflow."
+
+policy:
+  allow_implicit_invocation: true

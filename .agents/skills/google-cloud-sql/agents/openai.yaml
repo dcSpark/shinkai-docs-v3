@@ -1,0 +1,7 @@
+interface:
+  display_name: "Google Cloud SQL"
+  short_description: "Provision shared Cloud SQL customer databases"
+  default_prompt: "Use $google-cloud-sql to provision a shared Cloud SQL instance and a customer database/user for this workflow."
+
+policy:
+  allow_implicit_invocation: true
