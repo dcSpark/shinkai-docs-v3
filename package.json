@@ -1,0 +1,30 @@
+{
+  "name": "shinkai-docs-v3",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Shinkai documentation site powered by Docusaurus.",
+  "scripts": {
+    "generate:openapi-index": "node scripts/generate-openapi-index.mjs",
+    "start": "docusaurus start",
+    "build": "docusaurus build",
+    "serve": "docusaurus serve",
+    "clear": "docusaurus clear"
+  },
+  "dependencies": {
+    "@docusaurus/core": "3.8.1",
+    "@docusaurus/preset-classic": "3.8.1",
+    "@docusaurus/theme-common": "^3.9.2",
+    "js-yaml": "^4.1.1",
+    "lucide-react": "^0.577.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
+  "engines": {
+    "node": ">=18.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.2.2",
+    "@tailwindcss/typography": "^0.5.19",
+    "tailwindcss": "^4.2.2"
+  }
+}

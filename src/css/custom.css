@@ -1,0 +1,191 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:where(html[data-theme="dark"], html[data-theme="dark"] *));
+
+@theme {
+  --font-sans:
+    "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+    sans-serif;
+}
+
+:root {
+  --ifm-font-family-base:
+    "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+    sans-serif;
+  --ifm-color-primary: #fe6162;
+  --ifm-color-primary-dark: #ea5859;
+  --ifm-color-primary-darker: #dd4f50;
+  --ifm-color-primary-darkest: #b93b3c;
+  --ifm-color-primary-light: #ff7474;
+  --ifm-color-primary-lighter: #ff8182;
+  --ifm-color-primary-lightest: #ff9fa0;
+  --ifm-link-color: #d84f50;
+  --ifm-code-font-size: 95%;
+  --ifm-background-color: #fcfaf7;
+  --ifm-navbar-background-color: rgba(252, 250, 247, 0.92);
+  --ifm-footer-background-color: #1c1818;
+  --ifm-navbar-height: 122px;
+  --shinkai-shell-max-width: 92rem;
+  --shinkai-border: rgba(18, 18, 18, 0.08);
+  --shinkai-muted: #6f6a6a;
+  --shinkai-soft: #fff5f4;
+}
+
+html[data-theme="dark"] {
+  --ifm-color-primary: #ff7a7b;
+  --ifm-link-color: #ff9a9b;
+  --ifm-background-color: #151313;
+  --ifm-navbar-background-color: rgba(21, 19, 19, 0.92);
+  --ifm-footer-background-color: #0d0b0b;
+  --shinkai-border: rgba(255, 255, 255, 0.08);
+  --shinkai-muted: #c2bbbb;
+  --shinkai-soft: rgba(254, 97, 98, 0.12);
+}
+
+@layer base {
+  body {
+    @apply bg-[#fcfaf7] font-sans text-[#221f1f] antialiased dark:bg-[#151313] dark:text-[#f3eded];
+  }
+
+  .navbar {
+    @apply block h-auto border-b border-[rgba(18,18,18,0.08)] px-0 shadow-none backdrop-blur-[14px] dark:border-[rgba(255,255,255,0.08)] bg-white dark:bg-[#151313];
+
+  }
+
+  .navbar__inner,
+  .footer {
+    width: 100%;
+    max-width: var(--shinkai-shell-max-width);
+    margin: 0 auto;
+  }
+
+  .main-wrapper {
+    @apply bg-white dark:bg-[#151313];
+  }
+
+  .hero,
+  .pagination-nav {
+    @apply shadow-none py-6;
+  }
+
+  .theme-doc-sidebar-container {
+    @apply w-[316px];
+  }
+
+  .theme-doc-markdown video {
+    @apply w-full rounded-2xl border bg-black;
+    border-color: rgba(0, 0, 0, 0.08);
+  }
+
+  .table-of-contents {
+    @apply sticky pt-[38px];
+    top: calc(var(--ifm-navbar-height) + 42px);
+  }
+
+  .table-of-contents__left-border {
+    @apply border-l-0 pl-0;
+  }
+
+  .table-of-contents::before {
+    content: "On this page";
+    @apply mb-[18px] block text-[0.95rem] font-bold text-[#2b2828] dark:text-[#f3eded];
+  }
+
+  .table-of-contents li {
+    margin: 0 0 10px;
+  }
+
+  .table-of-contents a {
+    @apply text-[#6f6a6a] dark:text-[#c9c1c1];
+  }
+
+  .table-of-contents a:hover,
+  .table-of-contents__link--active {
+    color: var(--ifm-color-primary);
+  }
+
+  .pagination-nav {
+    @apply border-t border-[rgba(18,18,18,0.08)] dark:border-[rgba(255,255,255,0.08)];
+  }
+
+  .theme-edit-this-page,
+  .theme-doc-footer-edit-meta-row,
+  .breadcrumbs,
+  .footer {
+    @apply hidden;
+  }
+
+  .shinkai-docItemContainer header + *,
+  .shinkai-docItemContainer article > *:first-child {
+    @apply mt-0;
+  }
+
+  .shinkai-docTypography :where(.theme-doc-markdown) {
+    @apply max-w-none;
+  }
+
+  .shinkai-colorToggle {
+    @apply inline-flex h-9 w-9 shrink-0 items-center justify-center;
+  }
+
+  .shinkai-colorToggle button {
+    @apply inline-flex h-9 w-9 items-center justify-center rounded-full border border-[rgba(18,18,18,0.08)] bg-white text-[#403c3c] shadow-[0_1px_2px_rgba(18,18,18,0.05)] dark:border-[rgba(255,255,255,0.08)] dark:bg-[#151313] dark:text-[#f3eded];
+  }
+
+  .shinkai-colorToggle button:hover {
+    @apply bg-black/[0.03] text-[#1f1b1b] dark:bg-white/[0.06] dark:text-[#f3eded];
+  }
+
+  .shinkai-colorToggle svg {
+    @apply h-4 w-4;
+  }
+
+  .shinkai-sidebar-scroll {
+    scrollbar-gutter: stable;
+  }
+
+  .shinkai-sidebar-scroll::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  .shinkai-sidebar-scroll::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .shinkai-sidebar-scroll::-webkit-scrollbar-thumb {
+    border: 3px solid transparent;
+    border-radius: 999px;
+    background: rgba(18, 18, 18, 0.14);
+    background-clip: padding-box;
+  }
+
+  .shinkai-sidebar-scroll:hover::-webkit-scrollbar-thumb {
+    background: rgba(18, 18, 18, 0.22);
+    background-clip: padding-box;
+  }
+}
+
+@media (min-width: 997px) {
+  .shinkai-docItemCol {
+    max-width: 75% !important;
+  }
+}
+
+@media (max-width: 1200px) {
+  .theme-doc-sidebar-container {
+    @apply w-[286px];
+  }
+}
+
+@media (max-width: 996px) {
+  :root {
+    --ifm-navbar-height: 108px;
+  }
+
+  .theme-doc-sidebar-container,
+  .shinkai-docTocCol {
+    display: none;
+  }
+}

@@ -1,0 +1,231 @@
+module.exports = {
+  name: "Shinkai Docs",
+  logo: {
+    dark: "/logo/logo-dark.svg",
+    light: "/logo/logo-light.svg",
+  },
+  favicon: "/favicon.svg",
+  topbarLinks: [
+    {
+      name: "Discord",
+      url: "https://discord.gg/eJBhuTUQCU",
+    },
+    {
+      name: "Github",
+      url: "https://github.com/dcSpark/shinkai-apps",
+    },
+  ],
+  topbarCtaButton: {
+    name: "Get Shinkai",
+    url: "https://www.shinkai.com/get-shinkai",
+  },
+  docAreas: {
+    primaryTab: {
+      name: "Shinkai App",
+      to: "/",
+    },
+    secondaryTabs: [
+      {
+        name: "Shinkai Web",
+        to: "/shinkai-web/Welcome_1",
+      },
+      {
+        name: "Developer API Reference",
+        to: "/api-reference/introduction",
+      },
+    ],
+  },
+  anchors: [
+    {
+      name: "Blog",
+      icon: "newspaper",
+      url: "https://blog.shinkai.com/",
+    },
+    {
+      name: "Discord",
+      icon: "discord",
+      url: "https://discord.gg/eJBhuTUQCU",
+    },
+  ],
+  navigation: [
+    {
+      group: "Get Started",
+      pages: [
+        "introduction",
+        "what-is-shinkai",
+        "quickstart",
+        "basics/ai-agents",
+      ],
+    },
+    {
+      group: "Get Started",
+      pages: [
+        "shinkai-web/Welcome_1",
+        "shinkai-web/Quickstar_2",
+        "shinkai-web/Installation_3",
+      ],
+    },
+    {
+      group: "Basic Features",
+      pages: [
+        "shinkai-web/WhatsAIagent_4",
+        "shinkai-web/Overview_5",
+        "shinkai-web/AIChatsonWeb_6",
+        "shinkai-web/CreatingAgentsonWeb_7",
+      ],
+    },
+    {
+      group: "Advanced Features",
+      pages: [
+        "shinkai-web/AgentCollaboration_8",
+        "shinkai-web/x402PaymentsOnWeb_9",
+      ],
+    },
+    {
+      group: "Basic Features",
+      pages: [
+        "first-steps",
+        "basics/ai-chats",
+        "basics/files-manager",
+        "basics/tools",
+        "basics/metadata",
+        {
+          group: "Cloud AI Models",
+          pages: [
+            "basics/model-install",
+            "basics/models/gpt",
+            "basics/models/openrouter",
+            "basics/models/gemini",
+            "basics/models/groq",
+            "basics/models/ollama",
+            "basics/models/together-ai",
+            "basics/models/claude",
+          ],
+        },
+      ],
+    },
+    {
+      group: "Advanced Features",
+      pages: [
+        "advanced/custom-ai",
+        "advanced/chat-settings",
+        "advanced/shinkai-identity",
+        "advanced/connect-identity",
+        "advanced/AI-store-account",
+        "advanced/agents",
+      ],
+    },
+    {
+      group: "Tutorials",
+      pages: [
+        "advanced/tutorials/setting-up-twitter",
+        "advanced/tutorials/agent-learning-tutor",
+        "advanced/tutorials/combining-tools-from-pptx-presentation-to-audio-lesson",
+        "advanced/tutorials/human-in-the-loop",
+        "advanced/tutorials/blockchain-address-portfolio-tracker",
+        "advanced/tutorials/blockchain-data-AI-Agent",
+        "advanced/tutorials/running-R-scripts-from-Shinkai",
+      ],
+    },
+    {
+      group: "API Documentation",
+      pages: ["api-reference/introduction"],
+    },
+    {
+      group: "General",
+      pages: [
+        "api-reference/general/post-v2add_llm_provider",
+        "api-reference/general/post-v2add_ollama_models",
+        "api-reference/general/post-v2change_node_name",
+        "api-reference/general/get-v2default_embedding_model",
+        "api-reference/general/post-v2default_embedding_model",
+        "api-reference/general/get-v2download_file_from_inbox-",
+        "api-reference/general/get-v2health_check",
+        "api-reference/general/post-v2initial_registration",
+        "api-reference/general/get-v2is_pristine",
+        "api-reference/general/get-v2list_files_in_inbox",
+        "api-reference/general/get-v2local_processing_preference",
+        "api-reference/general/post-v2local_processing_preference",
+        "api-reference/general/post-v2modify_llm_provider",
+        "api-reference/general/get-v2public_keys",
+        "api-reference/general/post-v2remove_llm_provider",
+        "api-reference/general/get-v2scan_ollama_models",
+        "api-reference/general/post-v2stop_llm",
+        "api-reference/general/get-v2supported_embedding_models",
+        "api-reference/general/post-v2supported_embedding_models",
+      ],
+    },
+    {
+      group: "Jobs",
+      pages: [
+        "api-reference/jobs/post-v2add_file_to_inbox",
+        "api-reference/jobs/get-v2all_inboxes",
+        "api-reference/jobs/get-v2available_llm_providers",
+        "api-reference/jobs/post-v2change_job_llm_provider",
+        "api-reference/jobs/post-v2create_files_inbox",
+        "api-reference/jobs/post-v2create_job",
+        "api-reference/jobs/get-v2get_job_config",
+        "api-reference/jobs/get-v2get_job_scope",
+        "api-reference/jobs/post-v2job_message",
+        "api-reference/jobs/post-v2last_messages",
+        "api-reference/jobs/post-v2last_messages_with_branches",
+        "api-reference/jobs/post-v2retry_message",
+        "api-reference/jobs/post-v2update_job_config",
+        "api-reference/jobs/post-v2update_job_scope",
+        "api-reference/jobs/post-v2update_smart_inbox_name",
+      ],
+    },
+    {
+      group: "Subscriptions",
+      pages: [
+        "api-reference/subscriptions/post-v2available_shared_items",
+        "api-reference/subscriptions/post-v2available_shared_items_open",
+        "api-reference/subscriptions/post-v2create_shareable_folder",
+        "api-reference/subscriptions/post-v2http_free_subscription_links",
+        "api-reference/subscriptions/post-v2last_notifications",
+        "api-reference/subscriptions/post-v2my_subscribers",
+        "api-reference/subscriptions/post-v2my_subscriptions",
+        "api-reference/subscriptions/post-v2notifications_before_timestamp",
+        "api-reference/subscriptions/post-v2subscribe_to_shared_folder",
+        "api-reference/subscriptions/post-v2unshare_folder",
+        "api-reference/subscriptions/post-v2unsubscribe",
+        "api-reference/subscriptions/post-v2update_shareable_folder",
+      ],
+    },
+    {
+      group: "Tool Offerings",
+      pages: [
+        "api-reference/tool-offerings/get-v2get_all_tool_offerings",
+        "api-reference/tool-offerings/post-v2get_tool_offering",
+        "api-reference/tool-offerings/post-v2remove_tool_offering",
+        "api-reference/tool-offerings/post-v2set_tool_offering",
+      ],
+    },
+    {
+      group: "Vector File System",
+      pages: [
+        "api-reference/vecfs/post-v2convert_files_and_save",
+        "api-reference/vecfs/post-v2copy_folder",
+        "api-reference/vecfs/post-v2copy_item",
+        "api-reference/vecfs/post-v2create_folder",
+        "api-reference/vecfs/post-v2delete_folder",
+        "api-reference/vecfs/post-v2delete_item",
+        "api-reference/vecfs/post-v2move_folder",
+        "api-reference/vecfs/post-v2move_item",
+        "api-reference/vecfs/post-v2retrieve_path_simplified",
+        "api-reference/vecfs/get-v2retrieve_vector_resource",
+        "api-reference/vecfs/post-v2search_items",
+        "api-reference/vecfs/post-v2upload_file_to_folder",
+      ],
+    },
+    {
+      group: "Wallet",
+      pages: [
+        "api-reference/wallet/post-v2create_local_wallet",
+        "api-reference/wallet/post-v2pay_invoice",
+        "api-reference/wallet/post-v2restore_coinbase_mpc_wallet",
+        "api-reference/wallet/post-v2restore_local_wallet",
+      ],
+    },
+  ],
+};
