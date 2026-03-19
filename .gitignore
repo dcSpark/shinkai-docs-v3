@@ -2,4 +2,6 @@ node_modules
 build
 .docusaurus
 generated
+!src/generated/
+!src/generated/openapi-index.js
 videos/.DS_Store
