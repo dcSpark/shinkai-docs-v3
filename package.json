@@ -5,8 +5,6 @@
   "description": "Shinkai documentation site powered by Docusaurus.",
   "scripts": {
     "generate:openapi-index": "node scripts/generate-openapi-index.mjs",
-    "prestart": "npm run generate:openapi-index",
-    "prebuild": "npm run generate:openapi-index",
     "start": "docusaurus start",
     "build": "docusaurus build",
     "serve": "docusaurus serve",
